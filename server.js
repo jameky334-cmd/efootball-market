@@ -7,13 +7,11 @@ import jwt from 'jsonwebtoken';
 const { Pool } = pg;
 const app = express();
 
-/* =========================================================
-   CONFIG
-========================================================= */
-
 const PORT = Number(process.env.PORT || 10000);
 const DATABASE_URL = process.env.DATABASE_URL;
 const JWT_SECRET = process.env.JWT_SECRET;
+const FRONTEND_ORIGIN = String(process.env.FRONTEND_ORIGIN || '').trim();
+const NODE_ENV = process.env.NODE_ENV || 'production';
 
 if (!DATABASE_URL) {
   console.error('ERROR: DATABASE_URL is missing.');
@@ -25,53 +23,75 @@ if (!JWT_SECRET) {
   process.exit(1);
 }
 
-/* =========================================================
-   DATABASE
-========================================================= */
-
 const pool = new Pool({
   connectionString: DATABASE_URL,
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
   ssl:
-    process.env.NODE_ENV === 'production'
+    NODE_ENV === 'production'
       ? { rejectUnauthorized: false }
-      : false,
+      : false
 });
 
-pool.on('error', (error) => {
-  console.error('Unexpected PostgreSQL pool error:', error);
+pool.on('error', (err) => {
+  console.error('PostgreSQL pool error:', err);
 });
-
-/* =========================================================
-   APP SECURITY
-========================================================= */
 
 app.disable('x-powered-by');
 
-const allowedOrigins = String(
-  process.env.FRONTEND_ORIGIN || ''
-)
-  .split(',')
-  .map((value) => value.trim())
-  .filter(Boolean);
-
 app.use(
   cors({
-    origin: allowedOrigins.length
-      ? allowedOrigins
+    origin: FRONTEND_ORIGIN
+      ? FRONTEND_ORIGIN
+          .split(',')
+          .map((v) => v.trim())
+          .filter(Boolean)
       : '*',
-    credentials: false,
+    credentials: false
   })
 );
 
 app.use(
   express.json({
-    limit: '1mb',
+    limit: '1mb'
   })
 );
 
-/* =========================================================
-   DATABASE INITIALIZATION
-========================================================= */
+const fail = (res, status, error) =>
+  res.status(status).json({ error });
+
+function auth(req, res, next) {
+  try {
+    const header = req.headers.authorization || '';
+
+    if (!header.startsWith('Bearer ')) {
+      return fail(res, 401, 'unauthorized');
+    }
+
+    req.user = jwt.verify(
+      header.slice(7),
+      JWT_SECRET
+    );
+
+    next();
+  } catch {
+    return fail(res, 401, 'unauthorized');
+  }
+}
+
+function role(...roles) {
+  return (req, res, next) => {
+    if (
+      !req.user ||
+      !roles.includes(req.user.role)
+    ) {
+      return fail(res, 403, 'forbidden');
+    }
+
+    next();
+  };
+}
 
 async function initDatabase() {
   await pool.query(`
@@ -81,7 +101,7 @@ async function initDatabase() {
       password_hash TEXT NOT NULL,
       role TEXT NOT NULL DEFAULT 'buyer'
         CHECK (
-          role IN ('buyer', 'seller', 'admin')
+          role IN ('buyer','seller','admin')
         ),
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
@@ -93,6 +113,8 @@ async function initDatabase() {
         ON DELETE CASCADE,
 
       title TEXT NOT NULL,
+
+      description TEXT NOT NULL DEFAULT '',
 
       price NUMERIC(12,2) NOT NULL
         CHECK (price > 0),
@@ -108,6 +130,10 @@ async function initDatabase() {
 
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
+
+    ALTER TABLE listings
+      ADD COLUMN IF NOT EXISTS
+      description TEXT NOT NULL DEFAULT '';
 
     CREATE TABLE IF NOT EXISTS orders (
       id BIGSERIAL PRIMARY KEY,
@@ -133,105 +159,47 @@ async function initDatabase() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
 
-    CREATE INDEX IF NOT EXISTS idx_listings_status_created
+    CREATE INDEX IF NOT EXISTS
+      idx_listings_status_created
       ON listings(status, created_at DESC);
 
-    CREATE INDEX IF NOT EXISTS idx_listings_seller
+    CREATE INDEX IF NOT EXISTS
+      idx_listings_seller
       ON listings(seller_id, created_at DESC);
 
-    CREATE INDEX IF NOT EXISTS idx_orders_buyer
+    CREATE INDEX IF NOT EXISTS
+      idx_orders_buyer
       ON orders(buyer_id, created_at DESC);
 
-    CREATE INDEX IF NOT EXISTS idx_orders_listing
+    CREATE INDEX IF NOT EXISTS
+      idx_orders_listing
       ON orders(listing_id, created_at DESC);
 
-    CREATE UNIQUE INDEX IF NOT EXISTS uniq_open_order_per_listing
+    CREATE UNIQUE INDEX IF NOT EXISTS
+      uniq_open_order_per_listing
       ON orders(listing_id)
-      WHERE status IN ('pending', 'paid');
+      WHERE status IN ('pending','paid');
   `);
 
-  console.log('Database initialized successfully.');
+  console.log('Database initialized.');
 }
-
-/* =========================================================
-   AUTH MIDDLEWARE
-========================================================= */
-
-function auth(req, res, next) {
-  try {
-    const header =
-      req.headers.authorization || '';
-
-    if (!header.startsWith('Bearer ')) {
-      return res.status(401).json({
-        error: 'unauthorized',
-      });
-    }
-
-    const token = header.slice(7);
-
-    const decoded = jwt.verify(
-      token,
-      JWT_SECRET
-    );
-
-    req.user = decoded;
-
-    next();
-  } catch (error) {
-    return res.status(401).json({
-      error: 'unauthorized',
-    });
-  }
-}
-
-/* =========================================================
-   ROLE MIDDLEWARE
-========================================================= */
-
-function requireRole(...roles) {
-  return (req, res, next) => {
-    if (
-      !req.user ||
-      !roles.includes(req.user.role)
-    ) {
-      return res.status(403).json({
-        error: 'forbidden',
-      });
-    }
-
-    next();
-  };
-}
-
-/* =========================================================
-   ROOT
-========================================================= */
 
 app.get('/', (_req, res) => {
   res.json({
     ok: true,
     service: 'efootball-market-api',
-    version: '1.0.0',
+    version: '2.0.0',
     health: '/health',
-    apiHealth: '/api/health',
+    apiHealth: '/api/health'
   });
 });
-
-/* =========================================================
-   RENDER HEALTH CHECK
-========================================================= */
 
 app.get('/health', (_req, res) => {
   res.status(200).json({
     ok: true,
-    service: 'efootball-market-api',
+    service: 'efootball-market-api'
   });
 });
-
-/* =========================================================
-   DATABASE HEALTH CHECK
-========================================================= */
 
 app.get('/api/health', async (_req, res) => {
   try {
@@ -240,25 +208,21 @@ app.get('/api/health', async (_req, res) => {
     res.json({
       ok: true,
       service: 'efootball-market-api',
-      database: 'connected',
+      database: 'connected'
     });
-  } catch (error) {
+  } catch (err) {
     console.error(
-      'Database health check failed:',
-      error
+      'API health database error:',
+      err
     );
 
     res.status(503).json({
       ok: false,
       service: 'efootball-market-api',
-      database: 'unavailable',
+      database: 'unavailable'
     });
   }
 });
-
-/* =========================================================
-   REGISTER
-========================================================= */
 
 app.post(
   '/api/auth/register',
@@ -277,29 +241,22 @@ app.post(
       if (
         !/^\S+@\S+\.\S+$/.test(email)
       ) {
-        return res.status(400).json({
-          error: 'valid email required',
-        });
+        return fail(
+          res,
+          400,
+          'valid email required'
+        );
       }
 
       if (password.length < 6) {
-        return res.status(400).json({
-          error:
-            'password must be at least 6 characters',
-        });
+        return fail(
+          res,
+          400,
+          'password must be at least 6 characters'
+        );
       }
 
-      /*
-        IMPORTANT:
-        Public registration is ALWAYS buyer.
-
-        Users cannot register themselves as
-        seller/admin from the frontend.
-      */
-
-      const role = 'buyer';
-
-      const passwordHash =
+      const hash =
         await bcrypt.hash(
           password,
           12
@@ -315,7 +272,7 @@ app.post(
               role
             )
           VALUES
-            ($1, $2, $3)
+            ($1,$2,$3)
           RETURNING
             id,
             email,
@@ -324,51 +281,55 @@ app.post(
           `,
           [
             email,
-            passwordHash,
-            role,
+            hash,
+            'buyer'
           ]
         );
 
-      const user = result.rows[0];
+      const user =
+        result.rows[0];
 
-      const token = jwt.sign(
-        {
-          id: user.id,
-          email: user.email,
-          role: user.role,
-        },
-        JWT_SECRET,
-        {
-          expiresIn: '7d',
-        }
-      );
+      const token =
+        jwt.sign(
+          {
+            id: user.id,
+            email: user.email,
+            role: user.role
+          },
+          JWT_SECRET,
+          {
+            expiresIn: '7d'
+          }
+        );
 
       res.status(201).json({
         token,
-        user,
+        user
       });
-    } catch (error) {
-      if (error.code === '23505') {
-        return res.status(409).json({
-          error: 'email already exists',
-        });
+    } catch (err) {
+      if (
+        err?.code === '23505'
+      ) {
+        return fail(
+          res,
+          409,
+          'email already exists'
+        );
       }
 
       console.error(
         'Register error:',
-        error
+        err
       );
 
-      res.status(500).json({
-        error: 'server error',
-      });
+      fail(
+        res,
+        500,
+        'server error'
+      );
     }
   }
 );
-
-/* =========================================================
-   LOGIN
-========================================================= */
 
 app.post(
   '/api/auth/login',
@@ -385,10 +346,11 @@ app.post(
       );
 
       if (!email || !password) {
-        return res.status(400).json({
-          error:
-            'email and password required',
-        });
+        return fail(
+          res,
+          400,
+          'email and password required'
+        );
       }
 
       const result =
@@ -408,71 +370,75 @@ app.post(
         );
 
       if (!result.rowCount) {
-        return res.status(401).json({
-          error: 'invalid credentials',
-        });
+        return fail(
+          res,
+          401,
+          'invalid credentials'
+        );
       }
 
-      const row = result.rows[0];
+      const row =
+        result.rows[0];
 
-      const passwordValid =
+      const valid =
         await bcrypt.compare(
           password,
           row.password_hash
         );
 
-      if (!passwordValid) {
-        return res.status(401).json({
-          error: 'invalid credentials',
-        });
+      if (!valid) {
+        return fail(
+          res,
+          401,
+          'invalid credentials'
+        );
       }
 
       const user = {
         id: row.id,
         email: row.email,
         role: row.role,
-        created_at: row.created_at,
+        created_at: row.created_at
       };
 
-      const token = jwt.sign(
-        user,
-        JWT_SECRET,
-        {
-          expiresIn: '7d',
-        }
-      );
+      const token =
+        jwt.sign(
+          user,
+          JWT_SECRET,
+          {
+            expiresIn: '7d'
+          }
+        );
 
       res.json({
         token,
-        user,
+        user
       });
-    } catch (error) {
+    } catch (err) {
       console.error(
         'Login error:',
-        error
+        err
       );
 
-      res.status(500).json({
-        error: 'server error',
-      });
+      fail(
+        res,
+        500,
+        'server error'
+      );
     }
   }
 );
-
-/* =========================================================
-   LISTINGS - PUBLIC
-========================================================= */
 
 app.get(
   '/api/listings',
   async (_req, res) => {
     try {
       const result =
-        await pool.query(
-          `
+        await pool.query(`
           SELECT
             l.id,
             l.title,
+            l.description,
             l.price,
             l.status,
             l.created_at,
@@ -481,57 +447,82 @@ app.get(
           JOIN users u
             ON u.id = l.seller_id
           WHERE l.status = 'active'
-          ORDER BY l.created_at DESC
-          `
-        );
+          ORDER BY
+            l.created_at DESC
+        `);
 
-      res.json(result.rows);
-    } catch (error) {
+      res.json(
+        result.rows
+      );
+    } catch (err) {
       console.error(
         'Listings error:',
-        error
+        err
       );
 
-      res.status(500).json({
-        error: 'server error',
-      });
+      fail(
+        res,
+        500,
+        'server error'
+      );
     }
   }
 );
 
-/* =========================================================
-   CREATE LISTING
-   SELLER / ADMIN ONLY
-========================================================= */
-
 app.post(
   '/api/listings',
   auth,
-  requireRole('seller', 'admin'),
+  role('seller', 'admin'),
   async (req, res) => {
     try {
-      const title = String(
-        req.body?.title || ''
-      ).trim();
+      const title =
+        String(
+          req.body?.title || ''
+        ).trim();
 
-      const price = Number(
-        req.body?.price
-      );
+      const description =
+        String(
+          req.body?.description || ''
+        ).trim();
+
+      const price =
+        Number(
+          req.body?.price
+        );
 
       if (!title) {
-        return res.status(400).json({
-          error: 'title required',
-        });
+        return fail(
+          res,
+          400,
+          'title required'
+        );
+      }
+
+      if (title.length > 200) {
+        return fail(
+          res,
+          400,
+          'title too long'
+        );
       }
 
       if (
         !Number.isFinite(price) ||
         price <= 0
       ) {
-        return res.status(400).json({
-          error:
-            'positive price required',
-        });
+        return fail(
+          res,
+          400,
+          'positive price required'
+        );
+      }
+
+      if (description.length > 5000) {
+        return fail(
+          res,
+          400,
+          'description too long'
+        );
       }
 
       const result =
@@ -541,14 +532,16 @@ app.post(
             (
               seller_id,
               title,
+              description,
               price
             )
           VALUES
-            ($1, $2, $3)
+            ($1,$2,$3,$4)
           RETURNING
             id,
             seller_id,
             title,
+            description,
             price,
             status,
             created_at
@@ -556,35 +549,33 @@ app.post(
           [
             req.user.id,
             title,
-            price,
+            description,
+            price
           ]
         );
 
       res.status(201).json(
         result.rows[0]
       );
-    } catch (error) {
+    } catch (err) {
       console.error(
         'Create listing error:',
-        error
+        err
       );
 
-      res.status(500).json({
-        error: 'server error',
-      });
+      fail(
+        res,
+        500,
+        'server error'
+      );
     }
   }
 );
 
-/* =========================================================
-   MY LISTINGS
-   SELLER / ADMIN
-========================================================= */
-
 app.get(
   '/api/my-listings',
   auth,
-  requireRole('seller', 'admin'),
+  role('seller', 'admin'),
   async (req, res) => {
     try {
       const result =
@@ -594,38 +585,40 @@ app.get(
             id,
             seller_id,
             title,
+            description,
             price,
             status,
             created_at
           FROM listings
           WHERE seller_id = $1
-          ORDER BY created_at DESC
+          ORDER BY
+            created_at DESC
           `,
           [req.user.id]
         );
 
-      res.json(result.rows);
-    } catch (error) {
+      res.json(
+        result.rows
+      );
+    } catch (err) {
       console.error(
         'My listings error:',
-        error
+        err
       );
 
-      res.status(500).json({
-        error: 'server error',
-      });
+      fail(
+        res,
+        500,
+        'server error'
+      );
     }
   }
 );
 
-/* =========================================================
-   CREATE ORDER
-========================================================= */
-
 app.post(
   '/api/orders',
   auth,
-  requireRole('buyer', 'admin'),
+  role('buyer', 'admin'),
   async (req, res) => {
     const client =
       await pool.connect();
@@ -637,26 +630,21 @@ app.post(
         );
 
       if (
-        !Number.isInteger(listingId) ||
+        !Number.isInteger(
+          listingId
+        ) ||
         listingId <= 0
       ) {
-        return res.status(400).json({
-          error:
-            'valid listing_id required',
-        });
+        return fail(
+          res,
+          400,
+          'valid listing_id required'
+        );
       }
 
       await client.query(
         'BEGIN'
       );
-
-      /*
-        Lock listing row.
-
-        This prevents two buyers from
-        purchasing the same active listing
-        simultaneously.
-      */
 
       const listingResult =
         await client.query(
@@ -665,6 +653,7 @@ app.post(
             id,
             seller_id,
             title,
+            description,
             price,
             status
           FROM listings
@@ -679,10 +668,11 @@ app.post(
           'ROLLBACK'
         );
 
-        return res.status(404).json({
-          error:
-            'listing not found',
-        });
+        return fail(
+          res,
+          404,
+          'listing not found'
+        );
       }
 
       const listing =
@@ -695,39 +685,33 @@ app.post(
           'ROLLBACK'
         );
 
-        return res.status(409).json({
-          error:
-            'listing not active',
-        });
+        return fail(
+          res,
+          409,
+          'listing not active'
+        );
       }
-
-      /*
-        Prevent seller from buying
-        their own listing.
-      */
 
       if (
         String(
           listing.seller_id
         ) ===
-        String(req.user.id)
+        String(
+          req.user.id
+        )
       ) {
         await client.query(
           'ROLLBACK'
         );
 
-        return res.status(403).json({
-          error:
-            'cannot buy your own listing',
-        });
+        return fail(
+          res,
+          403,
+          'cannot buy your own listing'
+        );
       }
 
-      /*
-        Check for an existing
-        pending/paid order.
-      */
-
-      const openOrder =
+      const open =
         await client.query(
           `
           SELECT id
@@ -742,18 +726,19 @@ app.post(
           [listingId]
         );
 
-      if (openOrder.rowCount) {
+      if (open.rowCount) {
         await client.query(
           'ROLLBACK'
         );
 
-        return res.status(409).json({
-          error:
-            'listing already has an open order',
-        });
+        return fail(
+          res,
+          409,
+          'listing already has an open order'
+        );
       }
 
-      const orderResult =
+      const order =
         await client.query(
           `
           INSERT INTO orders
@@ -777,7 +762,7 @@ app.post(
           `,
           [
             listingId,
-            req.user.id,
+            req.user.id
           ]
         );
 
@@ -786,11 +771,15 @@ app.post(
       );
 
       res.status(201).json({
-        ...orderResult.rows[0],
-        title: listing.title,
-        price: listing.price,
+        ...order.rows[0],
+        title:
+          listing.title,
+        description:
+          listing.description,
+        price:
+          listing.price
       });
-    } catch (error) {
+    } catch (err) {
       try {
         await client.query(
           'ROLLBACK'
@@ -798,31 +787,30 @@ app.post(
       } catch {}
 
       if (
-        error.code === '23505'
+        err?.code === '23505'
       ) {
-        return res.status(409).json({
-          error:
-            'listing already has an open order',
-        });
+        return fail(
+          res,
+          409,
+          'listing already has an open order'
+        );
       }
 
       console.error(
         'Create order error:',
-        error
+        err
       );
 
-      res.status(500).json({
-        error: 'server error',
-      });
+      fail(
+        res,
+        500,
+        'server error'
+      );
     } finally {
       client.release();
     }
   }
 );
-
-/* =========================================================
-   GET ORDERS
-========================================================= */
 
 app.get(
   '/api/orders',
@@ -831,17 +819,11 @@ app.get(
     try {
       let result;
 
-      /*
-        ADMIN:
-        Can see all orders.
-      */
-
       if (
         req.user.role === 'admin'
       ) {
         result =
-          await pool.query(
-            `
+          await pool.query(`
             SELECT
               o.id,
               o.listing_id,
@@ -849,6 +831,7 @@ app.get(
               o.status,
               o.created_at,
               l.title,
+              l.description,
               l.price,
               buyer.email AS buyer_email,
               seller.email AS seller_email
@@ -861,16 +844,8 @@ app.get(
               ON seller.id = l.seller_id
             ORDER BY
               o.created_at DESC
-            `
-          );
-      }
-
-      /*
-        SELLER:
-        See orders for their listings.
-      */
-
-      else if (
+          `);
+      } else if (
         req.user.role === 'seller'
       ) {
         result =
@@ -883,6 +858,7 @@ app.get(
               o.status,
               o.created_at,
               l.title,
+              l.description,
               l.price,
               buyer.email AS buyer_email
             FROM orders o
@@ -896,14 +872,7 @@ app.get(
             `,
             [req.user.id]
           );
-      }
-
-      /*
-        BUYER:
-        See only their own orders.
-      */
-
-      else {
+      } else {
         result =
           await pool.query(
             `
@@ -914,6 +883,7 @@ app.get(
               o.status,
               o.created_at,
               l.title,
+              l.description,
               l.price,
               seller.email AS seller_email
             FROM orders o
@@ -932,22 +902,20 @@ app.get(
       res.json(
         result.rows
       );
-    } catch (error) {
+    } catch (err) {
       console.error(
         'Orders error:',
-        error
+        err
       );
 
-      res.status(500).json({
-        error: 'server error',
-      });
+      fail(
+        res,
+        500,
+        'server error'
+      );
     }
   }
 );
-
-/* =========================================================
-   GET SINGLE ORDER
-========================================================= */
 
 app.get(
   '/api/orders/:id',
@@ -955,16 +923,21 @@ app.get(
   async (req, res) => {
     try {
       const orderId =
-        Number(req.params.id);
+        Number(
+          req.params.id
+        );
 
       if (
-        !Number.isInteger(orderId) ||
+        !Number.isInteger(
+          orderId
+        ) ||
         orderId <= 0
       ) {
-        return res.status(400).json({
-          error:
-            'valid order id required',
-        });
+        return fail(
+          res,
+          400,
+          'valid order id required'
+        );
       }
 
       const result =
@@ -977,6 +950,7 @@ app.get(
             o.status,
             o.created_at,
             l.title,
+            l.description,
             l.price,
             l.seller_id,
             buyer.email AS buyer_email,
@@ -989,4 +963,133 @@ app.get(
           JOIN users seller
             ON seller.id = l.seller_id
           WHERE o.id = $1
-   
+            AND (
+              $2 = 'admin'
+              OR o.buyer_id = $3
+              OR l.seller_id = $3
+            )
+          LIMIT 1
+          `,
+          [
+            orderId,
+            req.user.role,
+            req.user.id
+          ]
+        );
+
+      if (!result.rowCount) {
+        return fail(
+          res,
+          404,
+          'order not found'
+        );
+      }
+
+      res.json(
+        result.rows[0]
+      );
+    } catch (err) {
+      console.error(
+        'Get order error:',
+        err
+      );
+
+      fail(
+        res,
+        500,
+        'server error'
+      );
+    }
+  }
+);
+
+app.use(
+  (err, _req, res, _next) => {
+    console.error(
+      'Unhandled error:',
+      err
+    );
+
+    if (!res.headersSent) {
+      fail(
+        res,
+        500,
+        'server error'
+      );
+    }
+  }
+);
+
+let server;
+
+async function start() {
+  await initDatabase();
+
+  server = app.listen(
+    PORT,
+    '0.0.0.0',
+    () => {
+      console.log(
+        'eFootball Market API listening on port ' +
+          PORT
+      );
+    }
+  );
+}
+
+async function shutdown(signal) {
+  console.log(
+    'Received ' +
+      signal +
+      ', shutting down...'
+  );
+
+  if (server) {
+    await new Promise(
+      (resolve) =>
+        server.close(resolve)
+    );
+  }
+
+  await pool.end();
+
+  process.exit(0);
+}
+
+process.on(
+  'SIGTERM',
+  () =>
+    shutdown('SIGTERM').catch(
+      (err) => {
+        console.error(
+          'Shutdown error:',
+          err
+        );
+        process.exit(1);
+      }
+    )
+);
+
+process.on(
+  'SIGINT',
+  () =>
+    shutdown('SIGINT').catch(
+      (err) => {
+        console.error(
+          'Shutdown error:',
+          err
+        );
+        process.exit(1);
+      }
+    )
+);
+
+start().catch(
+  (err) => {
+    console.error(
+      'Startup failed:',
+      err
+    );
+    process.exit(1);
+  }
+);
