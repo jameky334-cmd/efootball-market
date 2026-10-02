@@ -99,7 +99,7 @@ function adminVerify(i,status){const a=JSON.parse(localStorage.getItem('ef_verif
 <meta name="theme-color" content="#00d084">
 </head>
 <body>
-<header><div class="nav"><div class="logo">eFOOTBALL <span>MARKET</span></div><nav><a href="#market">ตลาดไอดี</a><a href="#how">วิธีซื้อขาย</a><a href="#sell">ลงขายไอดี</a></nav><div style="display:flex;gap:8px;align-items:center"><button class="btn ghost" onclick="openNotifications()">🔔 <span class="notify-dot" id="notifyCount">0</span></button><button class="btn ghost" onclick="openAccount()">👤 <span id="userLabel">เข้าสู่ระบบ</span></button><button class="btn primary" onclick="openSell()">ลงขายไอดี</button></div></div></header>
+<header><div class="nav"><div class="logo">eFOOTBALL <span>MARKET</span></div><nav><a href="#market">ตลาดไอดี</a><a href="#how">วิธีซื้อขาย</a><a href="#sell">ลงขายไอดี</a></nav><div style="display:flex;gap:8px;align-items:center"><button class="btn ghost" onclick="openNotifications()">🔔 <span class="notify-dot" id="notifyCount">0</span></button><button class="btn ghost"  onclick="openAuth()">👤 <span id="userLabel">เข้าสู่ระบบ</span></button><button class="btn primary" onclick="openSell()">ลงขายไอดี</button></div></div></header>
 
 <section class="hero">
 <div><span class="badge">MARKETPLACE • THAILAND</span><h1>ตลาดซื้อขาย<br><span style="color:var(--accent)">ไอดี eFootball</span></h1><p>รวมไอดี eFootball สำหรับคนที่กำลังมองหาทีมใหม่ ค้นหา กรองราคา และติดต่อผู้ขายได้ในที่เดียว</p><button class="btn primary" onclick="document.getElementById('market').scrollIntoView({behavior:'smooth'})">ดูไอดีทั้งหมด</button> <button class="btn ghost" onclick="openSell()">ลงขายไอดี</button></div>
