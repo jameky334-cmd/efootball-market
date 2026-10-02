@@ -29,8 +29,13 @@ const pool = new Pool({
 
 app.disable('x-powered-by');
 
+const allowedOrigins = String(process.env.FRONTEND_ORIGIN || '')
+  .split(',')
+  .map((value) => value.trim())
+  .filter(Boolean);
+
 app.use(cors({
-  origin: '*',
+  origin: allowedOrigins.length ? allowedOrigins : '*',
   credentials: false
 }));
 
@@ -72,14 +77,30 @@ async function initDatabase() {
     CREATE INDEX IF NOT EXISTS idx_listings_status_created
       ON listings(status, created_at DESC);
 
-    CREATE INDEX IF NOT EXISTS idx_orders_buyer
-      ON orders(buyer_id, created_at DESC);
-  `);
+   CREATE INDEX IF NOT EXISTS idx_orders_buyer
+  ON orders(buyer_id, created_at DESC);
+
+CREATE UNIQUE INDEX IF NOT EXISTS uniq_open_order_per_listing
+  ON orders(listing_id)
+  WHERE status IN ('pending', 'paid');
+}
+
+function requireRole(...roles) {
+  return (req, res, next) => {
+    if (!req.user || !roles.includes(req.user.role)) {
+      return res.status(403).json({
+        error: 'forbidden'
+      });
+    }
+
+    next();
+  };
 }
 
 function auth(req, res, next) {
   try {
-    const header = req.headers.authorization || '';
+    const header =
+      req.headers.authorization || '';
 
     if (!header.startsWith('Bearer ')) {
       return res.status(401).json({
@@ -310,7 +331,11 @@ app.get('/api/listings', async (_req, res) => {
   }
 });
 
-app.post('/api/listings', auth, async (req, res) => {
+app.post(
+  '/api/listings',
+  auth,
+  requireRole('seller', 'admin'),
+  async (req, res) => {
   try {
 
     const title = String(
@@ -367,68 +392,104 @@ app.post('/api/listings', auth, async (req, res) => {
   }
 });
 
-app.post('/api/orders', auth, async (req, res) => {
-  try {
+app.post(
+  '/api/orders',
+  auth,
+  requireRole('buyer', 'admin'),
+  async (req, res) => {
+    const client = await pool.connect();
 
-    const listingId = Number(
-      req.body?.listing_id
-    );
+    try {
+      const listingId = Number(req.body?.listing_id);
 
-    if (
-      !Number.isInteger(listingId) ||
-      listingId <= 0
-    ) {
-      return res.status(400).json({
-        error: 'valid listing_id required'
-      });
-    }
+      if (!Number.isInteger(listingId) || listingId <= 0) {
+        return res.status(400).json({
+          error: 'valid listing_id required'
+        });
+      }
 
-    const result = await pool.query(
-      `INSERT INTO orders
-        (listing_id, buyer_id)
-       SELECT
-        $1,
-        $2
-       WHERE EXISTS (
-         SELECT 1
+      await client.query('BEGIN');
+
+      const listingResult = await client.query(
+        `SELECT id, seller_id, title, price, status
          FROM listings
          WHERE id = $1
-         AND status = 'active'
-       )
-       RETURNING
-        id,
-        listing_id,
-        buyer_id,
-        status,
-        created_at`,
-      [
-        listingId,
-        req.user.id
-      ]
-    );
+         FOR UPDATE`,
+        [listingId]
+      );
 
-    if (!result.rowCount) {
-      return res.status(404).json({
-        error: 'listing not found or not active'
+      if (!listingResult.rowCount) {
+        await client.query('ROLLBACK');
+        return res.status(404).json({
+          error: 'listing not found'
+        });
+      }
+
+      const listing = listingResult.rows[0];
+
+      if (listing.status !== 'active') {
+        await client.query('ROLLBACK');
+        return res.status(409).json({
+          error: 'listing not active'
+        });
+      }
+
+      if (String(listing.seller_id) === String(req.user.id)) {
+        await client.query('ROLLBACK');
+        return res.status(403).json({
+          error: 'cannot buy your own listing'
+        });
+      }
+
+      const openOrder = await client.query(
+        `SELECT id
+         FROM orders
+         WHERE listing_id = $1
+         AND status IN ('pending', 'paid')
+         LIMIT 1
+         FOR UPDATE`,
+        [listingId]
+      );
+
+      if (openOrder.rowCount) {
+        await client.query('ROLLBACK');
+        return res.status(409).json({
+          error: 'listing already has an open order'
+        });
+      }
+
+      const orderResult = await client.query(
+        `INSERT INTO orders
+          (listing_id, buyer_id)
+         VALUES ($1, $2)
+         RETURNING id, listing_id, buyer_id, status, created_at`,
+        [listingId, req.user.id]
+      );
+
+      await client.query('COMMIT');
+
+      res.status(201).json(orderResult.rows[0]);
+    } catch (error) {
+      try {
+        await client.query('ROLLBACK');
+      } catch {}
+
+      if (error.code === '23505') {
+        return res.status(409).json({
+          error: 'listing already has an open order'
+        });
+      }
+
+      console.error('Create order error:', error);
+
+      res.status(500).json({
+        error: 'server error'
       });
+    } finally {
+      client.release();
     }
-
-    res.status(201).json(
-      result.rows[0]
-    );
-
-  } catch (error) {
-
-    console.error(
-      'Create order error:',
-      error
-    );
-
-    res.status(500).json({
-      error: 'server error'
-    });
   }
-});
+);
 
 app.use(
   (err, _req, res, _next) => {
