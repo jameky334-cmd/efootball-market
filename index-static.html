@@ -642,8 +642,579 @@ renderUnifiedInbox();
   window.efApiCreateListing=(title,price)=>efApi('/api/listings',{method:'POST',body:JSON.stringify({title,price})});
 })();
 </script>
-</body>
 <script>
+/* =========================================================
+   eFOOTBALL MARKET - PRODUCTION API
+   Frontend -> Render API
+   ========================================================= */
+
+(() => {
+  "use strict";
+
+  const API_BASE = "https://efootball-market-api.onrender.com";
+
+  window.EF_API_BASE_URL = API_BASE;
+  localStorage.setItem("ef_api_base_url", API_BASE);
+
+  // -----------------------------
+  // API helper
+  // -----------------------------
+  async function api(path, options = {}) {
+    const token = localStorage.getItem("ef_api_token");
+
+    const headers = {
+      "Content-Type": "application/json",
+      ...(options.headers || {})
+    };
+
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+
+    const response = await fetch(API_BASE + path, {
+      ...options,
+      headers
+    });
+
+    const text = await response.text();
+
+    let data = {};
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch {
+      data = { raw: text };
+    }
+
+    if (!response.ok) {
+      throw new Error(
+        data.error ||
+        data.message ||
+        `HTTP ${response.status}`
+      );
+    }
+
+    return data;
+  }
+
+  window.efApi = api;
+
+  // -----------------------------
+  // Auth mode
+  // -----------------------------
+  let authMode = "login";
+
+  window.switchAuth = function(mode) {
+    authMode = mode === "register"
+      ? "register"
+      : "login";
+
+    const loginTab =
+      document.getElementById("loginTab");
+
+    const registerTab =
+      document.getElementById("registerTab");
+
+    if (loginTab) {
+      loginTab.classList.toggle(
+        "active",
+        authMode === "login"
+      );
+    }
+
+    if (registerTab) {
+      registerTab.classList.toggle(
+        "active",
+        authMode === "register"
+      );
+    }
+
+    const button =
+      document.querySelector(
+        '#authModal .btn.primary'
+      );
+
+    if (button) {
+      button.textContent =
+        authMode === "login"
+          ? "เข้าสู่ระบบ"
+          : "สมัครสมาชิก";
+    }
+  };
+
+  // -----------------------------
+  // Login / Register
+  // -----------------------------
+  window.fakeLogin = async function() {
+    const email =
+      document.getElementById("authEmail")
+        ?.value
+        .trim()
+        .toLowerCase();
+
+    const password =
+      document.getElementById("authPass")
+        ?.value || "";
+
+    if (!email || !password) {
+      alert("กรุณากรอกอีเมลและรหัสผ่าน");
+      return;
+    }
+
+    try {
+      const endpoint =
+        authMode === "register"
+          ? "/api/auth/register"
+          : "/api/auth/login";
+
+      const result = await api(endpoint, {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          password
+        })
+      });
+
+      if (!result.token || !result.user) {
+        throw new Error(
+          "เซิร์ฟเวอร์ส่งข้อมูลเข้าสู่ระบบไม่ครบ"
+        );
+      }
+
+      localStorage.setItem(
+        "ef_api_token",
+        result.token
+      );
+
+      localStorage.setItem(
+        "ef_api_user",
+        JSON.stringify(result.user)
+      );
+
+      localStorage.setItem(
+        "ef_user",
+        JSON.stringify(result.user)
+      );
+
+      localStorage.setItem(
+        "ef_user_email",
+        result.user.email
+      );
+
+      localStorage.setItem(
+        "ef_role",
+        result.user.role
+      );
+
+      if (typeof currentUser !== "undefined") {
+        currentUser = result.user;
+      }
+
+      if (typeof currentRole !== "undefined") {
+        currentRole = result.user.role;
+      }
+
+      if (typeof syncAccountUI === "function") {
+        syncAccountUI();
+      }
+
+      if (typeof closeAuth === "function") {
+        closeAuth();
+      }
+
+      alert(
+        authMode === "register"
+          ? "สมัครสมาชิกสำเร็จ"
+          : "เข้าสู่ระบบสำเร็จ"
+      );
+
+      await syncServerListings();
+
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        "ไม่สำเร็จ\n\n" +
+        (error.message || "เกิดข้อผิดพลาด")
+      );
+    }
+  };
+
+  // -----------------------------
+  // Logout
+  // -----------------------------
+  window.logoutDemo = function() {
+
+    localStorage.removeItem("ef_api_token");
+    localStorage.removeItem("ef_api_user");
+    localStorage.removeItem("ef_user");
+    localStorage.removeItem("ef_user_email");
+    localStorage.removeItem("ef_role");
+
+    if (typeof currentUser !== "undefined") {
+      currentUser = null;
+    }
+
+    if (typeof currentRole !== "undefined") {
+      currentRole = "buyer";
+    }
+
+    if (typeof syncAccountUI === "function") {
+      syncAccountUI();
+    }
+
+    if (typeof closeAccount === "function") {
+      closeAccount();
+    }
+
+    alert("ออกจากระบบแล้ว");
+  };
+
+  // -----------------------------
+  // Load listings from PostgreSQL
+  // -----------------------------
+  window.syncServerListings = async function() {
+
+    try {
+
+      const rows = await api(
+        "/api/listings",
+        {
+          method: "GET"
+        }
+      );
+
+      const serverListings =
+        Array.isArray(rows)
+          ? rows
+          : [];
+
+      listings = serverListings.map(item => ({
+        id: Number(item.id),
+        name: item.title,
+        price: Number(item.price),
+        rating: 94,
+        tags: [
+          "ออนไลน์",
+          "ระบบจริง"
+        ],
+        sellerEmail:
+          item.seller_email || "",
+        sold:
+          item.status !== "active"
+      }));
+
+      localStorage.setItem(
+        "ef_listings",
+        JSON.stringify(listings)
+      );
+
+      if (typeof render === "function") {
+        render();
+      }
+
+      const count =
+        document.getElementById("dashCount");
+
+      if (count) {
+        count.textContent =
+          String(listings.length);
+      }
+
+    } catch (error) {
+
+      console.error(
+        "โหลดรายการไม่สำเร็จ:",
+        error
+      );
+
+    }
+  };
+
+  // -----------------------------
+  // Add listing
+  // -----------------------------
+  window.addListing = async function() {
+
+    const title =
+      document.getElementById("sellName")
+        ?.value
+        .trim();
+
+    const price =
+      Number(
+        document.getElementById("sellPrice")
+          ?.value
+      );
+
+    const description =
+      document.getElementById("sellDesc")
+        ?.value
+        .trim() || "";
+
+    if (!title) {
+      alert("กรุณากรอกชื่อไอดี");
+      return;
+    }
+
+    if (!Number.isFinite(price) || price <= 0) {
+      alert("กรุณากรอกราคาให้ถูกต้อง");
+      return;
+    }
+
+    const token =
+      localStorage.getItem("ef_api_token");
+
+    if (!token) {
+      if (typeof openAuth === "function") {
+        openAuth();
+      }
+
+      alert("กรุณาเข้าสู่ระบบก่อนลงขาย");
+      return;
+    }
+
+    try {
+
+      const result = await api(
+        "/api/listings",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            title,
+            price,
+            description
+          })
+        }
+      );
+
+      await syncServerListings();
+
+      if (typeof closeSell === "function") {
+        closeSell();
+      }
+
+      const nameInput =
+        document.getElementById("sellName");
+
+      const priceInput =
+        document.getElementById("sellPrice");
+
+      const descInput =
+        document.getElementById("sellDesc");
+
+      if (nameInput) nameInput.value = "";
+      if (priceInput) priceInput.value = "";
+      if (descInput) descInput.value = "";
+
+      alert(
+        "เพิ่มประกาศสำเร็จ\n\n" +
+        "Listing #" +
+        result.id
+      );
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "เพิ่มประกาศไม่สำเร็จ\n\n" +
+        error.message
+      );
+    }
+  };
+
+  // -----------------------------
+  // Create order
+  // -----------------------------
+  window.addToOrder = async function(listingId) {
+
+    const token =
+      localStorage.getItem("ef_api_token");
+
+    if (!token) {
+
+      if (typeof openAuth === "function") {
+        openAuth();
+      }
+
+      alert(
+        "กรุณาเข้าสู่ระบบก่อนสั่งซื้อ"
+      );
+
+      return;
+    }
+
+    const id = Number(listingId);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      alert("รายการไม่ถูกต้อง");
+      return;
+    }
+
+    try {
+
+      const result = await api(
+        "/api/orders",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            listing_id: id
+          })
+        }
+      );
+
+      const listing =
+        Array.isArray(listings)
+          ? listings.find(
+              item =>
+                Number(item.id) === id
+            )
+          : null;
+
+      const newOrder = {
+        id,
+        name:
+          listing?.name ||
+          `รายการ #${id}`,
+        price:
+          listing?.price || 0,
+        status:
+          result.status || "pending",
+        serverOrderId:
+          result.id,
+        createdAt:
+          result.created_at
+      };
+
+      if (!Array.isArray(orders)) {
+        orders = [];
+      }
+
+      orders.push(newOrder);
+
+      localStorage.setItem(
+        "ef_orders",
+        JSON.stringify(orders)
+      );
+
+      if (typeof updateOrders === "function") {
+        updateOrders();
+      }
+
+      alert(
+        "สร้างออเดอร์สำเร็จ\n\n" +
+        "Order #" +
+        result.id
+      );
+
+      await syncServerListings();
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        "สร้างออเดอร์ไม่สำเร็จ\n\n" +
+        error.message
+      );
+    }
+  };
+
+  // -----------------------------
+  // API health check
+  // -----------------------------
+  window.checkEFAPI = async function() {
+
+    try {
+
+      const result =
+        await api("/health");
+
+      console.log(
+        "eFootball API:",
+        result
+      );
+
+      alert(
+        "API เชื่อมต่อสำเร็จ"
+      );
+
+      return result;
+
+    } catch (error) {
+
+      console.error(
+        "API Error:",
+        error
+      );
+
+      alert(
+        "เชื่อมต่อ API ไม่สำเร็จ\n\n" +
+        error.message
+      );
+    }
+  };
+
+  // -----------------------------
+  // Restore login
+  // -----------------------------
+  function restoreUser() {
+
+    const saved =
+      localStorage.getItem(
+        "ef_api_user"
+      );
+
+    if (!saved) {
+      return;
+    }
+
+    try {
+
+      const user =
+        JSON.parse(saved);
+
+      if (typeof currentUser !== "undefined") {
+        currentUser = user;
+      }
+
+      if (typeof currentRole !== "undefined") {
+        currentRole =
+          user.role || "buyer";
+      }
+
+      if (typeof syncAccountUI === "function") {
+        syncAccountUI();
+      }
+
+    } catch (error) {
+
+      console.warn(
+        "ไม่สามารถคืนค่าผู้ใช้:",
+        error
+      );
+    }
+  }
+
+  // -----------------------------
+  // Startup
+  // -----------------------------
+  document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+
+      switchAuth("login");
+
+      restoreUser();
+
+      await syncServerListings();
+
+    }
+  );
+
+})();
+</script>
+
 (function(){
   const K='ef_account_security';
   const em=()=>localStorage.getItem('ef_user_email')||'guest@demo.local';
@@ -665,4 +1236,14 @@ renderUnifiedInbox();
   };
 })();
 </script>
-</html><script>document.addEventListener("DOMContentLoaded",()=>{if(typeof updateCompareUI==="function")updateCompareUI()});</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  if (typeof updateCompareUI === "function") {
+    updateCompareUI();
+  }
+});
+</script>
+
+</body>
+</html>
