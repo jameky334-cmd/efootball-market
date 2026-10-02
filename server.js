@@ -83,6 +83,7 @@ async function initDatabase() {
 CREATE UNIQUE INDEX IF NOT EXISTS uniq_open_order_per_listing
   ON orders(listing_id)
   WHERE status IN ('pending', 'paid');
+`);
 }
 
 function requireRole(...roles) {
