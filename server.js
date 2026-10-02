@@ -443,13 +443,20 @@ app.use(
   }
 );
 
+app.get('/health', (_req, res) 
+=> {
+  res.status(200).json({ ok: 
+true });
+});
+
 async function start() {
 
   await initDatabase();
 
   const server = app.listen(
-    PORT,
-    () => {
+  PORT,
+  '0.0.0.0',
+  () => {
       console.log(
         `eFootball Market API listening on port ${PORT}`
       );
