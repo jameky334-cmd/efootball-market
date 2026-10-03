@@ -17,7 +17,7 @@
   --green:#39e27d;
   --green2:#19b85a;
   --danger:#ff5d6c;
-  --yellow:#ffd166;
+  --yellow:#ffd166
 }
 
 *{box-sizing:border-box}
@@ -25,406 +25,429 @@
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,sans-serif;
-  background:linear-gradient(180deg,#06100b,#091710 50%,#06100b);
-  color:var(--text);
+  background:var(--bg);
+  color:var(--text)
 }
 
-button,input,select,textarea{
-  font:inherit;
+button,input,textarea,select{
+  font:inherit
 }
 
 button{
-  cursor:pointer;
-  border:0;
+  cursor:pointer
+}
+
+a{
+  color:inherit;
+  text-decoration:none
+}
+
+.container{
+  width:min(1150px,94%);
+  margin:auto
 }
 
 header{
   position:sticky;
   top:0;
   z-index:20;
-  background:rgba(6,16,11,.94);
+  background:rgba(7,17,12,.94);
   backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line);
+  border-bottom:1px solid var(--line)
 }
 
 .nav{
-  max-width:1150px;
-  margin:auto;
-  padding:14px 18px;
+  min-height:68px;
   display:flex;
   align-items:center;
-  gap:18px;
+  justify-content:space-between;
+  gap:15px
 }
 
 .logo{
+  font-size:21px;
   font-weight:900;
-  font-size:20px;
+  letter-spacing:.4px
 }
 
 .logo span{
-  color:var(--green);
+  color:var(--green)
 }
 
 .navlinks{
   display:flex;
   gap:8px;
-  margin-left:auto;
+  align-items:center
 }
 
 .navlinks button,
-.ghost{
-  background:transparent;
+.navlinks a{
+  border:1px solid var(--line);
+  background:var(--card);
   color:var(--text);
-  padding:9px 12px;
-  border-radius:10px;
-}
-
-.navlinks button:hover,
-.ghost:hover{
-  background:#12301f;
-}
-
-.primary{
-  background:var(--green);
-  color:#041008;
-  font-weight:800;
-  padding:10px 16px;
-  border-radius:11px;
-}
-
-.primary:hover{
-  background:#64f09a;
-}
-
-.container{
-  max-width:1150px;
-  margin:auto;
-  padding:24px 18px 100px;
+  padding:9px 13px;
+  border-radius:10px
 }
 
 .hero{
-  padding:34px 0 24px;
+  padding:55px 0 30px;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(57,226,125,.13),transparent 35%),
+    radial-gradient(circle at 80% 0%,rgba(25,184,90,.1),transparent 35%)
 }
 
 .hero h1{
-  font-size:clamp(30px,6vw,54px);
-  line-height:1;
-  margin:0 0 12px;
+  font-size:clamp(30px,6vw,55px);
+  line-height:1.05;
+  margin:0 0 15px
 }
 
 .hero p{
   color:var(--muted);
-  max-width:650px;
+  max-width:700px;
+  font-size:17px
 }
 
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin:20px 0;
-}
-
-.stat,
-.card{
-  background:linear-gradient(145deg,var(--card),#091810);
-  border:1px solid var(--line);
-  border-radius:16px;
-}
-
-.stat{
-  padding:17px;
-}
-
-.stat b{
-  font-size:25px;
-  display:block;
-}
-
-.stat small,
-.muted{
-  color:var(--muted);
-}
-
-.section{
-  margin-top:24px;
-}
-
-.sectionhead{
+.actions{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:12px;
-  margin-bottom:12px;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:22px
 }
 
-.section h2{
-  margin:0;
+.btn{
+  border:0;
+  border-radius:12px;
+  padding:12px 17px;
+  font-weight:800
+}
+
+.btn-primary{
+  background:var(--green);
+  color:#041108
+}
+
+.btn-dark{
+  background:var(--card);
+  color:var(--text);
+  border:1px solid var(--line)
+}
+
+.btn-danger{
+  background:var(--danger);
+  color:#fff
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:14px;
+  gap:14px
+}
+
+.stats{
+  padding:15px 0 25px
+}
+
+.stat{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:20px
+}
+
+.stat strong{
+  display:block;
+  font-size:30px;
+  color:var(--green)
+}
+
+.stat span{
+  color:var(--muted)
+}
+
+section{
+  padding:25px 0
+}
+
+.section-title{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:14px
+}
+
+.section-title h2{
+  margin:0;
+  font-size:22px
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px
+}
+
+.notice{
+  color:var(--muted);
+  line-height:1.7
+}
+
+.listings{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px
 }
 
 .listing{
-  padding:16px;
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden
 }
 
-.listing h3{
-  margin:0 0 8px;
+.listing-img{
+  height:150px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    linear-gradient(135deg,#10291a,#07110c);
+  color:var(--green);
+  font-size:42px;
+  font-weight:900
+}
+
+.listing-body{
+  padding:16px
+}
+
+.listing-title{
+  font-weight:900;
+  font-size:18px
 }
 
 .price{
-  font-size:23px;
-  font-weight:900;
+  font-size:24px;
   color:var(--green);
-  margin:10px 0;
+  font-weight:900;
+  margin:8px 0
 }
 
-.tag{
+.muted{
+  color:var(--muted)
+}
+
+.badge{
   display:inline-block;
-  padding:4px 8px;
-  border-radius:999px;
-  background:#153321;
-  color:#9af3b9;
-  font-size:12px;
-}
-
-.row{
-  display:flex;
-  gap:8px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-
-.spacer{
-  margin-left:auto;
-}
-
-.form{
-  display:grid;
-  gap:10px;
-}
-
-.form input,
-.form select,
-.form textarea{
-  width:100%;
-  background:#07120c;
-  color:var(--text);
   border:1px solid var(--line);
-  border-radius:10px;
-  padding:11px;
+  background:var(--card2);
+  border-radius:999px;
+  padding:5px 9px;
+  color:var(--muted);
+  font-size:12px
 }
 
-.form textarea{
-  min-height:100px;
-  resize:vertical;
+.empty{
+  padding:35px;
+  text-align:center;
+  color:var(--muted);
+  border:1px dashed var(--line);
+  border-radius:15px
+}
+
+footer{
+  padding:45px 0 90px;
+  color:var(--muted);
+  text-align:center
+}
+
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:30;
+  background:rgba(7,17,12,.96);
+  border-top:1px solid var(--line);
+  display:none
+}
+
+.bottom-inner{
+  display:grid;
+  grid-template-columns:repeat(4,1fr)
+}
+
+.bottom button{
+  border:0;
+  background:none;
+  color:var(--muted);
+  padding:12px 4px
+}
+
+.bottom button.active{
+  color:var(--green)
 }
 
 .modal{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.72);
+  z-index:50;
+  background:rgba(0,0,0,.7);
   display:none;
   align-items:center;
   justify-content:center;
-  padding:18px;
-  z-index:50;
+  padding:15px
 }
 
-.modal.open{
-  display:flex;
+.modal.show{
+  display:flex
 }
 
-.modalbox{
-  width:min(680px,100%);
+.modal-box{
+  width:min(700px,100%);
   max-height:90vh;
   overflow:auto;
-  background:#0b1911;
+  background:var(--card);
   border:1px solid var(--line);
   border-radius:18px;
-  padding:20px;
+  padding:20px
 }
 
-.modalhead{
+.modal-head{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  margin-bottom:15px;
+  align-items:center;
+  gap:10px;
+  margin-bottom:18px
+}
+
+.modal-head h3{
+  margin:0
 }
 
 .close{
-  background:#18261e;
-  color:white;
-  width:36px;
-  height:36px;
+  border:1px solid var(--line);
+  background:var(--card2);
+  color:#fff;
+  width:38px;
+  height:38px;
+  border-radius:10px
+}
+
+.form{
+  display:grid;
+  gap:12px
+}
+
+.form label{
+  display:grid;
+  gap:6px;
+  color:var(--muted)
+}
+
+.form input,
+.form textarea,
+.form select{
+  width:100%;
+  border:1px solid var(--line);
+  background:#07140c;
+  color:#fff;
+  padding:12px;
   border-radius:10px;
+  outline:none
+}
+
+.form input:focus,
+.form textarea:focus,
+.form select:focus{
+  border-color:var(--green)
+}
+
+.form textarea{
+  min-height:130px;
+  resize:vertical
 }
 
 .tabs{
   display:flex;
-  gap:7px;
-  overflow:auto;
-  margin-bottom:15px;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-bottom:15px
 }
 
-.tab{
-  white-space:nowrap;
-  background:#0c1b13;
-  color:#b9cdbf;
+.tabs button{
   border:1px solid var(--line);
+  background:var(--card2);
+  color:var(--text);
   padding:9px 13px;
-  border-radius:10px;
+  border-radius:9px
 }
 
-.tab.active{
-  background:#173a24;
-  color:#fff;
-  border-color:#2e6e46;
-}
-
-.notice{
-  padding:12px 14px;
-  border-radius:11px;
-  background:#102619;
-  border:1px solid var(--line);
-  color:#bde8cb;
-}
-
-.danger{
-  background:#30151a;
-  border-color:#64232d;
-  color:#ffc4cb;
-}
-
-.success{
-  background:#102a1a;
-  border-color:#245b36;
-  color:#baf4ca;
-}
-
-.empty{
-  text-align:center;
-  padding:35px;
-  color:var(--muted);
-  border:1px dashed var(--line);
-  border-radius:15px;
-}
-
-.bottom{
-  display:none;
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  background:rgba(6,16,11,.97);
-  border-top:1px solid var(--line);
-  z-index:30;
-}
-
-.bottom button{
-  flex:1;
-  background:transparent;
-  color:#a9b9ae;
-  padding:10px 4px;
-  font-size:12px;
-}
-
-.bottom button.active{
-  color:var(--green);
-}
-
-.admin-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:10px;
-}
-
-.admin-stat{
-  padding:14px;
-  background:#0d2116;
-  border:1px solid var(--line);
-  border-radius:12px;
-}
-
-.admin-stat b{
-  display:block;
-  font-size:22px;
+.tabs button.active{
+  background:var(--green);
+  color:#041108
 }
 
 table{
   width:100%;
   border-collapse:collapse;
-  font-size:14px;
+  min-width:600px
 }
 
-th,
-td{
-  padding:10px;
+th,td{
   border-bottom:1px solid var(--line);
-  text-align:left;
-  vertical-align:top;
+  padding:10px;
+  text-align:left
 }
 
 th{
-  color:#a9c5b3;
+  color:var(--green)
 }
 
 .toast{
   position:fixed;
-  right:18px;
-  bottom:20px;
-  background:#eafff0;
-  color:#06110a;
-  padding:12px 15px;
-  border-radius:12px;
-  font-weight:700;
-  display:none;
+  right:15px;
+  bottom:80px;
   z-index:100;
+  background:#13251a;
+  border:1px solid var(--line);
+  color:#fff;
+  padding:13px 16px;
+  border-radius:12px;
+  display:none;
+  max-width:350px
+}
+
+.toast.show{
+  display:block
 }
 
 @media(max-width:800px){
-
-  .grid{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .admin-grid{
-    grid-template-columns:1fr 1fr;
+  .grid,
+  .listings{
+    grid-template-columns:1fr
   }
 
   .navlinks{
-    display:none;
-  }
-
-  .bottom{
-    display:flex;
-  }
-
-  .container{
-    padding-bottom:90px;
-  }
-}
-
-@media(max-width:520px){
-
-  .stats,
-  .grid{
-    grid-template-columns:1fr;
+    display:none
   }
 
   .hero{
-    padding-top:25px;
+    padding-top:35px
   }
 
-  .admin-grid{
-    grid-template-columns:1fr 1fr;
+  .bottom{
+    display:block
   }
 
-  .stat b{
-    font-size:22px;
+  footer{
+    padding-bottom:100px
+  }
+
+  .desktop-only{
+    display:none!important
   }
 }
 </style>
@@ -433,1143 +456,1077 @@ th{
 <body>
 
 <header>
-  <div class="nav">
+  <div class="container nav">
 
     <div class="logo">
-      e<span>FOOTBALL</span> MARKET
+      eFOOTBALL <span>MARKET</span>
     </div>
 
     <div class="navlinks">
-      <button onclick="show('market')">ตลาด</button>
-      <button onclick="show('orders')">ออเดอร์</button>
-      <button onclick="show('account')">บัญชี</button>
-
-      <button
-        id="adminNav"
-        style="display:none"
-        onclick="show('admin')">
+      <button onclick="scrollToId('market')">ตลาด</button>
+      <button onclick="scrollToId('orders')">ออเดอร์</button>
+      <button onclick="openAuth()">เข้าสู่ระบบ</button>
+      <button onclick="openSell()">ลงขาย</button>
+      <button id="adminNav" onclick="openAdmin()" style="display:none">
         Admin
       </button>
     </div>
 
-    <button class="primary" onclick="openSell()">
-      + ลงขาย
-    </button>
-
   </div>
 </header>
 
-<main class="container">
+<main>
 
-<!-- MARKET -->
-
-<section id="market" class="page">
-
-  <div class="hero">
-
-    <span class="tag">
-      MARKETPLACE
-    </span>
+<section class="hero">
+  <div class="container">
 
     <h1>
       ตลาดซื้อขายไอดี<br>
-      eFootball
+      <span style="color:var(--green)">eFootball</span>
     </h1>
 
     <p>
-      ระบบซื้อขายที่แยกผู้ซื้อ ผู้ขาย และผู้ดูแล
-      พร้อมตรวจสอบการชำระเงินและการส่งมอบข้อมูลไอดีผ่าน API
+      ตลาดกลางสำหรับซื้อขายไอดี eFootball
+      พร้อมระบบสมาชิก ออเดอร์ การขาย และระบบผู้ดูแล
     </p>
 
-  </div>
+    <div class="actions">
+      <button class="btn btn-primary" onclick="scrollToId('market')">
+        ดูไอดีทั้งหมด
+      </button>
 
-  <div class="stats">
+      <button class="btn btn-dark" onclick="openSell()">
+        ลงขายไอดี
+      </button>
 
-    <div class="stat">
-      <small>รายการขาย</small>
-      <b id="statListings">0</b>
-    </div>
-
-    <div class="stat">
-      <small>สมาชิก</small>
-      <b id="statUsers">—</b>
-    </div>
-
-    <div class="stat">
-      <small>สถานะ API</small>
-      <b id="statApi">กำลังเช็ค</b>
+      <button class="btn btn-dark" onclick="openAuth()">
+        เข้าสู่ระบบ
+      </button>
     </div>
 
   </div>
+</section>
 
-  <div class="section">
+<section class="stats">
+  <div class="container grid">
 
-    <div class="sectionhead">
-      <h2>ไอดีล่าสุด</h2>
+    <div class="stat">
+      <strong id="statListings">0</strong>
+      <span>รายการขาย</span>
+    </div>
 
-      <button
-        class="ghost"
-        onclick="loadListings()">
+    <div class="stat">
+      <strong id="statMembers">—</strong>
+      <span>สมาชิก</span>
+    </div>
+
+    <div class="stat">
+      <strong id="statApi">...</strong>
+      <span>สถานะ API</span>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <div class="container">
+
+    <div class="card">
+      <h2>ระบบสมาชิก</h2>
+
+      <p class="notice">
+        สมัครสมาชิกเพื่อซื้อไอดีและติดตามออเดอร์
+        บัญชีที่ได้รับสิทธิ์ Seller สามารถลงขายไอดีได้
+        ส่วน Admin สามารถจัดการสมาชิกและระบบได้
+      </p>
+
+      <div class="actions">
+        <button class="btn btn-primary" onclick="openAuth('register')">
+          สมัครสมาชิก
+        </button>
+
+        <button class="btn btn-dark" onclick="openAuth('login')">
+          เข้าสู่ระบบ
+        </button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section id="market">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>ไอดีที่กำลังขาย</h2>
+
+      <button class="btn btn-dark" onclick="loadListings()">
         รีเฟรช
       </button>
     </div>
 
-    <div
-      id="listingGrid"
-      class="grid">
+    <div id="listingGrid" class="listings">
+      <div class="empty">
+        กำลังโหลดรายการ...
+      </div>
     </div>
 
   </div>
-
 </section>
 
+<section id="orders">
+  <div class="container">
 
-<!-- ORDERS -->
+    <div class="section-title">
+      <h2>ออเดอร์ของฉัน</h2>
 
-<section
-  id="orders"
-  class="page"
-  style="display:none">
+      <button class="btn btn-dark" onclick="loadOrders()">
+        โหลดออเดอร์
+      </button>
+    </div>
 
-  <div class="hero">
-
-    <span class="tag">
-      ORDERS
-    </span>
-
-    <h1>
-      ออเดอร์ของฉัน
-    </h1>
-
-    <p>
-      ตรวจสอบสถานะคำสั่งซื้อและรับข้อมูลไอดี
-      เมื่อระบบยืนยันการชำระเงินแล้ว
-    </p>
+    <div id="orderList" class="empty">
+      กรุณาเข้าสู่ระบบเพื่อดูออเดอร์
+    </div>
 
   </div>
-
-  <div id="orderList"></div>
-
 </section>
 
+<section id="account">
+  <div class="container">
 
-<!-- ACCOUNT -->
+    <div class="section-title">
+      <h2>บัญชีของฉัน</h2>
+    </div>
 
-<section
-  id="account"
-  class="page"
-  style="display:none">
+    <div id="accountBox" class="card">
+      <p class="notice">
+        ยังไม่ได้เข้าสู่ระบบ
+      </p>
 
-  <div class="hero">
-
-    <span class="tag">
-      ACCOUNT
-    </span>
-
-    <h1>
-      บัญชีของฉัน
-    </h1>
-
-  </div>
-
-  <div
-    id="accountBox"
-    class="card"
-    style="padding:18px">
-  </div>
-
-</section>
-
-
-<!-- ADMIN -->
-
-<section
-  id="admin"
-  class="page"
-  style="display:none">
-
-  <div class="hero">
-
-    <span class="tag">
-      ADMIN
-    </span>
-
-    <h1>
-      Admin Dashboard
-    </h1>
-
-    <p>
-      จัดการสมาชิก รายการขาย ออเดอร์
-      และบันทึกการทำรายการ
-    </p>
+      <button class="btn btn-primary" onclick="openAuth()">
+        เข้าสู่ระบบ
+      </button>
+    </div>
 
   </div>
-
-  <div class="tabs">
-
-    <button
-      class="tab active"
-      onclick="adminTab('overview',this)">
-      ภาพรวม
-    </button>
-
-    <button
-      class="tab"
-      onclick="adminTab('users',this)">
-      สมาชิก
-    </button>
-
-    <button
-      class="tab"
-      onclick="adminTab('listings',this)">
-      รายการขาย
-    </button>
-
-    <button
-      class="tab"
-      onclick="adminTab('orders',this)">
-      ออเดอร์
-    </button>
-
-    <button
-      class="tab"
-      onclick="adminTab('audit',this)">
-      Audit
-    </button>
-
-  </div>
-
-  <div id="adminContent"></div>
-
 </section>
 
 </main>
 
+<footer>
+  <div class="container">
+    eFootball Market
+    <br>
+    <small>ระบบตลาดซื้อขายไอดี eFootball</small>
+  </div>
+</footer>
 
-<!-- MOBILE NAV -->
+<div class="bottom">
+  <div class="bottom-inner">
 
-<nav class="bottom">
+    <button onclick="scrollToId('market')">
+      🏪<br>ตลาด
+    </button>
 
-  <button onclick="show('market')">
-    ตลาด
-  </button>
+    <button onclick="scrollToId('orders')">
+      📦<br>ออเดอร์
+    </button>
 
-  <button onclick="show('orders')">
-    ออเดอร์
-  </button>
+    <button onclick="scrollToId('account')">
+      👤<br>บัญชี
+    </button>
 
-  <button onclick="show('account')">
-    บัญชี
-  </button>
-
-  <button
-    id="bottomAdmin"
-    style="display:none"
-    onclick="show('admin')">
-    Admin
-  </button>
-
-</nav>
-
-
-<!-- LOGIN -->
-
-<div
-  id="authModal"
-  class="modal">
-
-  <div class="modalbox">
-
-    <div class="modalhead">
-
-      <h2 id="authTitle">
-        เข้าสู่ระบบ
-      </h2>
-
-      <button
-        class="close"
-        onclick="closeModal('authModal')">
-        ×
-      </button>
-
-    </div>
-
-    <div class="form">
-
-      <input
-        id="authEmail"
-        type="email"
-        placeholder="อีเมล">
-
-      <input
-        id="authPassword"
-        type="password"
-        placeholder="รหัสผ่าน">
-
-      <button
-        class="primary"
-        onclick="submitAuth()">
-        เข้าสู่ระบบ
-      </button>
-
-      <button
-        class="ghost"
-        onclick="toggleAuth()">
-        สลับเป็นสมัครสมาชิก
-      </button>
-
-      <div id="authMsg"></div>
-
-    </div>
+    <button onclick="openSell()">
+      ➕<br>ลงขาย
+    </button>
 
   </div>
-
 </div>
 
+<div id="toast" class="toast"></div>
 
-<!-- SELL -->
+<!-- AUTH MODAL -->
+<div id="authModal" class="modal">
 
-<div
-  id="sellModal"
-  class="modal">
+  <div class="modal-box">
 
-  <div class="modalbox">
+    <div class="modal-head">
+      <h3 id="authTitle">เข้าสู่ระบบ</h3>
 
-    <div class="modalhead">
-
-      <h2>
-        ลงขายไอดี
-      </h2>
-
-      <button
-        class="close"
-        onclick="closeModal('sellModal')">
+      <button class="close" onclick="closeModal('authModal')">
         ×
       </button>
-
     </div>
 
-    <div class="form">
+    <form class="form" onsubmit="submitAuth(event)">
 
-      <input
-        id="sellTitle"
-        placeholder="ชื่อรายการ เช่น ID Messi + Mbappe">
+      <label>
+        อีเมล
+        <input
+          id="authEmail"
+          type="email"
+          required
+          autocomplete="email"
+        >
+      </label>
 
-      <input
-        id="sellPrice"
-        type="number"
-        min="1"
-        placeholder="ราคา (บาท)">
+      <label>
+        รหัสผ่าน
+        <input
+          id="authPassword"
+          type="password"
+          required
+          minlength="8"
+          autocomplete="current-password"
+        >
+      </label>
 
-      <textarea
-        id="sellDescription"
-        placeholder="รายละเอียดไอดี"></textarea>
-
-      <input
-        id="sellAccount"
-        placeholder="ข้อมูลบัญชีสำหรับส่งมอบ">
+      <button class="btn btn-primary" type="submit">
+        <span id="authSubmitText">เข้าสู่ระบบ</span>
+      </button>
 
       <button
-        class="primary"
-        onclick="createListing()">
+        type="button"
+        class="btn btn-dark"
+        onclick="toggleAuthMode()"
+      >
+        <span id="authToggleText">
+          ยังไม่มีบัญชี? สมัครสมาชิก
+        </span>
+      </button>
+
+    </form>
+
+  </div>
+</div>
+
+<!-- SELL MODAL -->
+<div id="sellModal" class="modal">
+
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h3>ลงขายไอดี</h3>
+
+      <button class="close" onclick="closeModal('sellModal')">
+        ×
+      </button>
+    </div>
+
+    <form class="form" onsubmit="createListing(event)">
+
+      <label>
+        ชื่อรายการ
+        <input
+          id="sellTitle"
+          required
+          placeholder="เช่น ไอดีทีมเทพ 3000+ Coins"
+        >
+      </label>
+
+      <label>
+        ราคา (บาท)
+        <input
+          id="sellPrice"
+          type="number"
+          min="1"
+          step="1"
+          required
+          placeholder="1000"
+        >
+      </label>
+
+      <label>
+        รายละเอียด
+        <textarea
+          id="sellDescription"
+          placeholder="รายละเอียดนักเตะ / Coins / GP / ฯลฯ"
+        ></textarea>
+      </label>
+
+      <label>
+        ข้อมูลไอดี
+        <textarea
+          id="sellAccountData"
+          required
+          placeholder="ข้อมูลบัญชีสำหรับส่งมอบหลังชำระเงิน"
+        ></textarea>
+      </label>
+
+      <button class="btn btn-primary" type="submit">
         ลงขาย
       </button>
 
-      <div id="sellMsg"></div>
-
-    </div>
+    </form>
 
   </div>
-
 </div>
 
+<!-- ADMIN MODAL -->
+<div id="adminModal" class="modal">
 
-<!-- ADMIN BOOTSTRAP -->
+  <div class="modal-box">
 
-<div
-  id="adminBootstrapModal"
-  class="modal">
+    <div class="modal-head">
 
-  <div class="modalbox">
+      <h3>Admin Dashboard</h3>
 
-    <div class="modalhead">
-
-      <h2>
-        ตั้งค่า Admin ครั้งแรก
-      </h2>
-
-      <button
-        class="close"
-        onclick="closeModal('adminBootstrapModal')">
+      <button class="close" onclick="closeModal('adminModal')">
         ×
       </button>
 
     </div>
 
-    <p class="muted">
-      ใช้เฉพาะกรณีระบบยังไม่มี Admin เท่านั้น
-    </p>
-
-    <div class="form">
-
-      <input
-        id="bootstrapSecret"
-        type="password"
-        placeholder="ADMIN_BOOTSTRAP_SECRET">
+    <div class="tabs">
 
       <button
-        class="primary"
-        onclick="bootstrapAdmin()">
-        ยืนยันตั้ง Admin
+        id="adminTabOverview"
+        class="active"
+        onclick="adminTab('overview')"
+      >
+        ภาพรวม
       </button>
 
-      <div id="bootstrapMsg"></div>
+      <button
+        id="adminTabUsers"
+        onclick="adminTab('users')"
+      >
+        สมาชิก
+      </button>
+
+      <button
+        id="adminTabListings"
+        onclick="adminTab('listings')"
+      >
+        รายการขาย
+      </button>
+
+      <button
+        id="adminTabLogs"
+        onclick="adminTab('logs')"
+      >
+        Audit Log
+      </button>
 
     </div>
 
+    <div id="adminContent">
+      กำลังโหลด...
+    </div>
+
   </div>
-
 </div>
-
-
-<div
-  id="toast"
-  class="toast">
-</div>
-
 
 <script>
-
-const API =
-  'https://efootball-market-api.onrender.com';
+const API = 'https://efootball-market-api.onrender.com';
 
 let authMode = 'login';
 
-let currentUser = null;
-
-
-const $ = id =>
-  document.getElementById(id);
-
-
-function token(){
-
-  return (
-    localStorage.getItem('ef_token') ||
-    localStorage.getItem('ef_api_token') ||
-    ''
-  );
-
+function $(id){
+  return document.getElementById(id);
 }
 
+function token(){
+  return localStorage.getItem('ef_token') ||
+         localStorage.getItem('ef_api_token') ||
+         '';
+}
 
-function headers(json=true){
-
-  const h={};
-
-  if(json){
-    h['Content-Type']='application/json';
+function currentUser(){
+  try{
+    return JSON.parse(
+      localStorage.getItem('ef_user') ||
+      localStorage.getItem('ef_api_user') ||
+      'null'
+    );
+  }catch(e){
+    return null;
   }
+}
 
-  if(token()){
-    h.Authorization =
-      'Bearer '+token();
+function saveUser(user){
+  localStorage.setItem('ef_user', JSON.stringify(user));
+  localStorage.setItem('ef_api_user', JSON.stringify(user));
+}
+
+function saveToken(value){
+  localStorage.setItem('ef_token', value);
+  localStorage.setItem('ef_api_token', value);
+}
+
+function clearAuth(){
+  localStorage.removeItem('ef_token');
+  localStorage.removeItem('ef_api_token');
+  localStorage.removeItem('ef_user');
+  localStorage.removeItem('ef_api_user');
+}
+
+function headers(){
+  const h = {
+    'Content-Type':'application/json'
+  };
+
+  const t = token();
+
+  if(t){
+    h.Authorization = 'Bearer ' + t;
   }
 
   return h;
-
 }
 
+async function api(path, options={}){
+  const config = {
+    ...options,
+    headers:{
+      ...headers(),
+      ...(options.headers || {})
+    }
+  };
 
-async function api(path,opt={}){
+  const response = await fetch(API + path, config);
 
-  const r =
-    await fetch(
-      API+path,
-      {
-        ...opt,
-        headers:{
-          ...headers(!!opt.body),
-          ...(opt.headers||{})
-        }
-      }
-    );
-
-  let d={};
+  let data = {};
 
   try{
-    d=await r.json();
-  }catch{}
-
-  if(!r.ok){
-
-    throw new Error(
-      d.error ||
-      d.message ||
-      ('HTTP '+r.status)
-    );
-
+    data = await response.json();
+  }catch(e){
+    data = {};
   }
 
-  return d;
+  if(!response.ok){
+    throw new Error(
+      data.error ||
+      data.message ||
+      ('HTTP ' + response.status)
+    );
+  }
 
+  return data;
 }
 
+function toast(message){
+  const el = $('toast');
 
-function toast(msg){
+  el.textContent = message;
+  el.classList.add('show');
 
-  const t=$('toast');
+  clearTimeout(window.toastTimer);
 
-  t.textContent=msg;
-
-  t.style.display='block';
-
-  setTimeout(
-    ()=>t.style.display='none',
-    2800
-  );
-
+  window.toastTimer = setTimeout(()=>{
+    el.classList.remove('show');
+  },3500);
 }
 
+function scrollToId(id){
+  const el = $(id);
 
-function openModal(id){
-
-  $(id).classList.add('open');
-
+  if(el){
+    el.scrollIntoView({
+      behavior:'smooth',
+      block:'start'
+    });
+  }
 }
-
 
 function closeModal(id){
-
-  $(id).classList.remove('open');
-
+  $(id).classList.remove('show');
 }
 
-
-function show(name){
-
-  document
-    .querySelectorAll('.page')
-    .forEach(
-      x=>x.style.display='none'
-    );
-
-  $(name).style.display='block';
-
-  if(name==='orders'){
-    loadOrders();
-  }
-
-  if(name==='account'){
-    renderAccount();
-  }
-
-  if(name==='admin'){
-    loadAdmin();
-  }
-
-  window.scrollTo({
-    top:0,
-    behavior:'smooth'
-  });
-
+function openModal(id){
+  $(id).classList.add('show');
 }
 
+function openAuth(mode='login'){
+  authMode = mode;
 
-function openAuth(){
+  updateAuthModal();
 
   openModal('authModal');
-
 }
 
-
-function toggleAuth(){
-
+function toggleAuthMode(){
   authMode =
-    authMode==='login'
+    authMode === 'login'
       ? 'register'
       : 'login';
 
-  $('authTitle').textContent =
-    authMode==='login'
-      ? 'เข้าสู่ระบบ'
-      : 'สมัครสมาชิก';
-
-  $('authMsg').innerHTML='';
-
+  updateAuthModal();
 }
 
+function updateAuthModal(){
 
-async function submitAuth(){
+  if(authMode === 'login'){
+
+    $('authTitle').textContent = 'เข้าสู่ระบบ';
+
+    $('authSubmitText').textContent =
+      'เข้าสู่ระบบ';
+
+    $('authToggleText').textContent =
+      'ยังไม่มีบัญชี? สมัครสมาชิก';
+
+  }else{
+
+    $('authTitle').textContent =
+      'สมัครสมาชิก';
+
+    $('authSubmitText').textContent =
+      'สมัครสมาชิก';
+
+    $('authToggleText').textContent =
+      'มีบัญชีแล้ว? เข้าสู่ระบบ';
+
+  }
+}
+
+async function submitAuth(event){
+  event.preventDefault();
+
+  const email =
+    $('authEmail').value.trim();
+
+  const password =
+    $('authPassword').value;
 
   try{
 
-    const email =
-      $('authEmail').value.trim();
+    const endpoint =
+      authMode === 'login'
+        ? '/api/auth/login'
+        : '/api/auth/register';
 
-    const password =
-      $('authPassword').value;
-
-    if(
-      !email ||
-      password.length<8
-    ){
-
-      throw new Error(
-        'กรอกอีเมลและรหัสผ่านอย่างน้อย 8 ตัวอักษร'
-      );
-
-    }
-
-
-    const d =
-      await api(
-        '/api/auth/'+
-        (
-          authMode==='login'
-            ? 'login'
-            : 'register'
-        ),
-        {
-          method:'POST',
-          body:JSON.stringify({
-            email,
-            password
-          })
-        }
-      );
-
-
-    if(d.token){
-
-      localStorage.setItem(
-        'ef_token',
-        d.token
-      );
-
-    }
-
-
-    currentUser =
-      d.user || null;
-
-
-    localStorage.setItem(
-      'ef_api_user',
-      JSON.stringify(
-        currentUser || {}
-      )
+    const data = await api(
+      endpoint,
+      {
+        method:'POST',
+        body:JSON.stringify({
+          email,
+          password
+        })
+      }
     );
 
+    if(data.token){
+      saveToken(data.token);
+    }
+
+    if(data.user){
+      saveUser(data.user);
+    }
 
     closeModal('authModal');
 
-    await refreshMe();
-
     toast(
-      authMode==='login'
-        ? 'เข้าสู่ระบบแล้ว'
+      authMode === 'login'
+        ? 'เข้าสู่ระบบสำเร็จ'
         : 'สมัครสมาชิกสำเร็จ'
     );
 
-    loadListings();
+    await refreshMe();
 
-  }catch(e){
+    await loadListings();
 
-    $('authMsg').innerHTML =
-      '<div class="notice danger">'+
-      e.message+
-      '</div>';
+    await loadOrders();
+
+  }catch(error){
+
+    toast(error.message);
 
   }
-
 }
-
 
 async function refreshMe(){
 
   if(!token()){
-
-    currentUser=null;
-
     updateNav();
-
-    return;
-
+    renderAccount();
+    return null;
   }
-
 
   try{
 
-    const d =
-      await api('/api/me');
+    const data = await api('/api/me');
 
-    currentUser =
-      d.user || d;
+    const user =
+      data.user ||
+      data;
 
-    localStorage.setItem(
-      'ef_api_user',
-      JSON.stringify(currentUser)
-    );
+    saveUser(user);
 
-  }catch{
+    updateNav();
 
-    currentUser=null;
+    renderAccount();
 
+    return user;
+
+  }catch(error){
+
+    clearAuth();
+
+    updateNav();
+
+    renderAccount();
+
+    return null;
   }
-
-  updateNav();
-
 }
-
 
 function updateNav(){
 
-  const admin =
-    currentUser &&
-    currentUser.role==='admin';
+  const user = currentUser();
 
+  const admin =
+    user &&
+    user.role === 'admin';
 
   $('adminNav').style.display =
-    admin ? 'block':'none';
-
-
-  $('bottomAdmin').style.display =
-    admin ? 'block':'none';
-
+    admin ? 'block' : 'none';
 }
 
+function renderAccount(){
+
+  const user = currentUser();
+
+  if(!user){
+
+    $('accountBox').innerHTML = `
+      <p class="notice">
+        ยังไม่ได้เข้าสู่ระบบ
+      </p>
+
+      <button
+        class="btn btn-primary"
+        onclick="openAuth()"
+      >
+        เข้าสู่ระบบ
+      </button>
+    `;
+
+    return;
+  }
+
+  $('accountBox').innerHTML = `
+
+    <div style="display:grid;gap:10px">
+
+      <div>
+        <span class="muted">อีเมล</span><br>
+        <strong>${esc(user.email || '-')}</strong>
+      </div>
+
+      <div>
+        <span class="muted">สิทธิ์</span><br>
+        <span class="badge">
+          ${esc(user.role || 'buyer')}
+        </span>
+      </div>
+
+      <div class="actions">
+
+        <button
+          class="btn btn-dark"
+          onclick="loadOrders()"
+        >
+          ดูออเดอร์
+        </button>
+
+        ${
+          user.role === 'seller' ||
+          user.role === 'admin'
+          ? `
+            <button
+              class="btn btn-primary"
+              onclick="openSell()"
+            >
+              ลงขายไอดี
+            </button>
+          `
+          : ''
+        }
+
+        ${
+          user.role === 'admin'
+          ? `
+            <button
+              class="btn btn-dark"
+              onclick="openAdmin()"
+            >
+              Admin
+            </button>
+          `
+          : ''
+        }
+
+        <button
+          class="btn btn-danger"
+          onclick="logout()"
+        >
+          ออกจากระบบ
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
 
 function logout(){
 
-  localStorage.removeItem(
-    'ef_token'
-  );
-
-  localStorage.removeItem(
-    'ef_api_token'
-  );
-
-  localStorage.removeItem(
-    'ef_api_user'
-  );
-
-  currentUser=null;
+  clearAuth();
 
   updateNav();
 
   renderAccount();
 
+  $('orderList').innerHTML =
+    'กรุณาเข้าสู่ระบบเพื่อดูออเดอร์';
+
   toast('ออกจากระบบแล้ว');
-
 }
 
+async function checkApi(){
 
-function renderAccount(){
+  try{
 
-  if(!currentUser){
+    const data = await api('/health');
 
-    $('accountBox').innerHTML =
-      '<div class="empty">'+
-      'ยังไม่ได้เข้าสู่ระบบ<br><br>'+
-      '<button class="primary" onclick="openAuth()">'+
-      'เข้าสู่ระบบ / สมัครสมาชิก'+
-      '</button>'+
-      '</div>';
+    $('statApi').textContent = 'ออนไลน์';
 
-    return;
+    return data;
 
+  }catch(error){
+
+    $('statApi').textContent = 'ออฟไลน์';
+
+    return null;
   }
-
-
-  $('accountBox').innerHTML =
-    '<div class="row">'+
-
-      '<div>'+
-        '<h3>'+
-        esc(currentUser.email||'-')+
-        '</h3>'+
-
-        '<span class="tag">'+
-        'ROLE: '+
-        esc(currentUser.role||'buyer')+
-        '</span>'+
-      '</div>'+
-
-      '<div class="spacer">'+
-        '<button class="ghost" onclick="logout()">'+
-        'ออกจากระบบ'+
-        '</button>'+
-      '</div>'+
-
-    '</div>'+
-
-    '<hr style="border-color:var(--line);border-width:1px 0 0;margin:18px 0">'+
-
-    '<p class="muted">'+
-    'ผู้ซื้อสามารถสั่งซื้อได้ ส่วนผู้ขายต้องได้รับสิทธิ์ seller จาก Admin'+
-    '</p>';
-
-
-  if(currentUser.role==='buyer'){
-
-    $('accountBox').innerHTML +=
-      '<button class="ghost" onclick="openBootstrap()">'+
-      'ตั้ง Admin ครั้งแรก'+
-      '</button>';
-
-  }
-
 }
-
-
-function openBootstrap(){
-
-  openModal(
-    'adminBootstrapModal'
-  );
-
-}
-
 
 async function loadListings(){
 
-  $('statApi').textContent =
-    'กำลังเช็ค';
+  const grid = $('listingGrid');
 
-
-  try{
-
-    await api('/health');
-
-    $('statApi').textContent =
-      'ออนไลน์';
-
-  }catch{
-
-    $('statApi').textContent =
-      'ออฟไลน์';
-
-  }
-
+  grid.innerHTML = `
+    <div class="empty">
+      กำลังโหลดรายการ...
+    </div>
+  `;
 
   try{
 
-    const d =
+    const data =
       await api('/api/listings');
 
-    const items =
-      d.listings ||
-      d ||
-      [];
-
+    const listings =
+      Array.isArray(data)
+        ? data
+        : (
+            data.listings ||
+            data.items ||
+            []
+          );
 
     $('statListings').textContent =
-      items.length;
+      listings.length;
 
+    if(!listings.length){
 
-    $('listingGrid').innerHTML =
-      items.length
-      ? items.map(listingCard).join('')
-      : '<div class="empty" style="grid-column:1/-1">'+
-        'ยังไม่มีรายการขาย'+
-        '</div>';
+      grid.innerHTML = `
+        <div class="empty">
+          ยังไม่มีรายการขาย
+        </div>
+      `;
 
-  }catch(e){
-
-    $('listingGrid').innerHTML =
-      '<div class="empty" style="grid-column:1/-1">'+
-      'โหลดรายการไม่ได้: '+
-      esc(e.message)+
-      '</div>';
-
-  }
-
-
-  try{
-
-    const d =
-      await api('/api/stats');
-
-    if(d.users!=null){
-
-      $('statUsers').textContent =
-        d.users;
-
+      return;
     }
 
-  }catch{}
+    grid.innerHTML =
+      listings
+      .map(listingCard)
+      .join('');
 
+  }catch(error){
+
+    grid.innerHTML = `
+      <div class="empty">
+        โหลดรายการไม่สำเร็จ<br>
+        ${esc(error.message)}
+      </div>
+    `;
+  }
 }
 
-
-function listingCard(x){
+function listingCard(item){
 
   const id =
-    x.id ||
-    x.listing_id;
+    item.id;
 
   const title =
-    x.title ||
-    x.name ||
+    item.title ||
+    item.name ||
     'eFootball Account';
 
   const price =
-    Number(x.price||0);
+    Number(
+      item.price ||
+      item.amount ||
+      0
+    );
 
-  const status =
-    x.status ||
-    'active';
-
+  const description =
+    item.description ||
+    'ไม่มีรายละเอียด';
 
   return `
-    <article class="card listing">
 
-      <span class="tag">
-        ${esc(status)}
-      </span>
+    <div class="listing">
 
-      <h3>
-        ${esc(title)}
-      </h3>
-
-      <div class="muted">
-        ${esc(
-          x.description ||
-          'ไอดี eFootball พร้อมส่งมอบ'
-        )}
+      <div class="listing-img">
+        eFOOTBALL
       </div>
 
-      <div class="price">
-        ฿${price.toLocaleString('th-TH')}
+      <div class="listing-body">
+
+        <div class="listing-title">
+          ${esc(title)}
+        </div>
+
+        <div class="price">
+          ฿${price.toLocaleString('th-TH')}
+        </div>
+
+        <p class="muted">
+          ${esc(description)}
+        </p>
+
+        <div class="actions">
+
+          <button
+            class="btn btn-primary"
+            onclick="buy(${Number(id)})"
+          >
+            ซื้อไอดี
+          </button>
+
+        </div>
+
       </div>
 
-      <button
-        class="primary"
-        onclick="buy(${Number(id)},${price})">
-        ซื้อรายการนี้
-      </button>
-
-    </article>
+    </div>
   `;
-
 }
 
+async function buy(id){
 
-async function buy(id,price){
+  if(!token()){
 
-  if(!currentUser){
+    openAuth('login');
 
-    openAuth();
-
-    return;
-
-  }
-
-
-  if(
-    !confirm(
-      'ยืนยันสร้างออเดอร์ ราคา ฿'+
-      Number(price).toLocaleString('th-TH')+
-      ' ?'
-    )
-  ){
+    toast('กรุณาเข้าสู่ระบบก่อนซื้อ');
 
     return;
-
   }
 
+  const ok =
+    confirm(
+      'ยืนยันสร้าง Order สำหรับรายการนี้หรือไม่?'
+    );
+
+  if(!ok){
+    return;
+  }
 
   try{
 
-    const d =
+    const data =
       await api(
         '/api/orders',
         {
           method:'POST',
           body:JSON.stringify({
-            listing_id:id
+            listing_id:Number(id)
           })
         }
       );
 
-
     toast(
-      'สร้างออเดอร์แล้ว #'+
-      (
-        d.order?.id ||
-        d.id ||
-        ''
-      )
+      'สร้าง Order สำเร็จ #' +
+      (data.order?.id ||
+       data.id ||
+       '')
     );
 
+    await loadOrders();
 
-    show('orders');
+    scrollToId('orders');
 
-  }catch(e){
+  }catch(error){
 
-    toast(e.message);
+    toast(error.message);
 
   }
-
 }
-
 
 async function loadOrders(){
 
-  $('orderList').innerHTML =
-    '<div class="empty">กำลังโหลด...</div>';
+  if(!token()){
 
-
-  if(!currentUser){
-
-    $('orderList').innerHTML =
-      '<div class="empty">'+
-      'กรุณาเข้าสู่ระบบก่อน'+
-      '</div>';
+    $('orderList').innerHTML = `
+      <div class="empty">
+        กรุณาเข้าสู่ระบบเพื่อดูออเดอร์
+      </div>
+    `;
 
     return;
-
   }
 
+  $('orderList').innerHTML =
+    'กำลังโหลด...';
 
   try{
 
-    const d =
+    const data =
       await api('/api/orders');
 
-    const arr =
-      d.orders ||
-      d ||
-      [];
+    const orders =
+      Array.isArray(data)
+        ? data
+        : (
+            data.orders ||
+            data.items ||
+            []
+          );
 
+    if(!orders.length){
+
+      $('orderList').innerHTML = `
+        <div class="empty">
+          ยังไม่มีออเดอร์
+        </div>
+      `;
+
+      return;
+    }
 
     $('orderList').innerHTML =
-      arr.length
-
-      ? arr.map(o=>`
+      orders.map(order => `
 
         <div
           class="card"
-          style="padding:16px;margin-bottom:12px">
+          style="margin-bottom:10px"
+        >
 
-          <div class="row">
+          <div
+            style="
+              display:flex;
+              justify-content:space-between;
+              gap:10px;
+              flex-wrap:wrap
+            "
+          >
 
-            <b>
-              Order #${esc(o.id)}
-            </b>
+            <strong>
+              Order #${esc(order.id)}
+            </strong>
 
-            <span class="tag">
-              ${esc(
-                o.status ||
-                o.payment_status ||
-                '-'
-              )}
-            </span>
-
-            <span
-              class="spacer price"
-              style="font-size:18px">
-
-              ฿${Number(
-                o.amount ||
-                o.price ||
-                0
-              ).toLocaleString('th-TH')}
-
+            <span class="badge">
+              ${esc(order.status || '-')}
             </span>
 
           </div>
 
           <p class="muted">
-            Listing:
-            ${esc(o.listing_id||'-')}
+            ราคา:
+            ฿${Number(
+              order.amount ||
+              order.price ||
+              0
+            ).toLocaleString('th-TH')}
           </p>
 
-          ${
-            o.status==='paid' ||
-            o.payment_status==='paid'
+          <div class="actions">
 
-            ?
+            ${
+              order.status === 'paid' ||
+              order.payment_status === 'paid'
+              ? `
+                <button
+                  class="btn btn-primary"
+                  onclick="delivery(${Number(order.id)})"
+                >
+                  รับข้อมูลไอดี
+                </button>
+              `
+              : ''
+            }
 
-            `<button
-              class="primary"
-              onclick="delivery(${Number(o.id)})">
-              รับข้อมูลไอดี
-            </button>`
-
-            :
-
-            ''
-          }
+          </div>
 
         </div>
 
-      `).join('')
+      `).join('');
 
-      :
+  }catch(error){
 
-      '<div class="empty">'+
-      'ยังไม่มีออเดอร์'+
-      '</div>';
-
-
-  }catch(e){
-
-    $('orderList').innerHTML =
-      '<div class="empty">'+
-      esc(e.message)+
-      '</div>';
-
+    $('orderList').innerHTML = `
+      <div class="empty">
+        ${esc(error.message)}
+      </div>
+    `;
   }
-
 }
 
-
-async function delivery(id){
+async function delivery(orderId){
 
   try{
 
-    const d =
+    const data =
       await api(
-        '/api/orders/'+
-        id+
+        '/api/orders/' +
+        Number(orderId) +
         '/delivery'
       );
 
+    const deliveryData =
+      data.delivery ||
+      data.account ||
+      data;
 
     alert(
-      'ข้อมูลไอดี:\n'+
+      'ข้อมูลไอดี:\n\n' +
       JSON.stringify(
-        d.delivery||d,
+        deliveryData,
         null,
         2
       )
     );
 
-  }catch(e){
+  }catch(error){
 
-    toast(e.message);
+    toast(error.message);
 
   }
-
 }
-
 
 function openSell(){
 
-  if(!currentUser){
+  const user =
+    currentUser();
 
-    openAuth();
+  if(!user){
+
+    openAuth('login');
+
+    toast('กรุณาเข้าสู่ระบบก่อนลงขาย');
 
     return;
-
   }
 
-
   if(
-    !['seller','admin']
-    .includes(currentUser.role)
+    user.role !== 'seller' &&
+    user.role !== 'admin'
   ){
 
     toast(
@@ -1577,16 +1534,14 @@ function openSell(){
     );
 
     return;
-
   }
 
-
   openModal('sellModal');
-
 }
 
+async function createListing(event){
 
-async function createListing(){
+  event.preventDefault();
 
   try{
 
@@ -1594,29 +1549,13 @@ async function createListing(){
       $('sellTitle').value.trim();
 
     const price =
-      Number(
-        $('sellPrice').value
-      );
+      Number($('sellPrice').value);
 
     const description =
       $('sellDescription').value.trim();
 
     const account_data =
-      $('sellAccount').value;
-
-
-    if(
-      !title ||
-      price<=0 ||
-      !account_data
-    ){
-
-      throw new Error(
-        'กรอกข้อมูลให้ครบ'
-      );
-
-    }
-
+      $('sellAccountData').value;
 
     await api(
       '/api/listings',
@@ -1631,479 +1570,384 @@ async function createListing(){
       }
     );
 
+    closeModal('sellModal');
 
-    closeModal(
-      'sellModal'
-    );
+    $('sellTitle').value = '';
+    $('sellPrice').value = '';
+    $('sellDescription').value = '';
+    $('sellAccountData').value = '';
 
+    toast('ลงขายไอดีสำเร็จ');
 
-    toast(
-      'ลงขายสำเร็จ'
-    );
+    await loadListings();
 
+  }catch(error){
 
-    loadListings();
-
-  }catch(e){
-
-    $('sellMsg').innerHTML =
-      '<div class="notice danger">'+
-      esc(e.message)+
-      '</div>';
+    toast(error.message);
 
   }
-
 }
 
+async function openAdmin(){
 
-async function bootstrapAdmin(){
+  const user =
+    currentUser();
 
-  try{
+  if(!user){
 
-    if(!currentUser){
-
-      throw new Error(
-        'กรุณาเข้าสู่ระบบก่อน'
-      );
-
-    }
-
-
-    const secret =
-      $('bootstrapSecret').value;
-
-
-    if(!secret){
-
-      throw new Error(
-        'กรอก Secret'
-      );
-
-    }
-
-
-    await api(
-      '/api/admin/bootstrap',
-      {
-        method:'POST',
-        body:JSON.stringify({
-          secret
-        })
-      }
-    );
-
-
-    closeModal(
-      'adminBootstrapModal'
-    );
-
-
-    await refreshMe();
-
-
-    toast(
-      'ตั้ง Admin สำเร็จ'
-    );
-
-
-    show('admin');
-
-  }catch(e){
-
-    $('bootstrapMsg').innerHTML =
-      '<div class="notice danger">'+
-      esc(e.message)+
-      '</div>';
-
-  }
-
-}
-
-
-async function loadAdmin(){
-
-  if(
-    !currentUser ||
-    currentUser.role!=='admin'
-  ){
-
-    $('adminContent').innerHTML =
-      '<div class="empty">'+
-      'ต้องเป็น Admin เท่านั้น'+
-      '</div>';
+    openAuth('login');
 
     return;
-
   }
 
+  if(user.role !== 'admin'){
 
-  await adminTab(
-    'overview',
-    document.querySelector(
-      '#admin .tab'
-    )
-  );
+    toast('เฉพาะ Admin เท่านั้น');
 
+    return;
+  }
+
+  openModal('adminModal');
+
+  await adminTab('overview');
 }
 
-
-async function adminTab(tab,btn){
+async function adminTab(tab){
 
   document
-    .querySelectorAll(
-      '#admin .tab'
-    )
-    .forEach(
-      x=>x.classList.remove('active')
-    );
+    .querySelectorAll('.tabs button')
+    .forEach(button=>{
+      button.classList.remove('active');
+    });
 
+  const tabButton =
+    $('adminTab' +
+      tab.charAt(0).toUpperCase() +
+      tab.slice(1));
 
-  if(btn){
-
-    btn.classList.add('active');
-
+  if(tabButton){
+    tabButton.classList.add('active');
   }
 
-
   $('adminContent').innerHTML =
-    '<div class="empty">'+
-    'กำลังโหลด...'+
-    '</div>';
-
+    '<div class="empty">กำลังโหลด...</div>';
 
   try{
 
-    if(tab==='overview'){
+    if(tab === 'overview'){
 
-      const d =
-        await api('/api/stats');
+      let data = {};
 
+      try{
+        data =
+          await api('/api/stats');
+      }catch(e){
+        data = {};
+      }
 
-      $('adminContent').innerHTML =
+      const stats =
+        data.stats ||
+        data;
 
-        '<div class="admin-grid">'+
+      $('adminContent').innerHTML = `
 
-        [
-          ['Users',d.users],
-          ['Listings',d.listings],
-          ['Orders',d.orders],
-          ['Audit',d.audit_logs]
-        ]
+        <div class="grid">
 
-        .map(a=>
+          <div class="stat">
+            <strong>
+              ${esc(
+                stats.users ??
+                stats.members ??
+                '-'
+              )}
+            </strong>
+            <span>สมาชิก</span>
+          </div>
 
-          '<div class="admin-stat">'+
-          '<small>'+a[0]+'</small>'+
-          '<b>'+
-          esc(a[1]??'-')+
-          '</b>'+
-          '</div>'
+          <div class="stat">
+            <strong>
+              ${esc(
+                stats.listings ??
+                '-'
+              )}
+            </strong>
+            <span>รายการ</span>
+          </div>
 
-        ).join('')+
+          <div class="stat">
+            <strong>
+              ${esc(
+                stats.orders ??
+                '-'
+              )}
+            </strong>
+            <span>ออเดอร์</span>
+          </div>
 
-        '</div>';
+        </div>
 
-    }
+      `;
 
+    }else if(tab === 'users'){
 
-    else if(tab==='users'){
+      const data =
+        await api('/api/admin/users');
 
-      const d =
-        await api(
-          '/api/admin/users'
-        );
-
-      const a =
-        d.users ||
-        d ||
+      const users =
+        data.users ||
+        data ||
         [];
 
+      $('adminContent').innerHTML = `
 
-      $('adminContent').innerHTML =
+        <div
+          class="card"
+          style="padding:10px;overflow:auto"
+        >
 
-        '<div class="card" style="padding:10px;overflow:auto">'+
+          <table>
 
-        '<table>'+
+            <tr>
+              <th>ID</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>จัดการ</th>
+            </tr>
 
-        '<tr>'+
-        '<th>ID</th>'+
-        '<th>Email</th>'+
-        '<th>Role</th>'+
-        '<th>จัดการ</th>'+
-        '</tr>'+
+            ${users.map(user => `
 
-        a.map(u=>
+              <tr>
 
-          '<tr>'+
+                <td>
+                  ${esc(user.id)}
+                </td>
 
-          '<td>'+
-          esc(u.id)+
-          '</td>'+
+                <td>
+                  ${esc(user.email)}
+                </td>
 
-          '<td>'+
-          esc(u.email)+
-          '</td>'+
+                <td>
+                  ${esc(user.role)}
+                </td>
 
-          '<td>'+
-          esc(u.role)+
-          '</td>'+
+                <td>
 
-          '<td>'+
+                  <div
+                    style="
+                      display:flex;
+                      gap:5px;
+                      flex-wrap:wrap
+                    "
+                  >
 
-          '<button class="ghost" onclick="changeRole('+
-          Number(u.id)+
-          ',\'buyer\')">'+
-          'Buyer'+
-          '</button> '+
+                    <button
+                      class="btn btn-dark"
+                      onclick="changeRole(${Number(user.id)},'buyer')"
+                    >
+                      Buyer
+                    </button>
 
-          '<button class="ghost" onclick="changeRole('+
-          Number(u.id)+
-          ',\'seller\')">'+
-          'Seller'+
-          '</button> '+
+                    <button
+                      class="btn btn-dark"
+                      onclick="changeRole(${Number(user.id)},'seller')"
+                    >
+                      Seller
+                    </button>
 
-          '<button class="ghost" onclick="changeRole('+
-          Number(u.id)+
-          ',\'admin\')">'+
-          'Admin'+
-          '</button>'+
+                    <button
+                      class="btn btn-dark"
+                      onclick="changeRole(${Number(user.id)},'admin')"
+                    >
+                      Admin
+                    </button>
 
-          '</td>'+
+                  </div>
 
-          '</tr>'
+                </td>
 
-        ).join('')+
+              </tr>
 
-        '</table>'+
+            `).join('')}
 
-        '</div>';
+          </table>
 
-    }
+        </div>
 
+      `;
 
-    else if(tab==='listings'){
+    }else if(tab === 'listings'){
 
-      const d =
-        await api(
-          '/api/listings'
-        );
+      const data =
+        await api('/api/listings');
 
-      const a =
-        d.listings ||
-        d ||
+      const listings =
+        Array.isArray(data)
+          ? data
+          : (
+              data.listings ||
+              data.items ||
+              []
+            );
+
+      $('adminContent').innerHTML = `
+
+        <div
+          class="card"
+          style="padding:10px;overflow:auto"
+        >
+
+          <table>
+
+            <tr>
+              <th>ID</th>
+              <th>ชื่อ</th>
+              <th>ราคา</th>
+              <th>สถานะ</th>
+            </tr>
+
+            ${listings.map(item => `
+
+              <tr>
+
+                <td>
+                  ${esc(item.id)}
+                </td>
+
+                <td>
+                  ${esc(
+                    item.title ||
+                    item.name ||
+                    '-'
+                  )}
+                </td>
+
+                <td>
+                  ฿${Number(
+                    item.price ||
+                    0
+                  ).toLocaleString('th-TH')}
+                </td>
+
+                <td>
+                  ${esc(
+                    item.status ||
+                    'active'
+                  )}
+                </td>
+
+              </tr>
+
+            `).join('')}
+
+          </table>
+
+        </div>
+
+      `;
+
+    }else if(tab === 'logs'){
+
+      const data =
+        await api('/api/admin/audit-logs');
+
+      const logs =
+        data.logs ||
+        data ||
         [];
 
+      $('adminContent').innerHTML = `
 
-      $('adminContent').innerHTML =
+        <div
+          class="card"
+          style="padding:10px;overflow:auto"
+        >
 
-        '<div class="card" style="padding:10px;overflow:auto">'+
+          <table>
 
-        '<table>'+
+            <tr>
+              <th>ID</th>
+              <th>Action</th>
+              <th>User</th>
+              <th>เวลา</th>
+            </tr>
 
-        '<tr>'+
-        '<th>ID</th>'+
-        '<th>ชื่อ</th>'+
-        '<th>ราคา</th>'+
-        '<th>Seller</th>'+
-        '<th>Status</th>'+
-        '</tr>'+
+            ${logs.map(log => `
 
-        a.map(x=>
+              <tr>
 
-          '<tr>'+
+                <td>
+                  ${esc(log.id)}
+                </td>
 
-          '<td>'+
-          esc(x.id)+
-          '</td>'+
+                <td>
+                  ${esc(
+                    log.action ||
+                    '-'
+                  )}
+                </td>
 
-          '<td>'+
-          esc(x.title||x.name)+
-          '</td>'+
+                <td>
+                  ${esc(
+                    log.user_id ||
+                    '-'
+                  )}
+                </td>
 
-          '<td>฿'+
-          Number(
-            x.price||0
-          ).toLocaleString('th-TH')+
-          '</td>'+
+                <td>
+                  ${esc(
+                    log.created_at ||
+                    '-'
+                  )}
+                </td>
 
-          '<td>'+
-          esc(
-            x.seller_id ||
-            x.user_id ||
-            '-'
-          )+
-          '</td>'+
+              </tr>
 
-          '<td>'+
-          esc(x.status||'-')+
-          '</td>'+
+            `).join('')}
 
-          '</tr>'
+          </table>
 
-        ).join('')+
+        </div>
 
-        '</table>'+
-
-        '</div>';
-
-    }
-
-
-    else if(tab==='orders'){
-
-      const d =
-        await api(
-          '/api/orders'
-        );
-
-      const a =
-        d.orders ||
-        d ||
-        [];
-
-
-      $('adminContent').innerHTML =
-
-        '<div class="card" style="padding:10px;overflow:auto">'+
-
-        '<table>'+
-
-        '<tr>'+
-        '<th>ID</th>'+
-        '<th>Buyer</th>'+
-        '<th>Listing</th>'+
-        '<th>Status</th>'+
-        '<th>Payment</th>'+
-        '</tr>'+
-
-        a.map(x=>
-
-          '<tr>'+
-
-          '<td>'+
-          esc(x.id)+
-          '</td>'+
-
-          '<td>'+
-          esc(x.buyer_id||'-')+
-          '</td>'+
-
-          '<td>'+
-          esc(x.listing_id||'-')+
-          '</td>'+
-
-          '<td>'+
-          esc(x.status||'-')+
-          '</td>'+
-
-          '<td>'+
-          esc(x.payment_status||'-')+
-          '</td>'+
-
-          '</tr>'
-
-        ).join('')+
-
-        '</table>'+
-
-        '</div>';
+      `;
 
     }
 
+  }catch(error){
 
-    else{
+    $('adminContent').innerHTML = `
 
-      const d =
-        await api(
-          '/api/admin/audit-logs'
-        );
+      <div class="empty">
 
-      const a =
-        d.logs ||
-        d.audit_logs ||
-        d ||
-        [];
+        โหลดข้อมูลไม่สำเร็จ
 
+        <br>
 
-      $('adminContent').innerHTML =
+        ${esc(error.message)}
 
-        '<div class="card" style="padding:10px;overflow:auto">'+
+      </div>
 
-        '<table>'+
-
-        '<tr>'+
-        '<th>เวลา</th>'+
-        '<th>Action</th>'+
-        '<th>User</th>'+
-        '<th>รายละเอียด</th>'+
-        '</tr>'+
-
-        a.map(x=>
-
-          '<tr>'+
-
-          '<td>'+
-          esc(x.created_at||'-')+
-          '</td>'+
-
-          '<td>'+
-          esc(x.action||'-')+
-          '</td>'+
-
-          '<td>'+
-          esc(x.user_id||'-')+
-          '</td>'+
-
-          '<td>'+
-          esc(
-            JSON.stringify(
-              x.details||{}
-            )
-          )+
-          '</td>'+
-
-          '</tr>'
-
-        ).join('')+
-
-        '</table>'+
-
-        '</div>';
-
-    }
-
-  }catch(e){
-
-    $('adminContent').innerHTML =
-      '<div class="notice danger">'+
-      esc(e.message)+
-      '</div>';
-
+    `;
   }
-
 }
 
+async function changeRole(userId,role){
 
-async function changeRole(id,role){
+  const ok =
+    confirm(
+      'ยืนยันเปลี่ยนสิทธิ์สมาชิกเป็น ' +
+      role +
+      ' หรือไม่?'
+    );
 
-  if(
-    !confirm(
-      'เปลี่ยนสิทธิ์เป็น '+
-      role+
-      ' ?'
-    )
-  ){
-
+  if(!ok){
     return;
-
   }
-
 
   try{
 
     await api(
-      '/api/admin/users/'+
-      id+
+      '/api/admin/users/' +
+      Number(userId) +
       '/role',
       {
         method:'PATCH',
@@ -2113,46 +1957,109 @@ async function changeRole(id,role){
       }
     );
 
-
     toast(
-      'เปลี่ยนสิทธิ์แล้ว'
+      'เปลี่ยนสิทธิ์เป็น ' +
+      role +
+      ' สำเร็จ'
     );
 
+    await adminTab('users');
 
-    loadAdmin();
+  }catch(error){
 
-  }catch(e){
+    toast(error.message);
 
-    toast(e.message);
+  }
+}
 
+function esc(value){
+
+  return String(
+    value ??
+    ''
+  )
+  .replaceAll('&','&amp;')
+  .replaceAll('<','&lt;')
+  .replaceAll('>','&gt;')
+  .replaceAll('"','&quot;')
+  .replaceAll("'","&#039;");
+}
+
+async function bootstrapAdmin(){
+
+  const secret =
+    prompt(
+      'กรอก ADMIN_BOOTSTRAP_SECRET'
+    );
+
+  if(!secret){
+    return;
+  }
+
+  try{
+
+    const data =
+      await api(
+        '/api/admin/bootstrap',
+        {
+          method:'POST',
+          body:JSON.stringify({
+            secret
+          })
+        }
+      );
+
+    if(data.token){
+      saveToken(data.token);
+    }
+
+    if(data.user){
+      saveUser(data.user);
+    }
+
+    toast('สร้าง Admin สำเร็จ');
+
+    await refreshMe();
+
+  }catch(error){
+
+    toast(error.message);
+
+  }
+}
+
+async function init(){
+
+  await checkApi();
+
+  await refreshMe();
+
+  await loadListings();
+
+  if(token()){
+    await loadOrders();
   }
 
 }
 
+document
+  .querySelectorAll('.modal')
+  .forEach(modal=>{
 
-function esc(v){
+    modal.addEventListener(
+      'click',
+      event=>{
 
-  return String(
-    v??''
-  ).replace(
-    /[&<>"']/g,
-    c=>({
-      '&':'&amp;',
-      '<':'&lt;',
-      '>':'&gt;',
-      '"':'&quot;',
-      "'":'&#39;'
-    }[c])
-  );
+        if(event.target === modal){
+          modal.classList.remove('show');
+        }
 
-}
+      }
+    );
 
+  });
 
-refreshMe()
-  .then(
-    loadListings
-  );
-
+init();
 </script>
 
 </body>
