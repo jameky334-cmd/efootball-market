@@ -10,7 +10,9 @@ const app = express();
 const PORT = Number(process.env.PORT || 10000);
 const DATABASE_URL = process.env.DATABASE_URL;
 const JWT_SECRET = process.env.JWT_SECRET;
-const FRONTEND_ORIGIN = String(process.env.FRONTEND_ORIGIN || '').trim();
+const FRONTEND_ORIGIN = String(
+  process.env.FRONTEND_ORIGIN || ''
+).trim();
 const NODE_ENV = process.env.NODE_ENV || 'production';
 
 if (!DATABASE_URL) {
@@ -184,11 +186,15 @@ async function initDatabase() {
   console.log('Database initialized.');
 }
 
+/* =========================
+   HEALTH
+========================= */
+
 app.get('/', (_req, res) => {
   res.json({
     ok: true,
     service: 'efootball-market-api',
-    version: '2.0.0',
+    version: '3.0.0',
     health: '/health',
     apiHealth: '/api/health'
   });
@@ -223,6 +229,10 @@ app.get('/api/health', async (_req, res) => {
     });
   }
 });
+
+/* =========================
+   REGISTER
+========================= */
 
 app.post(
   '/api/auth/register',
@@ -272,7 +282,7 @@ app.post(
               role
             )
           VALUES
-            ($1,$2,$3)
+            ($1,$2,'buyer')
           RETURNING
             id,
             email,
@@ -281,8 +291,7 @@ app.post(
           `,
           [
             email,
-            hash,
-            'buyer'
+            hash
           ]
         );
 
@@ -330,6 +339,10 @@ app.post(
     }
   }
 );
+
+/* =========================
+   LOGIN
+========================= */
 
 app.post(
   '/api/auth/login',
@@ -429,6 +442,10 @@ app.post(
   }
 );
 
+/* =========================
+   PUBLIC LISTINGS
+========================= */
+
 app.get(
   '/api/listings',
   async (_req, res) => {
@@ -468,6 +485,10 @@ app.get(
     }
   }
 );
+
+/* =========================
+   CREATE LISTING
+========================= */
 
 app.post(
   '/api/listings',
@@ -572,6 +593,10 @@ app.post(
   }
 );
 
+/* =========================
+   MY LISTINGS
+========================= */
+
 app.get(
   '/api/my-listings',
   auth,
@@ -614,6 +639,207 @@ app.get(
     }
   }
 );
+
+/* =========================
+   UPDATE LISTING
+========================= */
+
+app.patch(
+  '/api/listings/:id',
+  auth,
+  role('seller', 'admin'),
+  async (req, res) => {
+    try {
+      const id =
+        Number(req.params.id);
+
+      if (
+        !Number.isInteger(id) ||
+        id <= 0
+      ) {
+        return fail(
+          res,
+          400,
+          'valid listing id required'
+        );
+      }
+
+      const current =
+        await pool.query(
+          `
+          SELECT
+            id,
+            seller_id,
+            status
+          FROM listings
+          WHERE id = $1
+          LIMIT 1
+          `,
+          [id]
+        );
+
+      if (!current.rowCount) {
+        return fail(
+          res,
+          404,
+          'listing not found'
+        );
+      }
+
+      const listing =
+        current.rows[0];
+
+      if (
+        req.user.role !== 'admin' &&
+        String(
+          listing.seller_id
+        ) !==
+          String(req.user.id)
+      ) {
+        return fail(
+          res,
+          403,
+          'forbidden'
+        );
+      }
+
+      if (
+        listing.status === 'sold'
+      ) {
+        return fail(
+          res,
+          409,
+          'sold listing cannot be edited'
+        );
+      }
+
+      const has = (key) =>
+        Object.prototype.hasOwnProperty.call(
+          req.body || {},
+          key
+        );
+
+      const title = has('title')
+        ? String(
+            req.body.title ?? ''
+          ).trim()
+        : undefined;
+
+      const description = has(
+        'description'
+      )
+        ? String(
+            req.body.description ?? ''
+          ).trim()
+        : undefined;
+
+      const price = has('price')
+        ? Number(req.body.price)
+        : undefined;
+
+      const status = has('status')
+        ? String(
+            req.body.status ?? ''
+          ).trim()
+        : undefined;
+
+      if (
+        title !== undefined &&
+        (!title || title.length > 200)
+      ) {
+        return fail(
+          res,
+          400,
+          'invalid title'
+        );
+      }
+
+      if (
+        description !== undefined &&
+        description.length > 5000
+      ) {
+        return fail(
+          res,
+          400,
+          'description too long'
+        );
+      }
+
+      if (
+        price !== undefined &&
+        (!Number.isFinite(price) ||
+          price <= 0)
+      ) {
+        return fail(
+          res,
+          400,
+          'positive price required'
+        );
+      }
+
+      if (
+        status !== undefined &&
+        ![
+          'active',
+          'cancelled'
+        ].includes(status)
+      ) {
+        return fail(
+          res,
+          400,
+          'invalid status'
+        );
+      }
+
+      const result =
+        await pool.query(
+          `
+          UPDATE listings
+          SET
+            title = COALESCE($1, title),
+            description = COALESCE($2, description),
+            price = COALESCE($3, price),
+            status = COALESCE($4, status)
+          WHERE id = $5
+          RETURNING
+            id,
+            seller_id,
+            title,
+            description,
+            price,
+            status,
+            created_at
+          `,
+          [
+            title,
+            description,
+            price,
+            status,
+            id
+          ]
+        );
+
+      res.json(
+        result.rows[0]
+      );
+    } catch (err) {
+      console.error(
+        'Update listing error:',
+        err
+      );
+
+      fail(
+        res,
+        500,
+        'server error'
+      );
+    }
+  }
+);
+
+/* =========================
+   CREATE ORDER
+========================= */
 
 app.post(
   '/api/orders',
@@ -714,7 +940,8 @@ app.post(
       const open =
         await client.query(
           `
-          SELECT id
+          SELECT
+            id
           FROM orders
           WHERE listing_id = $1
             AND status IN (
@@ -811,6 +1038,10 @@ app.post(
     }
   }
 );
+
+/* =========================
+   GET ORDERS
+========================= */
 
 app.get(
   '/api/orders',
@@ -917,6 +1148,10 @@ app.get(
   }
 );
 
+/* =========================
+   GET SINGLE ORDER
+========================= */
+
 app.get(
   '/api/orders/:id',
   auth,
@@ -1003,93 +1238,23 @@ app.get(
   }
 );
 
-app.use(
-  (err, _req, res, _next) => {
-    console.error(
-      'Unhandled error:',
-      err
-    );
+/* =========================
+   UPDATE ORDER STATUS
+========================= */
 
-    if (!res.headersSent) {
-      fail(
-        res,
-        500,
-        'server error'
-      );
-    }
-  }
-);
+app.patch(
+  '/api/orders/:id/status',
+  auth,
+  role('seller', 'admin'),
+  async (req, res) => {
+    const client =
+      await pool.connect();
 
-let server;
+    try {
+      const id =
+        Number(req.params.id);
 
-async function start() {
-  await initDatabase();
-
-  server = app.listen(
-    PORT,
-    '0.0.0.0',
-    () => {
-      console.log(
-        'eFootball Market API listening on port ' +
-          PORT
-      );
-    }
-  );
-}
-
-async function shutdown(signal) {
-  console.log(
-    'Received ' +
-      signal +
-      ', shutting down...'
-  );
-
-  if (server) {
-    await new Promise(
-      (resolve) =>
-        server.close(resolve)
-    );
-  }
-
-  await pool.end();
-
-  process.exit(0);
-}
-
-process.on(
-  'SIGTERM',
-  () =>
-    shutdown('SIGTERM').catch(
-      (err) => {
-        console.error(
-          'Shutdown error:',
-          err
-        );
-        process.exit(1);
-      }
-    )
-);
-
-process.on(
-  'SIGINT',
-  () =>
-    shutdown('SIGINT').catch(
-      (err) => {
-        console.error(
-          'Shutdown error:',
-          err
-        );
-        process.exit(1);
-      }
-    )
-);
-
-start().catch(
-  (err) => {
-    console.error(
-      'Startup failed:',
-      err
-    );
-    process.exit(1);
-  }
-);
+      const next =
+        String(
+          req.body?.status || ''
+       
