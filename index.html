@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>eFootball Market</title>
-<meta name="description" content="ตลาดซื้อขายไอดี eFootball">
 
 <style>
 :root{
@@ -15,9 +14,7 @@
   --text:#f4fff7;
   --muted:#9ab5a3;
   --green:#39e27d;
-  --green2:#19b85a;
   --danger:#ff5d6c;
-  --yellow:#ffd166
 }
 
 *{box-sizing:border-box}
@@ -26,34 +23,28 @@ body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,sans-serif;
   background:var(--bg);
-  color:var(--text)
+  color:var(--text);
 }
 
-button,input,textarea,select{
-  font:inherit
+button,input,textarea{
+  font:inherit;
 }
 
 button{
-  cursor:pointer
-}
-
-a{
-  color:inherit;
-  text-decoration:none
+  cursor:pointer;
 }
 
 .container{
   width:min(1150px,94%);
-  margin:auto
+  margin:auto;
 }
 
 header{
   position:sticky;
   top:0;
   z-index:20;
-  background:rgba(7,17,12,.94);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--line)
+  background:rgba(7,17,12,.95);
+  border-bottom:1px solid var(--line);
 }
 
 .nav{
@@ -61,182 +52,159 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:15px
+  gap:15px;
 }
 
 .logo{
   font-size:21px;
   font-weight:900;
-  letter-spacing:.4px
 }
 
 .logo span{
-  color:var(--green)
+  color:var(--green);
 }
 
 .navlinks{
   display:flex;
   gap:8px;
-  align-items:center
 }
 
-.navlinks button,
-.navlinks a{
+.navlinks button{
   border:1px solid var(--line);
   background:var(--card);
-  color:var(--text);
+  color:#fff;
   padding:9px 13px;
-  border-radius:10px
+  border-radius:10px;
 }
 
 .hero{
   padding:55px 0 30px;
   background:
     radial-gradient(circle at 20% 10%,rgba(57,226,125,.13),transparent 35%),
-    radial-gradient(circle at 80% 0%,rgba(25,184,90,.1),transparent 35%)
+    radial-gradient(circle at 80% 0%,rgba(25,184,90,.1),transparent 35%);
 }
 
 .hero h1{
   font-size:clamp(30px,6vw,55px);
   line-height:1.05;
-  margin:0 0 15px
+  margin:0 0 15px;
 }
 
 .hero p{
   color:var(--muted);
   max-width:700px;
-  font-size:17px
+  font-size:17px;
 }
 
 .actions{
   display:flex;
   gap:10px;
   flex-wrap:wrap;
-  margin-top:22px
+  margin-top:20px;
 }
 
 .btn{
   border:0;
   border-radius:12px;
   padding:12px 17px;
-  font-weight:800
+  font-weight:800;
 }
 
-.btn-primary{
+.primary{
   background:var(--green);
-  color:#041108
+  color:#041108;
 }
 
-.btn-dark{
+.dark{
   background:var(--card);
-  color:var(--text);
-  border:1px solid var(--line)
+  color:#fff;
+  border:1px solid var(--line);
 }
 
-.btn-danger{
+.danger{
   background:var(--danger);
-  color:#fff
+  color:#fff;
 }
 
 .grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:14px
+  gap:14px;
 }
 
-.stats{
-  padding:15px 0 25px
+section{
+  padding:25px 0;
 }
 
 .stat{
   background:var(--card);
   border:1px solid var(--line);
   border-radius:16px;
-  padding:20px
+  padding:20px;
 }
 
 .stat strong{
   display:block;
   font-size:30px;
-  color:var(--green)
+  color:var(--green);
 }
 
 .stat span{
-  color:var(--muted)
-}
-
-section{
-  padding:25px 0
-}
-
-.section-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:14px
-}
-
-.section-title h2{
-  margin:0;
-  font-size:22px
+  color:var(--muted);
 }
 
 .card{
   background:var(--card);
   border:1px solid var(--line);
   border-radius:16px;
-  padding:18px
+  padding:18px;
 }
 
-.notice{
+.muted{
   color:var(--muted);
-  line-height:1.7
 }
 
 .listings{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:14px
+  gap:14px;
 }
 
 .listing{
   background:var(--card);
   border:1px solid var(--line);
   border-radius:16px;
-  overflow:hidden
+  overflow:hidden;
 }
 
 .listing-img{
   height:150px;
   display:flex;
-  align-items:center;
   justify-content:center;
-  background:
-    linear-gradient(135deg,#10291a,#07110c);
+  align-items:center;
+  background:linear-gradient(135deg,#10291a,#07110c);
   color:var(--green);
-  font-size:42px;
-  font-weight:900
+  font-size:35px;
+  font-weight:900;
 }
 
 .listing-body{
-  padding:16px
-}
-
-.listing-title{
-  font-weight:900;
-  font-size:18px
+  padding:16px;
 }
 
 .price{
-  font-size:24px;
   color:var(--green);
+  font-size:24px;
   font-weight:900;
-  margin:8px 0
+  margin:8px 0;
 }
 
-.muted{
-  color:var(--muted)
+.empty{
+  padding:35px;
+  text-align:center;
+  color:var(--muted);
+  border:1px dashed var(--line);
+  border-radius:15px;
 }
 
 .badge{
@@ -246,63 +214,28 @@ section{
   border-radius:999px;
   padding:5px 9px;
   color:var(--muted);
-  font-size:12px
-}
-
-.empty{
-  padding:35px;
-  text-align:center;
-  color:var(--muted);
-  border:1px dashed var(--line);
-  border-radius:15px
+  font-size:12px;
 }
 
 footer{
   padding:45px 0 90px;
+  text-align:center;
   color:var(--muted);
-  text-align:center
-}
-
-.bottom{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:30;
-  background:rgba(7,17,12,.96);
-  border-top:1px solid var(--line);
-  display:none
-}
-
-.bottom-inner{
-  display:grid;
-  grid-template-columns:repeat(4,1fr)
-}
-
-.bottom button{
-  border:0;
-  background:none;
-  color:var(--muted);
-  padding:12px 4px
-}
-
-.bottom button.active{
-  color:var(--green)
 }
 
 .modal{
   position:fixed;
   inset:0;
   z-index:50;
-  background:rgba(0,0,0,.7);
+  background:rgba(0,0,0,.72);
   display:none;
   align-items:center;
   justify-content:center;
-  padding:15px
+  padding:15px;
 }
 
 .modal.show{
-  display:flex
+  display:flex;
 }
 
 .modal-box{
@@ -312,98 +245,90 @@ footer{
   background:var(--card);
   border:1px solid var(--line);
   border-radius:18px;
-  padding:20px
+  padding:20px;
 }
 
 .modal-head{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:10px;
-  margin-bottom:18px
+  margin-bottom:18px;
 }
 
 .modal-head h3{
-  margin:0
+  margin:0;
 }
 
 .close{
+  width:38px;
+  height:38px;
   border:1px solid var(--line);
   background:var(--card2);
   color:#fff;
-  width:38px;
-  height:38px;
-  border-radius:10px
+  border-radius:10px;
 }
 
 .form{
   display:grid;
-  gap:12px
+  gap:12px;
 }
 
 .form label{
   display:grid;
   gap:6px;
-  color:var(--muted)
+  color:var(--muted);
 }
 
 .form input,
-.form textarea,
-.form select{
+.form textarea{
   width:100%;
   border:1px solid var(--line);
   background:#07140c;
   color:#fff;
   padding:12px;
   border-radius:10px;
-  outline:none
-}
-
-.form input:focus,
-.form textarea:focus,
-.form select:focus{
-  border-color:var(--green)
+  outline:none;
 }
 
 .form textarea{
   min-height:130px;
-  resize:vertical
+  resize:vertical;
 }
 
 .tabs{
   display:flex;
   gap:8px;
   flex-wrap:wrap;
-  margin-bottom:15px
+  margin-bottom:15px;
 }
 
 .tabs button{
   border:1px solid var(--line);
   background:var(--card2);
-  color:var(--text);
+  color:#fff;
   padding:9px 13px;
-  border-radius:9px
+  border-radius:9px;
 }
 
 .tabs button.active{
   background:var(--green);
-  color:#041108
+  color:#041108;
 }
 
 table{
   width:100%;
   border-collapse:collapse;
-  min-width:600px
+  min-width:600px;
 }
 
 th,td{
   border-bottom:1px solid var(--line);
   padding:10px;
-  text-align:left
+  text-align:left;
 }
 
 th{
-  color:var(--green)
+  color:var(--green);
 }
 
 .toast{
@@ -417,37 +342,52 @@ th{
   padding:13px 16px;
   border-radius:12px;
   display:none;
-  max-width:350px
 }
 
 .toast.show{
-  display:block
+  display:block;
+}
+
+.bottom{
+  display:none;
 }
 
 @media(max-width:800px){
+
   .grid,
   .listings{
-    grid-template-columns:1fr
+    grid-template-columns:1fr;
   }
 
   .navlinks{
-    display:none
-  }
-
-  .hero{
-    padding-top:35px
+    display:none;
   }
 
   .bottom{
-    display:block
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    z-index:30;
+    display:block;
+    background:rgba(7,17,12,.97);
+    border-top:1px solid var(--line);
+  }
+
+  .bottom-inner{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+  }
+
+  .bottom button{
+    border:0;
+    background:none;
+    color:var(--muted);
+    padding:12px 4px;
   }
 
   footer{
-    padding-bottom:100px
-  }
-
-  .desktop-only{
-    display:none!important
+    padding-bottom:100px;
   }
 }
 </style>
@@ -456,370 +396,404 @@ th{
 <body>
 
 <header>
-  <div class="container nav">
+<div class="container nav">
 
-    <div class="logo">
-      eFOOTBALL <span>MARKET</span>
-    </div>
-
-    <div class="navlinks">
-      <button onclick="scrollToId('market')">ตลาด</button>
-      <button onclick="scrollToId('orders')">ออเดอร์</button>
-      <button onclick="openAuth()">เข้าสู่ระบบ</button>
-      <button onclick="openSell()">ลงขาย</button>
-      <button id="adminNav" onclick="openAdmin()" style="display:none">
-        Admin
-      </button>
-    </div>
-
+  <div class="logo">
+    eFOOTBALL <span>MARKET</span>
   </div>
+
+  <div class="navlinks">
+    <button onclick="go('market')">ตลาด</button>
+    <button onclick="go('orders')">ออเดอร์</button>
+    <button onclick="openAuth()">เข้าสู่ระบบ</button>
+    <button onclick="openSell()">ลงขาย</button>
+    <button id="adminNav"
+            onclick="openAdmin()"
+            style="display:none">
+      Admin
+    </button>
+  </div>
+
+</div>
 </header>
 
 <main>
 
 <section class="hero">
-  <div class="container">
+<div class="container">
 
-    <h1>
-      ตลาดซื้อขายไอดี<br>
-      <span style="color:var(--green)">eFootball</span>
-    </h1>
+  <h1>
+    ตลาดซื้อขายไอดี<br>
+    <span style="color:var(--green)">
+      eFootball
+    </span>
+  </h1>
 
-    <p>
-      ตลาดกลางสำหรับซื้อขายไอดี eFootball
-      พร้อมระบบสมาชิก ออเดอร์ การขาย และระบบผู้ดูแล
-    </p>
+  <p>
+    ตลาดกลางสำหรับซื้อขายไอดี eFootball
+    พร้อมระบบสมาชิก ออเดอร์ Seller และ Admin
+  </p>
 
-    <div class="actions">
-      <button class="btn btn-primary" onclick="scrollToId('market')">
-        ดูไอดีทั้งหมด
-      </button>
+  <div class="actions">
 
-      <button class="btn btn-dark" onclick="openSell()">
-        ลงขายไอดี
-      </button>
+    <button class="btn primary"
+            onclick="go('market')">
+      ดูไอดีทั้งหมด
+    </button>
 
-      <button class="btn btn-dark" onclick="openAuth()">
-        เข้าสู่ระบบ
-      </button>
-    </div>
+    <button class="btn dark"
+            onclick="openSell()">
+      ลงขายไอดี
+    </button>
 
-  </div>
-</section>
-
-<section class="stats">
-  <div class="container grid">
-
-    <div class="stat">
-      <strong id="statListings">0</strong>
-      <span>รายการขาย</span>
-    </div>
-
-    <div class="stat">
-      <strong id="statMembers">—</strong>
-      <span>สมาชิก</span>
-    </div>
-
-    <div class="stat">
-      <strong id="statApi">...</strong>
-      <span>สถานะ API</span>
-    </div>
+    <button class="btn dark"
+            onclick="openAuth()">
+      เข้าสู่ระบบ
+    </button>
 
   </div>
+
+</div>
 </section>
 
 <section>
-  <div class="container">
+<div class="container grid">
 
-    <div class="card">
-      <h2>ระบบสมาชิก</h2>
+  <div class="stat">
+    <strong id="statListings">0</strong>
+    <span>รายการขาย</span>
+  </div>
 
-      <p class="notice">
-        สมัครสมาชิกเพื่อซื้อไอดีและติดตามออเดอร์
-        บัญชีที่ได้รับสิทธิ์ Seller สามารถลงขายไอดีได้
-        ส่วน Admin สามารถจัดการสมาชิกและระบบได้
-      </p>
+  <div class="stat">
+    <strong id="statMembers">—</strong>
+    <span>สมาชิก</span>
+  </div>
 
-      <div class="actions">
-        <button class="btn btn-primary" onclick="openAuth('register')">
-          สมัครสมาชิก
-        </button>
+  <div class="stat">
+    <strong id="statApi">...</strong>
+    <span>สถานะ API</span>
+  </div>
 
-        <button class="btn btn-dark" onclick="openAuth('login')">
-          เข้าสู่ระบบ
-        </button>
-      </div>
+</div>
+</section>
+
+<section>
+<div class="container">
+
+  <div class="card">
+
+    <h2>ระบบสมาชิก</h2>
+
+    <p class="muted">
+      สมัครสมาชิกเพื่อซื้อไอดีและติดตามออเดอร์
+      บัญชี Seller สามารถลงขายได้
+      และ Admin สามารถจัดการระบบ
+    </p>
+
+    <div class="actions">
+
+      <button class="btn primary"
+              onclick="openAuth('register')">
+        สมัครสมาชิก
+      </button>
+
+      <button class="btn dark"
+              onclick="openAuth('login')">
+        เข้าสู่ระบบ
+      </button>
+
     </div>
 
   </div>
+
+</div>
 </section>
 
 <section id="market">
-  <div class="container">
+<div class="container">
 
-    <div class="section-title">
-      <h2>ไอดีที่กำลังขาย</h2>
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+    gap:10px
+  ">
 
-      <button class="btn btn-dark" onclick="loadListings()">
-        รีเฟรช
-      </button>
-    </div>
+    <h2>ไอดีที่กำลังขาย</h2>
 
-    <div id="listingGrid" class="listings">
-      <div class="empty">
-        กำลังโหลดรายการ...
-      </div>
+    <button class="btn dark"
+            onclick="loadListings()">
+      รีเฟรช
+    </button>
+
+  </div>
+
+  <div id="listingGrid"
+       class="listings">
+
+    <div class="empty">
+      กำลังโหลดรายการ...
     </div>
 
   </div>
+
+</div>
 </section>
 
 <section id="orders">
-  <div class="container">
+<div class="container">
 
-    <div class="section-title">
-      <h2>ออเดอร์ของฉัน</h2>
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:14px;
+    gap:10px
+  ">
 
-      <button class="btn btn-dark" onclick="loadOrders()">
-        โหลดออเดอร์
-      </button>
-    </div>
+    <h2>ออเดอร์ของฉัน</h2>
 
-    <div id="orderList" class="empty">
-      กรุณาเข้าสู่ระบบเพื่อดูออเดอร์
-    </div>
+    <button class="btn dark"
+            onclick="loadOrders()">
+      โหลดออเดอร์
+    </button>
 
   </div>
+
+  <div id="orderList"
+       class="empty">
+    กรุณาเข้าสู่ระบบเพื่อดูออเดอร์
+  </div>
+
+</div>
 </section>
 
 <section id="account">
-  <div class="container">
+<div class="container">
 
-    <div class="section-title">
-      <h2>บัญชีของฉัน</h2>
-    </div>
+  <h2>บัญชีของฉัน</h2>
 
-    <div id="accountBox" class="card">
-      <p class="notice">
-        ยังไม่ได้เข้าสู่ระบบ
-      </p>
+  <div id="accountBox"
+       class="card">
 
-      <button class="btn btn-primary" onclick="openAuth()">
-        เข้าสู่ระบบ
-      </button>
-    </div>
+    <p class="muted">
+      ยังไม่ได้เข้าสู่ระบบ
+    </p>
+
+    <button class="btn primary"
+            onclick="openAuth()">
+      เข้าสู่ระบบ
+    </button>
 
   </div>
+
+</div>
 </section>
 
 </main>
 
 <footer>
-  <div class="container">
-    eFootball Market
-    <br>
-    <small>ระบบตลาดซื้อขายไอดี eFootball</small>
-  </div>
+  eFootball Market
+  <br>
+  ระบบตลาดซื้อขายไอดี eFootball
 </footer>
 
 <div class="bottom">
-  <div class="bottom-inner">
+<div class="bottom-inner">
 
-    <button onclick="scrollToId('market')">
-      🏪<br>ตลาด
-    </button>
+  <button onclick="go('market')">
+    🏪<br>ตลาด
+  </button>
 
-    <button onclick="scrollToId('orders')">
-      📦<br>ออเดอร์
-    </button>
+  <button onclick="go('orders')">
+    📦<br>ออเดอร์
+  </button>
 
-    <button onclick="scrollToId('account')">
-      👤<br>บัญชี
-    </button>
+  <button onclick="go('account')">
+    👤<br>บัญชี
+  </button>
 
-    <button onclick="openSell()">
-      ➕<br>ลงขาย
-    </button>
+  <button onclick="openSell()">
+    ➕<br>ลงขาย
+  </button>
 
-  </div>
+</div>
 </div>
 
-<div id="toast" class="toast"></div>
+<div id="toast"
+     class="toast"></div>
 
-<!-- AUTH MODAL -->
-<div id="authModal" class="modal">
+<!-- LOGIN / REGISTER -->
 
-  <div class="modal-box">
+<div id="authModal"
+     class="modal">
 
-    <div class="modal-head">
-      <h3 id="authTitle">เข้าสู่ระบบ</h3>
+<div class="modal-box">
 
-      <button class="close" onclick="closeModal('authModal')">
-        ×
-      </button>
-    </div>
+  <div class="modal-head">
 
-    <form class="form" onsubmit="submitAuth(event)">
+    <h3 id="authTitle">
+      เข้าสู่ระบบ
+    </h3>
 
-      <label>
-        อีเมล
-        <input
-          id="authEmail"
-          type="email"
-          required
-          autocomplete="email"
-        >
-      </label>
-
-      <label>
-        รหัสผ่าน
-        <input
-          id="authPassword"
-          type="password"
-          required
-          minlength="8"
-          autocomplete="current-password"
-        >
-      </label>
-
-      <button class="btn btn-primary" type="submit">
-        <span id="authSubmitText">เข้าสู่ระบบ</span>
-      </button>
-
-      <button
-        type="button"
-        class="btn btn-dark"
-        onclick="toggleAuthMode()"
-      >
-        <span id="authToggleText">
-          ยังไม่มีบัญชี? สมัครสมาชิก
-        </span>
-      </button>
-
-    </form>
+    <button class="close"
+            onclick="closeModal('authModal')">
+      ×
+    </button>
 
   </div>
+
+  <form class="form"
+        onsubmit="submitAuth(event)">
+
+    <label>
+      อีเมล
+      <input id="authEmail"
+             type="email"
+             required>
+    </label>
+
+    <label>
+      รหัสผ่าน
+      <input id="authPassword"
+             type="password"
+             minlength="8"
+             required>
+    </label>
+
+    <button class="btn primary"
+            type="submit"
+            id="authSubmit">
+      เข้าสู่ระบบ
+    </button>
+
+    <button class="btn dark"
+            type="button"
+            onclick="toggleAuth()">
+      <span id="authToggle">
+        ยังไม่มีบัญชี? สมัครสมาชิก
+      </span>
+    </button>
+
+  </form>
+
+</div>
 </div>
 
-<!-- SELL MODAL -->
-<div id="sellModal" class="modal">
+<!-- SELL -->
 
-  <div class="modal-box">
+<div id="sellModal"
+     class="modal">
 
-    <div class="modal-head">
-      <h3>ลงขายไอดี</h3>
+<div class="modal-box">
 
-      <button class="close" onclick="closeModal('sellModal')">
-        ×
-      </button>
-    </div>
+  <div class="modal-head">
 
-    <form class="form" onsubmit="createListing(event)">
+    <h3>ลงขายไอดี</h3>
 
-      <label>
-        ชื่อรายการ
-        <input
-          id="sellTitle"
-          required
-          placeholder="เช่น ไอดีทีมเทพ 3000+ Coins"
-        >
-      </label>
-
-      <label>
-        ราคา (บาท)
-        <input
-          id="sellPrice"
-          type="number"
-          min="1"
-          step="1"
-          required
-          placeholder="1000"
-        >
-      </label>
-
-      <label>
-        รายละเอียด
-        <textarea
-          id="sellDescription"
-          placeholder="รายละเอียดนักเตะ / Coins / GP / ฯลฯ"
-        ></textarea>
-      </label>
-
-      <label>
-        ข้อมูลไอดี
-        <textarea
-          id="sellAccountData"
-          required
-          placeholder="ข้อมูลบัญชีสำหรับส่งมอบหลังชำระเงิน"
-        ></textarea>
-      </label>
-
-      <button class="btn btn-primary" type="submit">
-        ลงขาย
-      </button>
-
-    </form>
+    <button class="close"
+            onclick="closeModal('sellModal')">
+      ×
+    </button>
 
   </div>
+
+  <form class="form"
+        onsubmit="createListing(event)">
+
+    <label>
+      ชื่อรายการ
+      <input id="sellTitle"
+             required
+             placeholder="ไอดี eFootball">
+    </label>
+
+    <label>
+      ราคา
+      <input id="sellPrice"
+             type="number"
+             min="1"
+             required
+             placeholder="1000">
+    </label>
+
+    <label>
+      รายละเอียด
+      <textarea id="sellDescription"
+                placeholder="รายละเอียดไอดี"></textarea>
+    </label>
+
+    <label>
+      ข้อมูลบัญชี
+      <textarea id="sellAccountData"
+                required
+                placeholder="ข้อมูลสำหรับส่งมอบหลังชำระเงิน"></textarea>
+    </label>
+
+    <button class="btn primary"
+            type="submit">
+      ลงขาย
+    </button>
+
+  </form>
+
+</div>
 </div>
 
-<!-- ADMIN MODAL -->
-<div id="adminModal" class="modal">
+<!-- ADMIN -->
 
-  <div class="modal-box">
+<div id="adminModal"
+     class="modal">
 
-    <div class="modal-head">
+<div class="modal-box">
 
-      <h3>Admin Dashboard</h3>
+  <div class="modal-head">
 
-      <button class="close" onclick="closeModal('adminModal')">
-        ×
-      </button>
+    <h3>Admin Dashboard</h3>
 
-    </div>
-
-    <div class="tabs">
-
-      <button
-        id="adminTabOverview"
-        class="active"
-        onclick="adminTab('overview')"
-      >
-        ภาพรวม
-      </button>
-
-      <button
-        id="adminTabUsers"
-        onclick="adminTab('users')"
-      >
-        สมาชิก
-      </button>
-
-      <button
-        id="adminTabListings"
-        onclick="adminTab('listings')"
-      >
-        รายการขาย
-      </button>
-
-      <button
-        id="adminTabLogs"
-        onclick="adminTab('logs')"
-      >
-        Audit Log
-      </button>
-
-    </div>
-
-    <div id="adminContent">
-      กำลังโหลด...
-    </div>
+    <button class="close"
+            onclick="closeModal('adminModal')">
+      ×
+    </button>
 
   </div>
+
+  <div class="tabs">
+
+    <button id="tabOverview"
+            class="active"
+            onclick="adminTab('overview')">
+      ภาพรวม
+    </button>
+
+    <button id="tabUsers"
+            onclick="adminTab('users')">
+      สมาชิก
+    </button>
+
+    <button id="tabListings"
+            onclick="adminTab('listings')">
+      รายการขาย
+    </button>
+
+    <button id="tabLogs"
+            onclick="adminTab('logs')">
+      Audit Log
+    </button>
+
+  </div>
+
+  <div id="adminContent">
+    กำลังโหลด...
+  </div>
+
+</div>
 </div>
 
 <script>
-const API = 'https://efootball-market-api.onrender.com';
+const API =
+  'https://efootball-market-api.onrender.com';
 
 let authMode = 'login';
 
@@ -833,7 +807,7 @@ function token(){
          '';
 }
 
-function currentUser(){
+function user(){
   try{
     return JSON.parse(
       localStorage.getItem('ef_user') ||
@@ -845,61 +819,77 @@ function currentUser(){
   }
 }
 
-function saveUser(user){
-  localStorage.setItem('ef_user', JSON.stringify(user));
-  localStorage.setItem('ef_api_user', JSON.stringify(user));
-}
+function saveAuth(data){
 
-function saveToken(value){
-  localStorage.setItem('ef_token', value);
-  localStorage.setItem('ef_api_token', value);
-}
+  if(data.token){
+    localStorage.setItem(
+      'ef_token',
+      data.token
+    );
 
-function clearAuth(){
-  localStorage.removeItem('ef_token');
-  localStorage.removeItem('ef_api_token');
-  localStorage.removeItem('ef_user');
-  localStorage.removeItem('ef_api_user');
+    localStorage.setItem(
+      'ef_api_token',
+      data.token
+    );
+  }
+
+  if(data.user){
+
+    const value =
+      JSON.stringify(data.user);
+
+    localStorage.setItem(
+      'ef_user',
+      value
+    );
+
+    localStorage.setItem(
+      'ef_api_user',
+      value
+    );
+  }
 }
 
 function headers(){
+
   const h = {
     'Content-Type':'application/json'
   };
 
-  const t = token();
-
-  if(t){
-    h.Authorization = 'Bearer ' + t;
+  if(token()){
+    h.Authorization =
+      'Bearer ' + token();
   }
 
   return h;
 }
 
-async function api(path, options={}){
-  const config = {
-    ...options,
-    headers:{
-      ...headers(),
-      ...(options.headers || {})
-    }
-  };
+async function api(path,options={}){
 
-  const response = await fetch(API + path, config);
+  const response =
+    await fetch(
+      API + path,
+      {
+        ...options,
+        headers:{
+          ...headers(),
+          ...(options.headers || {})
+        }
+      }
+    );
 
   let data = {};
 
   try{
     data = await response.json();
-  }catch(e){
-    data = {};
-  }
+  }catch(e){}
 
   if(!response.ok){
+
     throw new Error(
       data.error ||
       data.message ||
-      ('HTTP ' + response.status)
+      'เกิดข้อผิดพลาด'
     );
   }
 
@@ -907,64 +897,76 @@ async function api(path, options={}){
 }
 
 function toast(message){
+
   const el = $('toast');
 
-  el.textContent = message;
+  el.textContent =
+    message;
+
   el.classList.add('show');
 
-  clearTimeout(window.toastTimer);
+  clearTimeout(
+    window.toastTimer
+  );
 
-  window.toastTimer = setTimeout(()=>{
-    el.classList.remove('show');
-  },3500);
+  window.toastTimer =
+    setTimeout(
+      ()=>{
+        el.classList.remove('show');
+      },
+      3500
+    );
 }
 
-function scrollToId(id){
+function go(id){
+
   const el = $(id);
 
   if(el){
     el.scrollIntoView({
-      behavior:'smooth',
-      block:'start'
+      behavior:'smooth'
     });
   }
-}
-
-function closeModal(id){
-  $(id).classList.remove('show');
 }
 
 function openModal(id){
   $(id).classList.add('show');
 }
 
+function closeModal(id){
+  $(id).classList.remove('show');
+}
+
 function openAuth(mode='login'){
+
   authMode = mode;
 
-  updateAuthModal();
+  updateAuth();
 
   openModal('authModal');
 }
 
-function toggleAuthMode(){
+function toggleAuth(){
+
   authMode =
     authMode === 'login'
       ? 'register'
       : 'login';
 
-  updateAuthModal();
+  updateAuth();
 }
 
-function updateAuthModal(){
+function updateAuth(){
 
   if(authMode === 'login'){
 
-    $('authTitle').textContent = 'เข้าสู่ระบบ';
-
-    $('authSubmitText').textContent =
+    $('authTitle').textContent =
       'เข้าสู่ระบบ';
 
-    $('authToggleText').textContent =
+    $('authSubmit').textContent =
+      'เข้าสู่ระบบ';
+
+    $('authToggle').textContent =
       'ยังไม่มีบัญชี? สมัครสมาชิก';
 
   }else{
@@ -972,16 +974,16 @@ function updateAuthModal(){
     $('authTitle').textContent =
       'สมัครสมาชิก';
 
-    $('authSubmitText').textContent =
+    $('authSubmit').textContent =
       'สมัครสมาชิก';
 
-    $('authToggleText').textContent =
+    $('authToggle').textContent =
       'มีบัญชีแล้ว? เข้าสู่ระบบ';
-
   }
 }
 
 async function submitAuth(event){
+
   event.preventDefault();
 
   const email =
@@ -997,24 +999,19 @@ async function submitAuth(event){
         ? '/api/auth/login'
         : '/api/auth/register';
 
-    const data = await api(
-      endpoint,
-      {
-        method:'POST',
-        body:JSON.stringify({
-          email,
-          password
-        })
-      }
-    );
+    const data =
+      await api(
+        endpoint,
+        {
+          method:'POST',
+          body:JSON.stringify({
+            email,
+            password
+          })
+        }
+      );
 
-    if(data.token){
-      saveToken(data.token);
-    }
-
-    if(data.user){
-      saveUser(data.user);
-    }
+    saveAuth(data);
 
     closeModal('authModal');
 
@@ -1033,73 +1030,68 @@ async function submitAuth(event){
   }catch(error){
 
     toast(error.message);
-
   }
 }
 
 async function refreshMe(){
 
   if(!token()){
-    updateNav();
-    renderAccount();
-    return null;
+
+    updateUI();
+
+    return;
   }
 
   try{
 
-    const data = await api('/api/me');
+    const data =
+      await api('/api/me');
 
-    const user =
-      data.user ||
-      data;
+    if(data.user){
 
-    saveUser(user);
+      const value =
+        JSON.stringify(data.user);
 
-    updateNav();
+      localStorage.setItem(
+        'ef_user',
+        value
+      );
 
-    renderAccount();
-
-    return user;
+      localStorage.setItem(
+        'ef_api_user',
+        value
+      );
+    }
 
   }catch(error){
 
-    clearAuth();
-
-    updateNav();
-
-    renderAccount();
-
-    return null;
+    localStorage.removeItem('ef_token');
+    localStorage.removeItem('ef_api_token');
+    localStorage.removeItem('ef_user');
+    localStorage.removeItem('ef_api_user');
   }
+
+  updateUI();
 }
 
-function updateNav(){
+function updateUI(){
 
-  const user = currentUser();
-
-  const admin =
-    user &&
-    user.role === 'admin';
+  const u = user();
 
   $('adminNav').style.display =
-    admin ? 'block' : 'none';
-}
+    u && u.role === 'admin'
+      ? 'block'
+      : 'none';
 
-function renderAccount(){
-
-  const user = currentUser();
-
-  if(!user){
+  if(!u){
 
     $('accountBox').innerHTML = `
-      <p class="notice">
+      <p class="muted">
         ยังไม่ได้เข้าสู่ระบบ
       </p>
 
-      <button
-        class="btn btn-primary"
-        onclick="openAuth()"
-      >
+      <button class="btn primary"
+              onclick="openAuth()">
         เข้าสู่ระบบ
       </button>
     `;
@@ -1109,37 +1101,35 @@ function renderAccount(){
 
   $('accountBox').innerHTML = `
 
-    <div style="display:grid;gap:10px">
+    <div>
 
-      <div>
-        <span class="muted">อีเมล</span><br>
-        <strong>${esc(user.email || '-')}</strong>
-      </div>
+      <p>
+        <span class="muted">
+          อีเมล
+        </span><br>
+        <strong>
+          ${esc(u.email)}
+        </strong>
+      </p>
 
-      <div>
-        <span class="muted">สิทธิ์</span><br>
+      <p>
+        <span class="muted">
+          สิทธิ์
+        </span><br>
+
         <span class="badge">
-          ${esc(user.role || 'buyer')}
+          ${esc(u.role)}
         </span>
-      </div>
+      </p>
 
       <div class="actions">
 
-        <button
-          class="btn btn-dark"
-          onclick="loadOrders()"
-        >
-          ดูออเดอร์
-        </button>
-
         ${
-          user.role === 'seller' ||
-          user.role === 'admin'
+          u.role === 'seller' ||
+          u.role === 'admin'
           ? `
-            <button
-              class="btn btn-primary"
-              onclick="openSell()"
-            >
+            <button class="btn primary"
+                    onclick="openSell()">
               ลงขายไอดี
             </button>
           `
@@ -1147,22 +1137,18 @@ function renderAccount(){
         }
 
         ${
-          user.role === 'admin'
+          u.role === 'admin'
           ? `
-            <button
-              class="btn btn-dark"
-              onclick="openAdmin()"
-            >
+            <button class="btn dark"
+                    onclick="openAdmin()">
               Admin
             </button>
           `
           : ''
         }
 
-        <button
-          class="btn btn-danger"
-          onclick="logout()"
-        >
+        <button class="btn danger"
+                onclick="logout()">
           ออกจากระบบ
         </button>
 
@@ -1174,11 +1160,12 @@ function renderAccount(){
 
 function logout(){
 
-  clearAuth();
+  localStorage.removeItem('ef_token');
+  localStorage.removeItem('ef_api_token');
+  localStorage.removeItem('ef_user');
+  localStorage.removeItem('ef_api_user');
 
-  updateNav();
-
-  renderAccount();
+  updateUI();
 
   $('orderList').innerHTML =
     'กรุณาเข้าสู่ระบบเพื่อดูออเดอร์';
@@ -1190,25 +1177,21 @@ async function checkApi(){
 
   try{
 
-    const data = await api('/health');
+    await api('/health');
 
-    $('statApi').textContent = 'ออนไลน์';
-
-    return data;
+    $('statApi').textContent =
+      'ออนไลน์';
 
   }catch(error){
 
-    $('statApi').textContent = 'ออฟไลน์';
-
-    return null;
+    $('statApi').textContent =
+      'ออฟไลน์';
   }
 }
 
 async function loadListings(){
 
-  const grid = $('listingGrid');
-
-  grid.innerHTML = `
+  $('listingGrid').innerHTML = `
     <div class="empty">
       กำลังโหลดรายการ...
     </div>
@@ -1219,7 +1202,7 @@ async function loadListings(){
     const data =
       await api('/api/listings');
 
-    const listings =
+    const list =
       Array.isArray(data)
         ? data
         : (
@@ -1229,11 +1212,11 @@ async function loadListings(){
           );
 
     $('statListings').textContent =
-      listings.length;
+      list.length;
 
-    if(!listings.length){
+    if(!list.length){
 
-      grid.innerHTML = `
+      $('listingGrid').innerHTML = `
         <div class="empty">
           ยังไม่มีรายการขาย
         </div>
@@ -1242,14 +1225,12 @@ async function loadListings(){
       return;
     }
 
-    grid.innerHTML =
-      listings
-      .map(listingCard)
-      .join('');
+    $('listingGrid').innerHTML =
+      list.map(card).join('');
 
   }catch(error){
 
-    grid.innerHTML = `
+    $('listingGrid').innerHTML = `
       <div class="empty">
         โหลดรายการไม่สำเร็จ<br>
         ${esc(error.message)}
@@ -1258,10 +1239,10 @@ async function loadListings(){
   }
 }
 
-function listingCard(item){
+function card(item){
 
   const id =
-    item.id;
+    Number(item.id);
 
   const title =
     item.title ||
@@ -1269,11 +1250,7 @@ function listingCard(item){
     'eFootball Account';
 
   const price =
-    Number(
-      item.price ||
-      item.amount ||
-      0
-    );
+    Number(item.price || 0);
 
   const description =
     item.description ||
@@ -1289,9 +1266,9 @@ function listingCard(item){
 
       <div class="listing-body">
 
-        <div class="listing-title">
+        <strong>
           ${esc(title)}
-        </div>
+        </strong>
 
         <div class="price">
           ฿${price.toLocaleString('th-TH')}
@@ -1301,16 +1278,11 @@ function listingCard(item){
           ${esc(description)}
         </p>
 
-        <div class="actions">
-
-          <button
-            class="btn btn-primary"
-            onclick="buy(${Number(id)})"
-          >
-            ซื้อไอดี
-          </button>
-
-        </div>
+        <button
+          class="btn primary"
+          onclick="buy(${id})">
+          ซื้อไอดี
+        </button>
 
       </div>
 
@@ -1324,17 +1296,12 @@ async function buy(id){
 
     openAuth('login');
 
-    toast('กรุณาเข้าสู่ระบบก่อนซื้อ');
-
     return;
   }
 
-  const ok =
-    confirm(
-      'ยืนยันสร้าง Order สำหรับรายการนี้หรือไม่?'
-    );
-
-  if(!ok){
+  if(!confirm(
+    'ยืนยันสร้าง Order หรือไม่?'
+  )){
     return;
   }
 
@@ -1346,26 +1313,27 @@ async function buy(id){
         {
           method:'POST',
           body:JSON.stringify({
-            listing_id:Number(id)
+            listing_id:id
           })
         }
       );
 
     toast(
       'สร้าง Order สำเร็จ #' +
-      (data.order?.id ||
-       data.id ||
-       '')
+      (
+        data.order?.id ||
+        data.id ||
+        ''
+      )
     );
 
     await loadOrders();
 
-    scrollToId('orders');
+    go('orders');
 
   }catch(error){
 
     toast(error.message);
-
   }
 }
 
@@ -1375,15 +1343,12 @@ async function loadOrders(){
 
     $('orderList').innerHTML = `
       <div class="empty">
-        กรุณาเข้าสู่ระบบเพื่อดูออเดอร์
+        กรุณาเข้าสู่ระบบ
       </div>
     `;
 
     return;
   }
-
-  $('orderList').innerHTML =
-    'กำลังโหลด...';
 
   try{
 
@@ -1411,31 +1376,14 @@ async function loadOrders(){
     }
 
     $('orderList').innerHTML =
-      orders.map(order => `
+      orders.map(order=>`
 
-        <div
-          class="card"
-          style="margin-bottom:10px"
-        >
+        <div class="card"
+             style="margin-bottom:10px">
 
-          <div
-            style="
-              display:flex;
-              justify-content:space-between;
-              gap:10px;
-              flex-wrap:wrap
-            "
-          >
-
-            <strong>
-              Order #${esc(order.id)}
-            </strong>
-
-            <span class="badge">
-              ${esc(order.status || '-')}
-            </span>
-
-          </div>
+          <strong>
+            Order #${esc(order.id)}
+          </strong>
 
           <p class="muted">
             ราคา:
@@ -1446,23 +1394,26 @@ async function loadOrders(){
             ).toLocaleString('th-TH')}
           </p>
 
-          <div class="actions">
+          <span class="badge">
+            ${esc(order.status || '-')}
+          </span>
 
-            ${
-              order.status === 'paid' ||
-              order.payment_status === 'paid'
-              ? `
+          ${
+            order.status === 'paid' ||
+            order.payment_status === 'paid'
+            ? `
+              <div class="actions">
+
                 <button
-                  class="btn btn-primary"
-                  onclick="delivery(${Number(order.id)})"
-                >
+                  class="btn primary"
+                  onclick="delivery(${Number(order.id)})">
                   รับข้อมูลไอดี
                 </button>
-              `
-              : ''
-            }
 
-          </div>
+              </div>
+            `
+            : ''
+          }
 
         </div>
 
@@ -1478,26 +1429,23 @@ async function loadOrders(){
   }
 }
 
-async function delivery(orderId){
+async function delivery(id){
 
   try{
 
     const data =
       await api(
         '/api/orders/' +
-        Number(orderId) +
+        Number(id) +
         '/delivery'
       );
-
-    const deliveryData =
-      data.delivery ||
-      data.account ||
-      data;
 
     alert(
       'ข้อมูลไอดี:\n\n' +
       JSON.stringify(
-        deliveryData,
+        data.delivery ||
+        data.account ||
+        data,
         null,
         2
       )
@@ -1506,27 +1454,23 @@ async function delivery(orderId){
   }catch(error){
 
     toast(error.message);
-
   }
 }
 
 function openSell(){
 
-  const user =
-    currentUser();
+  const u = user();
 
-  if(!user){
+  if(!u){
 
     openAuth('login');
-
-    toast('กรุณาเข้าสู่ระบบก่อนลงขาย');
 
     return;
   }
 
   if(
-    user.role !== 'seller' &&
-    user.role !== 'admin'
+    u.role !== 'seller' &&
+    u.role !== 'admin'
   ){
 
     toast(
@@ -1545,27 +1489,26 @@ async function createListing(event){
 
   try{
 
-    const title =
-      $('sellTitle').value.trim();
-
-    const price =
-      Number($('sellPrice').value);
-
-    const description =
-      $('sellDescription').value.trim();
-
-    const account_data =
-      $('sellAccountData').value;
-
     await api(
       '/api/listings',
       {
         method:'POST',
         body:JSON.stringify({
-          title,
-          price,
-          description,
-          account_data
+
+          title:
+            $('sellTitle').value.trim(),
+
+          price:
+            Number(
+              $('sellPrice').value
+            ),
+
+          description:
+            $('sellDescription').value.trim(),
+
+          account_data:
+            $('sellAccountData').value
+
         })
       }
     );
@@ -1577,32 +1520,34 @@ async function createListing(event){
     $('sellDescription').value = '';
     $('sellAccountData').value = '';
 
-    toast('ลงขายไอดีสำเร็จ');
+    toast(
+      'ลงขายไอดีสำเร็จ'
+    );
 
     await loadListings();
 
   }catch(error){
 
     toast(error.message);
-
   }
 }
 
 async function openAdmin(){
 
-  const user =
-    currentUser();
+  const u = user();
 
-  if(!user){
+  if(!u){
 
     openAuth('login');
 
     return;
   }
 
-  if(user.role !== 'admin'){
+  if(u.role !== 'admin'){
 
-    toast('เฉพาะ Admin เท่านั้น');
+    toast(
+      'เฉพาะ Admin เท่านั้น'
+    );
 
     return;
   }
@@ -1616,17 +1561,17 @@ async function adminTab(tab){
 
   document
     .querySelectorAll('.tabs button')
-    .forEach(button=>{
-      button.classList.remove('active');
+    .forEach(b=>{
+      b.classList.remove('active');
     });
 
-  const tabButton =
-    $('adminTab' +
+  const button =
+    $('tab' +
       tab.charAt(0).toUpperCase() +
       tab.slice(1));
 
-  if(tabButton){
-    tabButton.classList.add('active');
+  if(button){
+    button.classList.add('active');
   }
 
   $('adminContent').innerHTML =
@@ -1641,9 +1586,7 @@ async function adminTab(tab){
       try{
         data =
           await api('/api/stats');
-      }catch(e){
-        data = {};
-      }
+      }catch(e){}
 
       const stats =
         data.stats ||
@@ -1685,13 +1628,17 @@ async function adminTab(tab){
           </div>
 
         </div>
-
       `;
 
-    }else if(tab === 'users'){
+      return;
+    }
+
+    if(tab === 'users'){
 
       const data =
-        await api('/api/admin/users');
+        await api(
+          '/api/admin/users'
+        );
 
       const users =
         data.users ||
@@ -1700,10 +1647,8 @@ async function adminTab(tab){
 
       $('adminContent').innerHTML = `
 
-        <div
-          class="card"
-          style="padding:10px;overflow:auto"
-        >
+        <div class="card"
+             style="overflow:auto">
 
           <table>
 
@@ -1714,54 +1659,41 @@ async function adminTab(tab){
               <th>จัดการ</th>
             </tr>
 
-            ${users.map(user => `
+            ${users.map(u=>`
 
               <tr>
 
                 <td>
-                  ${esc(user.id)}
+                  ${esc(u.id)}
                 </td>
 
                 <td>
-                  ${esc(user.email)}
+                  ${esc(u.email)}
                 </td>
 
                 <td>
-                  ${esc(user.role)}
+                  ${esc(u.role)}
                 </td>
 
                 <td>
 
-                  <div
-                    style="
-                      display:flex;
-                      gap:5px;
-                      flex-wrap:wrap
-                    "
-                  >
+                  <button
+                    class="btn dark"
+                    onclick="changeRole(${Number(u.id)},'buyer')">
+                    Buyer
+                  </button>
 
-                    <button
-                      class="btn btn-dark"
-                      onclick="changeRole(${Number(user.id)},'buyer')"
-                    >
-                      Buyer
-                    </button>
+                  <button
+                    class="btn dark"
+                    onclick="changeRole(${Number(u.id)},'seller')">
+                    Seller
+                  </button>
 
-                    <button
-                      class="btn btn-dark"
-                      onclick="changeRole(${Number(user.id)},'seller')"
-                    >
-                      Seller
-                    </button>
-
-                    <button
-                      class="btn btn-dark"
-                      onclick="changeRole(${Number(user.id)},'admin')"
-                    >
-                      Admin
-                    </button>
-
-                  </div>
+                  <button
+                    class="btn dark"
+                    onclick="changeRole(${Number(u.id)},'admin')">
+                    Admin
+                  </button>
 
                 </td>
 
@@ -1772,10 +1704,12 @@ async function adminTab(tab){
           </table>
 
         </div>
-
       `;
 
-    }else if(tab === 'listings'){
+      return;
+    }
+
+    if(tab === 'listings'){
 
       const data =
         await api('/api/listings');
@@ -1791,10 +1725,8 @@ async function adminTab(tab){
 
       $('adminContent').innerHTML = `
 
-        <div
-          class="card"
-          style="padding:10px;overflow:auto"
-        >
+        <div class="card"
+             style="overflow:auto">
 
           <table>
 
@@ -1805,7 +1737,7 @@ async function adminTab(tab){
               <th>สถานะ</th>
             </tr>
 
-            ${listings.map(item => `
+            ${listings.map(item=>`
 
               <tr>
 
@@ -1823,8 +1755,7 @@ async function adminTab(tab){
 
                 <td>
                   ฿${Number(
-                    item.price ||
-                    0
+                    item.price || 0
                   ).toLocaleString('th-TH')}
                 </td>
 
@@ -1842,13 +1773,17 @@ async function adminTab(tab){
           </table>
 
         </div>
-
       `;
 
-    }else if(tab === 'logs'){
+      return;
+    }
+
+    if(tab === 'logs'){
 
       const data =
-        await api('/api/admin/audit-logs');
+        await api(
+          '/api/admin/audit-logs'
+        );
 
       const logs =
         data.logs ||
@@ -1857,10 +1792,8 @@ async function adminTab(tab){
 
       $('adminContent').innerHTML = `
 
-        <div
-          class="card"
-          style="padding:10px;overflow:auto"
-        >
+        <div class="card"
+             style="overflow:auto">
 
           <table>
 
@@ -1871,7 +1804,7 @@ async function adminTab(tab){
               <th>เวลา</th>
             </tr>
 
-            ${logs.map(log => `
+            ${logs.map(log=>`
 
               <tr>
 
@@ -1881,22 +1814,19 @@ async function adminTab(tab){
 
                 <td>
                   ${esc(
-                    log.action ||
-                    '-'
+                    log.action || '-'
                   )}
                 </td>
 
                 <td>
                   ${esc(
-                    log.user_id ||
-                    '-'
+                    log.user_id || '-'
                   )}
                 </td>
 
                 <td>
                   ${esc(
-                    log.created_at ||
-                    '-'
+                    log.created_at || '-'
                   )}
                 </td>
 
@@ -1907,7 +1837,6 @@ async function adminTab(tab){
           </table>
 
         </div>
-
       `;
 
     }
@@ -1917,29 +1846,22 @@ async function adminTab(tab){
     $('adminContent').innerHTML = `
 
       <div class="empty">
-
         โหลดข้อมูลไม่สำเร็จ
-
         <br>
-
         ${esc(error.message)}
-
       </div>
 
     `;
   }
 }
 
-async function changeRole(userId,role){
+async function changeRole(id,role){
 
-  const ok =
-    confirm(
-      'ยืนยันเปลี่ยนสิทธิ์สมาชิกเป็น ' +
-      role +
-      ' หรือไม่?'
-    );
-
-  if(!ok){
+  if(!confirm(
+    'ยืนยันเปลี่ยนสิทธิ์เป็น ' +
+    role +
+    ' หรือไม่?'
+  )){
     return;
   }
 
@@ -1947,7 +1869,7 @@ async function changeRole(userId,role){
 
     await api(
       '/api/admin/users/' +
-      Number(userId) +
+      Number(id) +
       '/role',
       {
         method:'PATCH',
@@ -1958,9 +1880,7 @@ async function changeRole(userId,role){
     );
 
     toast(
-      'เปลี่ยนสิทธิ์เป็น ' +
-      role +
-      ' สำเร็จ'
+      'เปลี่ยนสิทธิ์สำเร็จ'
     );
 
     await adminTab('users');
@@ -1968,78 +1888,19 @@ async function changeRole(userId,role){
   }catch(error){
 
     toast(error.message);
-
   }
 }
 
 function esc(value){
 
   return String(
-    value ??
-    ''
+    value ?? ''
   )
   .replaceAll('&','&amp;')
   .replaceAll('<','&lt;')
   .replaceAll('>','&gt;')
   .replaceAll('"','&quot;')
   .replaceAll("'","&#039;");
-}
-
-async function bootstrapAdmin(){
-
-  const secret =
-    prompt(
-      'กรอก ADMIN_BOOTSTRAP_SECRET'
-    );
-
-  if(!secret){
-    return;
-  }
-
-  try{
-
-    const data =
-      await api(
-        '/api/admin/bootstrap',
-        {
-          method:'POST',
-          body:JSON.stringify({
-            secret
-          })
-        }
-      );
-
-    if(data.token){
-      saveToken(data.token);
-    }
-
-    if(data.user){
-      saveUser(data.user);
-    }
-
-    toast('สร้าง Admin สำเร็จ');
-
-    await refreshMe();
-
-  }catch(error){
-
-    toast(error.message);
-
-  }
-}
-
-async function init(){
-
-  await checkApi();
-
-  await refreshMe();
-
-  await loadListings();
-
-  if(token()){
-    await loadOrders();
-  }
-
 }
 
 document
@@ -2058,6 +1919,19 @@ document
     );
 
   });
+
+async function init(){
+
+  await checkApi();
+
+  await refreshMe();
+
+  await loadListings();
+
+  if(token()){
+    await loadOrders();
+  }
+}
 
 init();
 </script>
