@@ -1,666 +1,1112 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>eFootball Market TH</title>
-<style>
-:root{--bg:#070b14;--panel:#101827;--panel2:#151f31;--text:#f5f7fb;--muted:#9aa8bd;--line:#263349;--accent:#27e58a;--accent2:#5b8cff;--danger:#ff5d6c}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-header{position:sticky;top:0;z-index:10;background:rgba(7,11,20,.94);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.nav{max-width:1180px;margin:auto;padding:15px 20px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo{font-weight:900;font-size:21px}.logo span{color:var(--accent)}
-nav{display:flex;gap:18px}nav a{color:var(--muted);text-decoration:none;font-size:14px}nav a:hover{color:white}
-.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:800;cursor:pointer}.primary{background:var(--accent);color:#06110b}.ghost{background:var(--panel2);color:white;border:1px solid var(--line)}
-.hero{max-width:1180px;margin:auto;padding:55px 20px 30px;display:grid;grid-template-columns:1.3fr .7fr;gap:30px;align-items:center}
-.badge{display:inline-flex;padding:7px 11px;border:1px solid #245e48;background:#0b2119;color:var(--accent);border-radius:999px;font-size:12px;font-weight:800}
-h1{font-size:clamp(38px,6vw,70px);line-height:.98;margin:15px 0}.hero p{color:var(--muted);font-size:17px;line-height:1.6;max-width:650px}
-.hero-card{background:linear-gradient(145deg,#17233a,#0d1422);border:1px solid var(--line);border-radius:24px;padding:25px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:20px}.stat{background:#0c1320;border:1px solid var(--line);border-radius:14px;padding:14px}.stat b{display:block;font-size:21px}.stat span{color:var(--muted);font-size:12px}
-main{max-width:1180px;margin:auto;padding:10px 20px 60px}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:15px 0 25px}.search{flex:1;min-width:220px;background:var(--panel);border:1px solid var(--line);color:white;padding:13px 15px;border-radius:12px;outline:none}.filter{background:var(--panel);border:1px solid var(--line);color:white;padding:13px;border-radius:12px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;overflow:hidden;transition:.2s}.card:hover{transform:translateY(-3px);border-color:#3c506f}
-.cover{height:155px;background:radial-gradient(circle at 75% 25%,#2b6bff55,transparent 30%),linear-gradient(135deg,#111b2d,#1b2943);display:flex;align-items:flex-end;padding:15px;position:relative}.rating{position:absolute;top:12px;right:12px;background:#07101d;border:1px solid #3b4c67;border-radius:9px;padding:6px 9px;font-weight:900}.cover .ball{font-size:58px}
-.body{padding:16px}.title{font-size:18px;font-weight:900}.meta{color:var(--muted);font-size:13px;margin:6px 0 13px}.chips{display:flex;gap:6px;flex-wrap:wrap}.chip{font-size:11px;background:#182338;border:1px solid #283a57;padding:5px 7px;border-radius:7px}.price{display:flex;align-items:center;justify-content:space-between;margin-top:16px}.price b{font-size:21px;color:var(--accent)}.price button{padding:9px 12px}
-.empty{display:none;text-align:center;color:var(--muted);padding:50px}
-footer{border-top:1px solid var(--line);color:var(--muted);text-align:center;padding:25px 20px;font-size:13px}
-.modal{position:fixed;inset:0;background:#0009;display:none;align-items:center;justify-content:center;padding:20px;z-index:20}.modal.open{display:flex}.dialog{width:min(520px,100%);background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px}.dialog h2{margin-top:0}.close{float:right;background:none;color:white;border:0;font-size:24px;cursor:pointer}.field{margin:12px 0}.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:6px}.field input,.field textarea{width:100%;background:#0b1320;border:1px solid var(--line);border-radius:10px;padding:12px;color:white}.field textarea{min-height:100px}
-@media(max-width:850px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,1fr)}nav{display:none}}
-@media(max-width:560px){.grid{grid-template-columns:1fr}.hero{padding-top:35px}.stats{grid-template-columns:1fr 1fr 1fr}.stat{padding:10px}.stat b{font-size:17px}}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eFootball Market</title>
 
-.dashboard{max-width:1180px;margin:auto;padding:10px 20px 55px}.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.dash-card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px}.dash-card b{font-size:25px}.dash-card span{display:block;color:var(--muted);font-size:12px;margin-top:5px}.admin-table{width:100%;border-collapse:collapse;margin-top:15px}.admin-table th,.admin-table td{padding:11px;border-bottom:1px solid var(--line);text-align:left;font-size:13px}.fav{background:#182338!important;border:1px solid #30415e!important;color:white}.chat{height:250px;background:#0b1320;border:1px solid var(--line);border-radius:14px;padding:14px;overflow:auto}.bubble{max-width:78%;padding:9px 12px;border-radius:12px;margin:7px 0;background:#17243a}.bubble.me{margin-left:auto;background:#145c45}.chatbar{display:flex;gap:8px;margin-top:9px}.chatbar input{flex:1;background:#0b1320;border:1px solid var(--line);border-radius:10px;padding:11px;color:white}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tabs button.active{border-color:var(--accent);color:var(--accent)}
-@media(max-width:850px){.dash-grid{grid-template-columns:repeat(2,1fr)}}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-.orderbar{position:fixed;right:18px;bottom:18px;z-index:50;background:var(--panel);border:1px solid var(--line);padding:10px 14px;border-radius:16px;box-shadow:0 12px 35px #0008;display:flex;gap:10px;align-items:center}
-.ordercount{background:var(--accent);color:#06110b;border-radius:999px;padding:3px 8px;font-weight:800}
-.preview-img{width:100%;max-height:220px;object-fit:cover;border-radius:14px;margin-top:10px;border:1px solid var(--line)}
-.status{display:inline-flex;padding:4px 9px;border-radius:999px;font-size:12px;font-weight:800;background:#173622;color:#70f0a7}.status.sold{background:#3b1d24;color:#ff9eaa}
-.order-row{display:flex;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;margin:8px 0}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      color: #111827;
+    }
 
-.role-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#182338;border:1px solid var(--line);font-size:12px;font-weight:800}.notify-dot{display:inline-flex;min-width:20px;height:20px;padding:0 5px;align-items:center;justify-content:center;border-radius:999px;background:var(--danger);color:#fff;font-size:11px}.review{border:1px solid var(--line);border-radius:14px;padding:13px;margin:8px 0;background:#0c1320}.stars{color:#ffd45a;letter-spacing:2px}.role-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.role-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#0c1320;cursor:pointer}.role-card.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
-@media(max-width:800px){.role-grid{grid-template-columns:1fr}.nav nav{display:none}.dash-grid{grid-template-columns:repeat(2,1fr)}}
+    header {
+      background: #111827;
+      color: white;
+      padding: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
 
-.checkout-summary,.order-row,.pay-demo,.receipt-pay{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:12px;margin:10px 0}.checkout-summary,.order-row{display:flex;justify-content:space-between;gap:12px;align-items:center}.pay-demo{line-height:1.7;color:#cbd5e1}.demo-note{font-size:12px;color:#94a3b8}.status-pill{padding:6px 10px;border-radius:999px;background:#172554;color:#bfdbfe;font-size:12px}
+    .nav {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
 
-/* Mobile UX polish */
-.mobile-nav{display:none}
-.promo-strip{max-width:1180px;margin:0 auto;padding:0 20px}.promo-inner{background:linear-gradient(135deg,#102b24,#172554);border:1px solid #275844;border-radius:18px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:15px}.promo-inner b{font-size:18px}.promo-inner span{display:block;color:var(--muted);font-size:13px;margin-top:3px}.quick-search{display:flex;gap:8px;flex-wrap:wrap;margin:-8px 0 22px}.quick-search button{background:#101a2b;color:#dce5f4;border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:800;cursor:pointer}.quick-search button:hover{border-color:var(--accent);color:var(--accent)}.to-top{position:fixed;right:18px;bottom:22px;z-index:80;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--panel);color:#fff;display:none;place-items:center;box-shadow:0 10px 30px #0007}
-@media(max-width:700px){
-  body{padding-bottom:76px}
-  .nav{padding:12px 14px}
-  .nav .logo{font-size:15px}
-  .nav>div:last-child .btn.primary{display:none}
-  .mobile-nav{position:fixed;display:grid;grid-template-columns:repeat(4,1fr);left:10px;right:10px;bottom:10px;z-index:70;background:rgba(12,19,32,.96);border:1px solid var(--line);border-radius:18px;padding:7px;backdrop-filter:blur(12px);box-shadow:0 12px 35px #0008}
-  .mobile-nav button{background:none;border:0;color:var(--muted);font-size:11px;padding:7px 2px;border-radius:12px}
-  .mobile-nav button:active,.mobile-nav button.active{background:#182338;color:#fff}
-  .mobile-nav b{display:block;font-size:18px;line-height:20px}
-  .to-top{bottom:92px;right:16px}
-  .toolbar{grid-template-columns:1fr 1fr}
-  .toolbar .search{grid-column:1/-1}
-  .player-grid{grid-template-columns:1fr 1fr}
-  .detail-stat-grid{grid-template-columns:1fr 1fr}
-}
+    .logo {
+      font-size: 20px;
+      font-weight: bold;
+    }
 
-.detail-team{margin-top:16px}.detail-team h3{margin:0 0 10px}.player-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.player-card{background:#101a2b;border:1px solid var(--line);border-radius:13px;padding:10px;display:flex;align-items:center;gap:9px}.player-avatar{width:42px;height:42px;border-radius:11px;display:grid;place-items:center;background:linear-gradient(135deg,#1d3557,#243b53);font-size:20px}.player-card b{font-size:13px}.player-card small{display:block;color:var(--muted);font-size:11px;margin-top:2px}.detail-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}.detail-stat{background:#0f1929;border:1px solid var(--line);border-radius:12px;padding:10px}.detail-stat b{display:block;font-size:17px}.detail-stat span{color:var(--muted);font-size:11px}.compare-bar{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:79;background:#0d1728;border:1px solid #2a3a55;border-radius:16px;padding:10px 14px;box-shadow:0 14px 35px #0009;display:none;align-items:center;gap:10px}.compare-count{font-weight:900;color:var(--accent)}.compare-modal{max-width:1000px}.compare-wrap{overflow:auto}.compare-table{width:100%;border-collapse:collapse;min-width:620px}.compare-table th,.compare-table td{padding:11px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.compare-check{position:absolute;top:10px;right:10px;z-index:3;background:#0b1220cc;padding:5px 7px;border-radius:8px}
+    button {
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: bold;
+    }
 
-.chat-head{display:flex;align-items:center;gap:10px;padding:10px 0}.online-dot{width:9px;height:9px;border-radius:50%;background:#35d07f;box-shadow:0 0 0 4px #35d07f22}.chat-meta{font-size:11px;color:var(--muted)}.chat-tools{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.chat-tools button{font-size:11px}.chat-time{display:block;font-size:9px;opacity:.55;margin-top:4px}.unread-pill{background:#ff5c7a;color:white;border-radius:999px;padding:2px 7px;font-size:10px}.chat-room{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px;margin:7px 0;background:#0f1929}.chat-room:hover{border-color:#39506f}.</style>
+    .primary {
+      background: #2563eb;
+      color: white;
+    }
 
-<style>
-.admin-kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:14px 0}.admin-kpi{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:16px}.admin-kpi b{font-size:24px;display:block;margin-top:5px}.admin-tabs{display:flex;gap:8px;overflow:auto;margin:10px 0}.admin-tabs button{white-space:nowrap}.admin-panel{display:none}.admin-panel.active{display:block}.admin-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-bottom:1px solid rgba(255,255,255,.07)}.admin-row:last-child{border-bottom:0}.admin-actions{display:flex;gap:6px;flex-wrap:wrap}.admin-badge{font-size:11px;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,.08)}@media(max-width:700px){.admin-kpi-grid{grid-template-columns:repeat(2,1fr)}.admin-row{align-items:flex-start;flex-direction:column}.admin-actions{width:100%}.admin-actions button{flex:1}}
-</style>
-<script>
-function adminHub(){
- if(typeof currentUser==='undefined'||!currentUser||currentUser.role!=='Admin'){alert('เฉพาะ Admin เท่านั้น');return;}
- const users=JSON.parse(localStorage.getItem('ef_users')||'[]');
- const orders=JSON.parse(localStorage.getItem('ef_orders')||'[]');
- const reports=JSON.parse(localStorage.getItem('ef_reports')||'[]');
- const ver=JSON.parse(localStorage.getItem('ef_verifications')||'[]');
- const html=`<div class="modal" id="adminHubModal"><div class="modal-card wide"><button class="modal-x" onclick="document.getElementById('adminHubModal').remove()">×</button><h2>🛡️ Admin Control Center</h2><div class="admin-kpi-grid"><div class="admin-kpi">สมาชิก<b>${users.length}</b></div><div class="admin-kpi">ออเดอร์<b>${orders.length}</b></div><div class="admin-kpi">รายงาน<b>${reports.length}</b></div><div class="admin-kpi">ตรวจสอบร้าน<b>${ver.filter(x=>x.status==='pending').length}</b></div></div><div class="admin-tabs"><button onclick="adminTab('members')">สมาชิก</button><button onclick="adminTab('orders')">ออเดอร์</button><button onclick="adminTab('reports')">รายงาน</button><button onclick="adminTab('verify')">ตรวจร้าน</button></div><div id="adminPanelMembers" class="admin-panel active"></div><div id="adminPanelOrders" class="admin-panel"></div><div id="adminPanelReports" class="admin-panel"></div><div id="adminPanelVerify" class="admin-panel"></div></div></div>`;
- document.body.insertAdjacentHTML('beforeend',html); adminRenderAll();
-}
-function adminTab(tab){document.querySelectorAll('.admin-panel').forEach(x=>x.classList.remove('active'));const el=document.getElementById('adminPanel'+tab[0].toUpperCase()+tab.slice(1));if(el)el.classList.add('active');}
-function adminRenderAll(){
- const users=JSON.parse(localStorage.getItem('ef_users')||'[]'); const orders=JSON.parse(localStorage.getItem('ef_orders')||'[]'); const reports=JSON.parse(localStorage.getItem('ef_reports')||'[]'); const ver=JSON.parse(localStorage.getItem('ef_verifications')||'[]');
- document.getElementById('adminPanelMembers').innerHTML=users.length?users.map((u,i)=>`<div class="admin-row"><div><b>${escapeHtml(u.name||u.email||'ผู้ใช้')}</b><div class="muted">${escapeHtml(u.email||'')} · <span class="admin-badge">${escapeHtml(u.role||'Buyer')}</span></div></div><div class="admin-actions"><button onclick="adminToggleUser(${i})">${u.banned?'ปลดแบน':'แบน'}</button></div></div>`).join(''):'<p class="muted">ยังไม่มีสมาชิก</p>';
- document.getElementById('adminPanelOrders').innerHTML=orders.length?orders.slice().reverse().map((o,i)=>`<div class="admin-row"><div><b>${escapeHtml(o.orderNo||'ORDER')}</b><div class="muted">${escapeHtml(o.productName||o.itemName||'ไอดี')} · ${Number(o.price||o.total||0).toLocaleString()} บาท</div></div><div class="admin-actions"><button onclick="adminSetOrder(${orders.length-1-i},'กำลังส่งข้อมูลไอดี')">ส่งข้อมูล</button><button onclick="adminSetOrder(${orders.length-1-i},'ซื้อขายสำเร็จ')">สำเร็จ</button></div></div>`).join(''):'<p class="muted">ยังไม่มีออเดอร์</p>';
- document.getElementById('adminPanelReports').innerHTML=reports.length?reports.map((r,i)=>`<div class="admin-row"><div><b>${escapeHtml(r.reason||'รายงานรายการ')}</b><div class="muted">${escapeHtml(r.productName||r.listingId||'ไม่ระบุ')}</div></div><div class="admin-actions"><button onclick="adminCloseReport(${i})">ปิดรายงาน</button></div></div>`).join(''):'<p class="muted">ไม่มีรายงานค้าง</p>';
- document.getElementById('adminPanelVerify').innerHTML=ver.length?ver.map((v,i)=>`<div class="admin-row"><div><b>${escapeHtml(v.sellerName||v.email||'ผู้ขาย')}</b><div class="muted">สถานะ: ${escapeHtml(v.status||'pending')}</div></div><div class="admin-actions"><button onclick="adminVerify(${i},'verified')">อนุมัติ</button><button onclick="adminVerify(${i},'rejected')">ปฏิเสธ</button></div></div>`).join(''):'<p class="muted">ไม่มีคำขอตรวจสอบ</p>';
-}
-function adminSave(k,v){localStorage.setItem(k,JSON.stringify(v));adminRenderAll();}
-function adminToggleUser(i){const a=JSON.parse(localStorage.getItem('ef_users')||'[]');if(a[i])a[i].banned=!a[i].banned;adminSave('ef_users',a)}
-function adminSetOrder(i,status){const a=JSON.parse(localStorage.getItem('ef_orders')||'[]');if(a[i]){a[i].status=status;a[i].updatedAt=new Date().toISOString()}adminSave('ef_orders',a)}
-function adminCloseReport(i){const a=JSON.parse(localStorage.getItem('ef_reports')||'[]');a.splice(i,1);adminSave('ef_reports',a)}
-function adminVerify(i,status){const a=JSON.parse(localStorage.getItem('ef_verifications')||'[]');if(a[i])a[i].status=status;adminSave('ef_verifications',a)}
-</script>
-<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22eFootball%20Market%20TH%22%2C%22short_name%22%3A%22eFootball%20Market%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b1020%22%2C%22theme_color%22%3A%22%230b1020%22%7D">
-<meta name="theme-color" content="#0b1020">
-<link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#00d084">
+    .danger {
+      background: #dc2626;
+      color: white;
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+
+    .hero {
+      background: white;
+      padding: 25px;
+      border-radius: 14px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px #00000012;
+    }
+
+    .hero h1 {
+      margin-top: 0;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    .online {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .offline {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .listings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 2px 10px #00000012;
+    }
+
+    .price {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2563eb;
+      margin: 10px 0;
+    }
+
+    .muted {
+      color: #6b7280;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: #00000080;
+      z-index: 50;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-box {
+      width: 100%;
+      max-width: 450px;
+      background: white;
+      border-radius: 14px;
+      padding: 22px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 11px;
+      margin: 7px 0 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .row > * {
+      flex: 1;
+    }
+
+    .empty {
+      background: white;
+      padding: 30px;
+      text-align: center;
+      border-radius: 14px;
+    }
+
+    .user-box {
+      font-size: 13px;
+      text-align: right;
+    }
+
+    @media (max-width: 600px) {
+      .nav {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .user-box {
+        text-align: left;
+      }
+    }
+  </style>
 </head>
+
 <body>
-<header><div class="nav"><div class="logo">eFOOTBALL <span>MARKET</span></div><nav><a href="#market">ตลาดไอดี</a><a href="#how">วิธีซื้อขาย</a><a href="#sell">ลงขายไอดี</a></nav><div style="display:flex;gap:8px;align-items:center"><button class="btn ghost" onclick="openNotifications()">🔔 <span class="notify-dot" id="notifyCount">0</span></button><button class="btn ghost" onclick="openAccount()">👤 <span id="userLabel">เข้าสู่ระบบ</span></button><button class="btn primary" onclick="openSell()">ลงขายไอดี</button></div></div></header>
 
-<section class="hero">
-<div><span class="badge">MARKETPLACE • THAILAND</span><h1>ตลาดซื้อขาย<br><span style="color:var(--accent)">ไอดี eFootball</span></h1><p>รวมไอดี eFootball สำหรับคนที่กำลังมองหาทีมใหม่ ค้นหา กรองราคา และติดต่อผู้ขายได้ในที่เดียว</p><button class="btn primary" onclick="document.getElementById('market').scrollIntoView({behavior:'smooth'})">ดูไอดีทั้งหมด</button> <button class="btn ghost" onclick="openSell()">ลงขายไอดี</button></div>
-<div class="hero-card"><div style="color:var(--muted);font-size:13px">ตลาดวันนี้</div><div style="font-size:30px;font-weight:900;margin:8px 0">ไอดีพร้อมขาย</div><div class="stats"><div class="stat"><b>128+</b><span>รายการ</span></div><div class="stat"><b>24/7</b><span>เปิดตลาด</span></div><div class="stat"><b>THB</b><span>สกุลเงิน</span></div></div></div>
-</section>
+<header>
+  <div class="nav">
+    <div class="logo">⚽ eFootball Market</div>
 
-<div class="promo-strip"><div class="promo-inner"><div><b>🔥 FLASH SALE • ลดสูงสุด 15%</b><span>ใช้โค้ด FLASH15 ในขั้นตอนชำระเงิน • Demo</span></div><button class="btn primary" onclick="applyQuickSearch('FLASH')">ดูรายการลดราคา</button></div></div>
+    <div class="user-box">
+      <div id="userText">ยังไม่ได้เข้าสู่ระบบ</div>
+      <div id="roleText"></div>
+    </div>
 
-<main id="market">
-<h2>ไอดีล่าสุด</h2>
-<div class="quick-search" aria-label="ค้นหานักเตะแบบด่วน"><button onclick="applyQuickSearch('Messi')">⭐ Messi</button><button onclick="applyQuickSearch('Mbappé')">⚡ Mbappé</button><button onclick="applyQuickSearch('Ronaldo')">🔥 Ronaldo</button><button onclick="applyQuickSearch('Epic')">💎 Epic</button><button onclick="applyQuickSearch('Coins')">🪙 Coins</button><button onclick="applyQuickSearch('')">แสดงทั้งหมด</button></div>
-<div class="toolbar"><input id="search" class="search" placeholder="ค้นหา เช่น Messi, Epic, 3100 Coins..." oninput="render()"><select id="price" class="filter" onchange="render()"><option value="">ราคาทั้งหมด</option><option value="1000">ไม่เกิน ฿1,000</option><option value="3000">ไม่เกิน ฿3,000</option><option value="5000">ไม่เกิน ฿5,000</option></select><select id="sort" class="filter" onchange="render()"><option value="new">ล่าสุด</option><option value="low">ราคาต่ำ → สูง</option><option value="high">ราคาสูง → ต่ำ</option></select></div>
-<div id="grid" class="grid"></div><div id="empty" class="empty">ไม่พบไอดีที่ตรงกับการค้นหา</div><section id="recentSection" style="margin-top:28px;display:none"><h2>🕘 ดูล่าสุด</h2><div id="recentGrid" class="grid"></div></section>
+    <div class="row">
+      <button class="secondary" onclick="openLogin()">เข้าสู่ระบบ</button>
+      <button class="primary" onclick="openRegister()">สมัครสมาชิก</button>
+      <button class="danger" onclick="logout()">ออกจากระบบ</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <h1>ตลาดซื้อขายไอดี eFootball</h1>
+    <p class="muted">
+      ตลาดซื้อขายไอดี eFootball พร้อมระบบบัญชี Order และการชำระเงิน
+    </p>
+
+    <span id="apiStatus" class="status offline">
+      กำลังตรวจสอบ API...
+    </span>
+  </section>
+
+  <div class="toolbar">
+    <button class="primary" onclick="loadListings()">🔄 รีเฟรชรายการ</button>
+    <button class="primary" onclick="openSell()">＋ ลงขายไอดี</button>
+    <button class="secondary" onclick="loadMyListings()">📦 รายการของฉัน</button>
+    <button class="secondary" onclick="loadOrders()">🧾 Orders</button>
+  </div>
+
+  <section>
+    <h2>ไอดีที่กำลังขาย</h2>
+    <div id="listings" class="listings">
+      <div class="empty">กำลังโหลด...</div>
+    </div>
+  </section>
+
 </main>
 
-<section id="how" style="max-width:1180px;margin:auto;padding:10px 20px 55px"><h2>วิธีซื้อขาย</h2><div class="grid"><div class="hero-card"><b>01 • ค้นหา</b><p style="color:var(--muted)">เลือกไอดีที่ตรงกับงบและทีมที่ต้องการ</p></div><div class="hero-card"><b>02 • ติดต่อ</b><p style="color:var(--muted)">กดปุ่มติดต่อผู้ขายเพื่อสอบถามรายละเอียด</p></div><div class="hero-card"><b>03 • ตรวจสอบ</b><p style="color:var(--muted)">ตรวจสอบข้อมูลไอดีและเงื่อนไขก่อนชำระเงิน</p></div></div></section>
 
-<section id="seller" style="max-width:1180px;margin:auto;padding:10px 20px 55px">
-<h2>ผู้ขายแนะนำ</h2>
-<div class="grid">
-<div class="hero-card"><div style="display:flex;justify-content:space-between"><b>🔥 TOP SELLER</b><span style="color:var(--accent)">★★★★★</span></div><h3 style="margin-bottom:5px">EFOOTBALL SHOP</h3><p style="color:var(--muted)">ขายแล้ว 248 รายการ • ตอบแชตไว</p><button class="btn ghost" onclick="openSeller('EFOOTBALL SHOP')">ดูโปรไฟล์</button></div>
-<div class="hero-card"><div style="display:flex;justify-content:space-between"><b>✓ VERIFIED</b><span style="color:var(--accent)">★★★★★</span></div><h3 style="margin-bottom:5px">GAME ID STORE</h3><p style="color:var(--muted)">ขายแล้ว 126 รายการ • ยืนยันตัวตนแล้ว</p><button class="btn ghost" onclick="openSeller('GAME ID STORE')">ดูโปรไฟล์</button></div>
-<div class="hero-card"><div style="display:flex;justify-content:space-between"><b>⚡ FAST SELLER</b><span style="color:var(--accent)">★★★★☆</span></div><h3 style="margin-bottom:5px">BALL MASTER</h3><p style="color:var(--muted)">ขายแล้ว 89 รายการ • ออนไลน์วันนี้</p><button class="btn ghost" onclick="openSeller('BALL MASTER')">ดูโปรไฟล์</button></div>
+<!-- LOGIN -->
+
+<div id="loginModal" class="modal">
+  <div class="modal-box">
+
+    <h2>เข้าสู่ระบบ</h2>
+
+    <label>อีเมล</label>
+    <input id="loginEmail" type="email">
+
+    <label>รหัสผ่าน</label>
+    <input id="loginPassword" type="password">
+
+    <div class="row">
+      <button class="primary" onclick="login()">เข้าสู่ระบบ</button>
+      <button class="secondary" onclick="closeModals()">ปิด</button>
+    </div>
+
+  </div>
 </div>
-</section>
-
-<section class="dashboard" id="dashboard"><h2>ศูนย์จัดการร้าน</h2><div class="dash-grid"><div class="dash-card"><b id="dashCount">6</b><span>รายการทั้งหมด</span></div><div class="dash-card"><b id="dashFav">0</b><span>รายการโปรด</span></div><div class="dash-card"><b>฿18,250</b><span>ยอดขายจำลอง</span></div><div class="dash-card"><b style="color:var(--accent)">ออนไลน์</b><span>สถานะร้าน</span></div></div><div class="hero-card" style="margin-top:14px"><div style="display:flex;justify-content:space-between;align-items:center"><b>รายการล่าสุดในร้าน</b><button class="btn ghost" onclick="openAdmin()">จัดการรายการ</button></div><p style="color:var(--muted);margin-bottom:0">ระบบนี้เป็นเดโม ข้อมูลจะถูกเก็บไว้เฉพาะในหน้านี้จนกว่าจะเชื่อมฐานข้อมูลจริง</p></div></section>
-<footer>eFootball Market TH • เว็บไซต์ตัวอย่างสำหรับตลาดซื้อขายไอดี • โปรดตรวจสอบข้อมูลก่อนชำระเงิน</footer>
-
-<div class="modal" id="sellerModal"><div class="dialog"><button class="close" onclick="closeSeller()">×</button><h2 id="sellerTitle">โปรไฟล์ผู้ขาย</h2><div class="hero-card"><div style="font-size:38px">👤</div><h3 id="sellerName"></h3><p style="color:var(--muted)">★★★★★ 4.9/5 • ยืนยันตัวตนแล้ว</p><p>รายการขายสำเร็จ <b>248</b> รายการ<br>ตอบกลับเฉลี่ย <b>5 นาที</b></p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" onclick="alert('เปิด LINE ของผู้ขายในเวอร์ชันจริง')">LINE</button><button class="btn ghost" onclick="alert('เปิด Facebook ของผู้ขายในเวอร์ชันจริง')">Facebook</button></div></div></div></div>
-<div class="modal" id="modal"><div class="dialog"><button class="close" onclick="closeSell()">×</button><h2>ลงขายไอดี</h2><div class="field"><label>ชื่อรายการ</label><input id="sellName" placeholder="เช่น ทีม Epic 12 ตัว"></div><div class="field"><label>ราคา (บาท)</label><label>รูปภาพไอดี (ตัวอย่าง)<input id="sellImage" type="file" accept="image/*" onchange="previewSellImage(event)"></label><img id="sellPreview" class="preview-img" style="display:none"><input id="sellPrice" type="number" placeholder="2500"></div><div class="field"><label>รายละเอียด</label><textarea id="sellDesc" placeholder="รายละเอียดทีม / นักเตะ / Coins"></textarea></div><button class="btn primary" onclick="addListing()">เพิ่มรายการตัวอย่าง</button></div></div>
 
 
-<div class="modal" id="authModal"><div class="dialog"><button class="close" onclick="closeAuth()">×</button><h2>เข้าสู่ระบบ / สมัครสมาชิก</h2><div class="tabs"><button class="btn ghost active" id="loginTab" onclick="switchAuth('login')">เข้าสู่ระบบ</button><button class="btn ghost" id="registerTab" onclick="switchAuth('register')">สมัครสมาชิก</button></div><div class="field"><label>อีเมล</label><input id="authEmail" type="email" placeholder="example@email.com"></div><div class="field"><label>รหัสผ่าน</label><input id="authPass" type="password" placeholder="••••••••"></div><button class="btn primary" style="width:100%" onclick="fakeLogin()">ดำเนินการ</button><p style="color:var(--muted);font-size:12px">เดโมเท่านั้น ยังไม่เชื่อมระบบสมาชิกจริง</p></div></div>
-<div class="modal" id="adminModal"><div class="dialog" style="max-width:760px"><button class="close" onclick="closeAdmin()">×</button><h2>Admin • จัดการรายการ</h2><div style="overflow:auto"><table class="admin-table"><thead><tr><th>รายการ</th><th>ราคา</th><th>OVR</th><th>จัดการ</th></tr></thead><tbody id="adminRows"></tbody></table></div></div></div>
-<div class="modal" id="detailModal"><div class="dialog"><button class="close" onclick="closeDetail()">×</button><h2 id="detailName"></h2><div class="hero-card"><p id="detailInfo" style="color:var(--muted)"></p><div id="detailTags" class="chips"></div><div id="detailStats" class="detail-stat-grid"></div><div class="detail-team"><h3>⚽ ทีมภายในไอดี</h3><div id="detailPlayers" class="player-grid"></div></div><div class="price" style="margin-top:16px"><b id="detailPrice"></b><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn primary" onclick="addToOrder(currentDetailId)">🛒 เพิ่มออเดอร์</button><button class="btn ghost" onclick="openChat()">💬 แชตผู้ขาย</button><button class="btn ghost" onclick="toggleFav(currentDetailId,this)">♡ ถูกใจ</button></div></div></div></div></div>
-<div class="modal" id="chatModal"><div class="dialog"><button class="close" onclick="closeChat()">×</button><div class="chat-head"><div class="online-dot"></div><div><h2 style="margin:0">💬 แชตกับผู้ขาย</h2><div class="chat-meta">ผู้ขายออนไลน์ • ตอบกลับเร็ว (Demo)</div></div></div><div class="chat-tools"><button class="btn ghost" onclick="chatPreset('ขอดูรายละเอียดทีมเพิ่มเติมได้ไหมครับ?')">📋 ขอรายละเอียดทีม</button><button class="btn ghost" onclick="chatPreset('ต่อรองราคาได้ไหมครับ?')">💰 ต่อรองราคา</button><button class="btn ghost" onclick="chatPreset('ส่งข้อมูลไอดีอย่างไรครับ?')">🔐 สอบถามการส่งมอบ</button><button class="btn ghost" onclick="clearCurrentChat()">🗑️ ล้างแชต</button></div><div class="chat" id="chatBox"></div><div class="chatbar"><input id="chatInput" placeholder="พิมพ์ข้อความ..." onkeydown="if(event.key==='Enter')sendChat()"><button class="btn primary" onclick="sendChat()">ส่ง</button></div></div></div>
-<script>
-let listings=[
-{id:1,name:"Epic Squad • 3100 Coins",price:3290,rating:97,tags:["Epic","3100 Coins","ทีมพร้อมเล่น"],sellerEmail:"seller@efootball.local"},
-{id:2,name:"Messi + Mbappé • Starter",price:1490,rating:95,tags:["Messi","Mbappé","ราคาพิเศษ"],sellerEmail:"seller@efootball.local"},
-{id:3,name:"Big Time Collection",price:4590,rating:99,tags:["Big Time","10+ Stars","ทีมแข็ง"],sellerEmail:"seller@efootball.local"},
-{id:4,name:"Legend Squad",price:2190,rating:96,tags:["Legend","900 Coins","ครบตำแหน่ง"],sellerEmail:"seller@efootball.local"},
-{id:5,name:"P2W Squad • Premium",price:5990,rating:100,tags:["Premium","Epic","Full Team"],sellerEmail:"seller@efootball.local"},
-{id:6,name:"Budget Squad",price:790,rating:91,tags:["มือใหม่","ราคาประหยัด","พร้อมเล่น"],sellerEmail:"seller@efootball.local"}
-];
-try{const savedListings=JSON.parse(localStorage.getItem("ef_listings")||"null");if(Array.isArray(savedListings)&&savedListings.length)listings=savedListings}catch(e){}
-function saveListings(){localStorage.setItem("ef_listings",JSON.stringify(listings))}
-function money(n){return new Intl.NumberFormat("th-TH").format(n)}
-let compareIds=JSON.parse(localStorage.getItem("ef_compare")||"[]");
-function saveCompare(){localStorage.setItem("ef_compare",JSON.stringify(compareIds));updateCompareUI()}
-function updateCompareUI(){const b=document.getElementById("compareBar"),c=document.getElementById("compareCount");if(b){b.style.display=compareIds.length?"flex":"none";if(c)c.textContent=compareIds.length}}
-function toggleCompare(id,on){id=Number(id);if(on){if(!compareIds.includes(id)){if(compareIds.length>=3){alert("เลือกเปรียบเทียบได้สูงสุด 3 ไอดี");render();return}compareIds.push(id)}}else compareIds=compareIds.filter(x=>x!==id);saveCompare();render()}
-function clearCompare(){compareIds=[];saveCompare();render()}
-function openCompare(){const chosen=compareIds.map(id=>listings.find(x=>Number(x.id)===id)).filter(Boolean);if(!chosen.length){alert("เลือกไอดีอย่างน้อย 1 รายการ");return}const get=(x,k)=>x[k]??x[k.toLowerCase()]??"—";let h='<table class="compare-table"><thead><tr><th>รายการ</th>'+chosen.map(x=>'<th>'+escapeHtml(x.name||"eFootball ID")+'</th>').join("")+'</tr></thead><tbody>';[["ราคา",x=>"฿"+money(x.price)],["OVR",x=>x.rating||"—"],["นักเตะ",x=>(x.tags||[]).join(", ")],["สถานะ",x=>x.sold?"ขายแล้ว":"พร้อมขาย"]].forEach(r=>{h+='<tr><td><b>'+r[0]+'</b></td>'+chosen.map(x=>'<td>'+escapeHtml(String(r[1](x)))+'</td>').join("")+'</tr>'});h+='</tbody></table>';document.getElementById("compareContent").innerHTML=h;openModal("compareModal")}
-function escapeHtml(v){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
-function applyQuickSearch(q){const input=document.getElementById('search');if(!input)return;input.value=q==='FLASH'?'':q;if(q==='FLASH'){document.getElementById('sort').value='low'}render();document.getElementById('market').scrollIntoView({behavior:'smooth',block:'start'});if(q==='FLASH')alert('โหมด FLASH SALE เป็นเดโม — ใช้โค้ด FLASH15 ตอนชำระเงิน');}
-function render(){
- const q=document.getElementById("search").value.toLowerCase(), max=+document.getElementById("price").value||Infinity, sort=document.getElementById("sort").value;
- let data=listings.filter(x=>(x.name+" "+x.tags.join(" ")).toLowerCase().includes(q)&&x.price<=max);
- data.sort((a,b)=>sort==="low"?a.price-b.price:sort==="high"?b.price-a.price:b.id-a.id);
- const grid=document.getElementById("grid"); grid.innerHTML=data.map(x=>`<article class="card"><label class="compare-check"><input type="checkbox" onchange="toggleCompare(${x.id},this.checked)" ${compareIds.includes(x.id)?"checked":""}> เทียบ</label><div class="cover"><div class="ball">⚽</div><div class="rating">OVR ${x.rating}</div></div><div class="body"><div class="title">${x.name}</div><div class="meta">ตรวจสอบข้อมูลก่อนซื้อทุกครั้ง</div><div class="chips">${x.tags.map(t=>`<span class="chip">${t}</span>`).join("")}</div><div class="price"><b>฿${money(x.price)}</b><div style="display:flex;gap:6px"><button class="btn ghost" onclick="toggleFav(${x.id},this)">${favorites.includes(x.id)?"♥":"♡"}</button><button class="btn ghost" onclick="openDetail(${x.id})">ดูรายละเอียด</button><button class="btn primary" onclick="addToOrder(${x.id})">🛒</button></div></div></div></article>`).join("");
- document.getElementById("empty").style.display=data.length?"none":"block";
- document.getElementById("dashFav").textContent=favorites.length;
-}
+<!-- REGISTER -->
 
-function renderRecent(){
- const ids=JSON.parse(localStorage.getItem("ef_recent")||"[]");
- const data=ids.map(id=>listings.find(x=>x.id===id)).filter(Boolean);
- const sec=document.getElementById("recentSection"),grid=document.getElementById("recentGrid");
- if(!sec||!grid)return;
- sec.style.display=data.length?"block":"none";
- grid.innerHTML=data.map(x=>`<article class="card"><div class="cover"><div class="ball">⚽</div><div class="rating">OVR ${x.rating}</div></div><div class="body"><div class="title">${x.name}</div><div class="meta">฿${money(x.price)}</div><div class="price"><button class="btn ghost" onclick="openDetail(${x.id})">ดูอีกครั้ง</button><button class="btn primary" onclick="addToOrder(${x.id})">🛒 ซื้อ</button></div></div></article>`).join("");
-}
-function contact(name){alert("ติดต่อผู้ขายรายการ: "+name+"\\n\\nในเวอร์ชันจริงสามารถเชื่อม Facebook / LINE / ระบบแชตได้")}
-function openSeller(name){document.getElementById("sellerName").textContent=name;document.getElementById("sellerModal").classList.add("open")}
-function closeSeller(){document.getElementById("sellerModal").classList.remove("open")}
-function openSell(){document.getElementById("modal").classList.add("open")}
-function closeSell(){document.getElementById("modal").classList.remove("open")}
-function addListing(){
- const name=document.getElementById("sellName").value.trim(), price=+document.getElementById("sellPrice").value;
- if(!name||!price){alert("กรุณากรอกชื่อรายการและราคา");return}
- listings.unshift({id:Date.now(),name,price,rating:94,tags:["รายการใหม่","รอตรวจสอบ"]});saveListings();
- closeSell(); document.getElementById("sellName").value="";document.getElementById("sellPrice").value="";document.getElementById("sellDesc").value="";render();document.getElementById("market").scrollIntoView({behavior:"smooth"});
-}
-let favorites=JSON.parse(localStorage.getItem('ef_fav')||'[]');
-function toggleFav(id,btn){if(favorites.includes(id)){favorites=favorites.filter(x=>x!==id);btn.textContent='♡'}else{favorites.push(id);btn.textContent='♥'}localStorage.setItem('ef_fav',JSON.stringify(favorites));document.getElementById('dashFav').textContent=favorites.length;render()}
-let currentDetailId=null;
-function openDetail(id){
- currentDetailId=id;const x=listings.find(a=>a.id===id);if(!x)return;
- let recent=JSON.parse(localStorage.getItem("ef_recent")||"[]");recent=[id,...recent.filter(v=>v!==id)].slice(0,4);localStorage.setItem("ef_recent",JSON.stringify(recent));renderRecent();
- document.getElementById('detailName').textContent=x.name;
- document.getElementById('detailInfo').textContent='OVR '+x.rating+' • '+(x.sold?'รายการขายแล้ว':'พร้อมขาย')+' • ตรวจสอบข้อมูลกับผู้ขายก่อนชำระเงิน';
- document.getElementById('detailPrice').textContent='฿'+money(x.price);
- document.getElementById('detailTags').innerHTML=(x.tags||[]).map(t=>`<span class="chip">${escapeHtml(t)}</span>`).join('');
- const coins=(x.tags||[]).find(t=>/Coins/i.test(t))||'—';
- const stars=(x.tags||[]).find(t=>/Stars|Epic|Legend|Big Time/i.test(t))||'—';
- document.getElementById('detailStats').innerHTML=`<div class="detail-stat"><b>${x.rating||'—'}</b><span>OVR</span></div><div class="detail-stat"><b>${escapeHtml(coins)}</b><span>Coins</span></div><div class="detail-stat"><b>${escapeHtml(stars)}</b><span>ประเภททีม</span></div><div class="detail-stat"><b>${x.sold?'ขายแล้ว':'พร้อมขาย'}</b><span>สถานะ</span></div>`;
- const presets=[['L. Messi','CF'],['K. Mbappé','CF'],['Cristiano Ronaldo','ST'],['K. De Bruyne','AMF'],['V. van Dijk','CB'],['M. ter Stegen','GK']];
- const count=Math.max(4,Math.min(6,Math.round((x.rating||94)/17)));
- document.getElementById('detailPlayers').innerHTML=presets.slice(0,count).map((p,i)=>`<div class="player-card"><div class="player-avatar">⚽</div><div><b>${p[0]}</b><small>${p[1]} • OVR ${Math.max(88,(x.rating||94)-i)}</small></div></div>`).join('');
- document.getElementById('detailModal').classList.add('open');
-}
-function closeDetail(){document.getElementById('detailModal').classList.remove('open')}
-function openChat(){closeDetail();document.getElementById('chatModal').classList.add('open')}
-function closeChat(){document.getElementById('chatModal').classList.remove('open')}
-function sendChat(){const i=document.getElementById('chatInput'),v=i.value.trim();if(!v)return;document.getElementById('chatBox').insertAdjacentHTML('beforeend',`<div class="bubble me">${v.replace(/</g,'&lt;')}</div><div class="bubble">รับทราบครับ เดี๋ยวส่งข้อมูลให้เพิ่มเติมครับ</div>`);i.value='';document.getElementById('chatBox').scrollTop=99999}
-function openAuth(){document.getElementById('authModal').classList.add('open')}function closeAuth(){document.getElementById('authModal').classList.remove('open')}
-function switchAuth(mode){document.getElementById('loginTab').classList.toggle('active',mode==='login');document.getElementById('registerTab').classList.toggle('active',mode==='register')}
-function fakeLogin(){const e=document.getElementById('authEmail').value.trim();if(!e){alert('กรุณากรอกอีเมล');return}alert('เข้าสู่ระบบเดโมสำเร็จ: '+e);closeAuth()}
-function openAdmin(){document.getElementById('adminRows').innerHTML=listings.map(x=>`<tr><td>${x.name}</td><td>฿${money(x.price)}</td><td>${x.rating}</td><td><button class="btn ghost" onclick="removeListing(${x.id})">ลบ</button></td></tr>`).join('');document.getElementById('adminModal').classList.add('open')}function closeAdmin(){document.getElementById('adminModal').classList.remove('open')}
-function removeListing(id){const i=listings.findIndex(x=>x.id===id);if(i>-1){listings.splice(i,1);saveListings();render();openAdmin();document.getElementById('dashCount').textContent=listings.length}}
-document.getElementById('dashCount').textContent=listings.length;document.getElementById('dashFav').textContent=favorites.length;
-render();
+<div id="registerModal" class="modal">
+  <div class="modal-box">
 
-let orders=JSON.parse(localStorage.getItem('ef_orders')||'[]');
-function updateOrders(){document.getElementById('orderCount').textContent=orders.length;}
-function addToOrder(id){const x=listings.find(a=>a.id===id);if(!x)return;if(!orders.some(o=>o.id===id)){orders.push({id,name:x.name,price:x.price,status:'รอดำเนินการ'});localStorage.setItem('ef_orders',JSON.stringify(orders));updateOrders();alert('เพิ่มรายการลงออเดอร์แล้ว');}else alert('รายการนี้อยู่ในออเดอร์แล้ว');}
-function openOrders(){document.getElementById('ordersList').innerHTML=orders.length?orders.map((o,i)=>`<div class="order-row"><div><b>${o.name}</b><div>฿${money(o.price)} · <span class="status ${o.status==='ขายแล้ว'?'sold':''}">${o.status}</span></div></div><button class="btn ghost" onclick="removeOrder(${i})">ลบ</button></div>`).join(''):'<p class="muted">ยังไม่มีรายการสั่งซื้อ</p>';document.getElementById('ordersModal').classList.add('open')}
-function closeOrders(){document.getElementById('ordersModal').classList.remove('open')}
-function removeOrder(i){orders.splice(i,1);localStorage.setItem('ef_orders',JSON.stringify(orders));updateOrders();openOrders()}
-function checkoutDemo(){if(!orders.length){alert('ยังไม่มีรายการในออเดอร์');return}orders=orders.map(o=>({...o,status:'รอตรวจสอบการชำระเงิน'}));localStorage.setItem('ef_orders',JSON.stringify(orders));openOrders();alert('สร้างออเดอร์ Demo แล้ว — ยังไม่มีการตัดเงินจริง')}
-function previewSellImage(e){const f=e.target.files?.[0],img=document.getElementById('sellPreview');if(!f){img.style.display='none';return}img.src=URL.createObjectURL(f);img.style.display='block'}
-updateOrders();
+    <h2>สมัครสมาชิก</h2>
 
-// --- Member roles / notifications / reviews demo ---
-let currentUser=JSON.parse(localStorage.getItem('ef_user')||'null');
-let currentRole=localStorage.getItem('ef_role')||'buyer';
-let notifications=JSON.parse(localStorage.getItem('ef_notifications')||'[]');
-let reviews=JSON.parse(localStorage.getItem('ef_reviews')||'[]');
-function syncAccountUI(){
- const label=document.getElementById('userLabel'); const n=document.getElementById('notifyCount');
- if(label) label.textContent=currentUser?.email||'เข้าสู่ระบบ'; if(n)n.textContent=notifications.filter(x=>!x.read).length;
-}
-function openAccount(){document.getElementById('accountInfo').innerHTML=currentUser?`อีเมล: <b>${currentUser.email}</b><br>บทบาท: <span class="role-pill">${currentRole.toUpperCase()}</span>`:'ยังไม่ได้เข้าสู่ระบบ'; ['buyer','seller','admin'].forEach(r=>document.getElementById('role'+r[0].toUpperCase()+r.slice(1)).classList.toggle('active',currentRole===r)); document.getElementById('accountModal').classList.add('open')}
-function closeAccount(){document.getElementById('accountModal').classList.remove('open')}
-function setRole(r){currentRole=r;localStorage.setItem('ef_role',r);openAccount();alert('เปลี่ยนบทบาท Demo เป็น '+r.toUpperCase())}
-function logoutDemo(){currentUser=null;localStorage.removeItem('ef_user');syncAccountUI();closeAccount();alert('ออกจากระบบแล้ว')}
-function openNotifications(){if(!notifications.length)notifications=[{text:'ยินดีต้อนรับสู่ eFootball Market',read:false},{text:'ระบบออเดอร์พร้อมใช้งานแบบ Demo',read:false}];document.getElementById('notifyList').innerHTML=notifications.map((n,i)=>`<div class="review"><b>${n.read?'':'🟢 '}${n.text}</b></div>`).join('');notifications=notifications.map(x=>({...x,read:true}));localStorage.setItem('ef_notifications',JSON.stringify(notifications));syncAccountUI();document.getElementById('notifyModal').classList.add('open')}
-function closeNotifications(){document.getElementById('notifyModal').classList.remove('open')}
-function openReview(seller='ผู้ขาย'){document.getElementById('reviewSeller').textContent='รีวิวสำหรับ '+seller;document.getElementById('reviewModal').classList.add('open')}
-function closeReview(){document.getElementById('reviewModal').classList.remove('open')}
-function submitReview(){const stars=Number(document.getElementById('reviewStars').value),textv=document.getElementById('reviewText').value.trim();if(!textv){alert('กรุณาเขียนความคิดเห็น');return}reviews.unshift({seller:document.getElementById('reviewSeller').textContent.replace('รีวิวสำหรับ ',''),stars,text:textv,created:new Date().toLocaleString('th-TH')});localStorage.setItem('ef_reviews',JSON.stringify(reviews));notifications.unshift({text:'บันทึกรีวิวของคุณแล้ว',read:false});localStorage.setItem('ef_notifications',JSON.stringify(notifications));syncAccountUI();closeReview();alert('ส่งรีวิวเรียบร้อย (Demo)')}
-// extend demo login to persist account
-const _fakeLogin=fakeLogin;
-fakeLogin=function(){const e=document.getElementById('authEmail').value.trim();if(!e){alert('กรุณากรอกอีเมล');return}currentUser={email:e};localStorage.setItem('ef_user',JSON.stringify(currentUser));syncAccountUI();closeAuth();alert('เข้าสู่ระบบเดโมสำเร็จ: '+e)};
-syncAccountUI();
+    <label>อีเมล</label>
+    <input id="registerEmail" type="email">
 
-</script>
+    <label>รหัสผ่าน</label>
+    <input id="registerPassword" type="password">
 
-<div class="orderbar"><span>🛒 ออเดอร์</span><span class="ordercount" id="orderCount">0</span><button class="btn" onclick="openOrders()">ดูรายการ</button></div>
-<div class="modal" id="ordersModal"><div class="modal-card"><button class="close" onclick="closeOrders()">×</button><h2>🛒 รายการสั่งซื้อ</h2><div id="ordersList"></div><button class="btn" onclick="checkoutDemo()">ยืนยันออเดอร์ (Demo)</button></div></div>
+    <div class="row">
+      <button class="primary" onclick="register()">สมัครสมาชิก</button>
+      <button class="secondary" onclick="closeModals()">ปิด</button>
+    </div>
 
-<style>
-.checkout-box,.receipt-box{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px;margin-top:16px}
-.status-track{display:grid;gap:10px;margin:15px 0}.status-step{display:flex;gap:12px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:12px}.status-dot{width:12px;height:12px;border-radius:50%;background:#46536a}.status-step.done .status-dot{background:var(--accent)}
-.order-no{font-family:monospace;color:var(--accent);font-weight:800}.receipt-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
-</style>
-<script>
-let checkoutOrder=null;
-function openCheckout(id){
- const item=listings.find(x=>x.id===id); if(!item)return;
- checkoutOrder={...item,orderNo:'EF'+Date.now().toString().slice(-8),status:'รอตรวจสอบการชำระเงิน',created:new Date().toLocaleString('th-TH'),buyer:currentUser?.email||'guest@demo.local',sellerEmail:item.sellerEmail||'seller@efootball.local'};
- document.getElementById('checkoutModal').style.display='flex';
- document.getElementById('checkoutContent').innerHTML=`<div class="checkout-box"><h2>🛒 ยืนยันการสั่งซื้อ</h2><p><b>${item.name}</b></p><div class="checkout-summary"><span>ราคาสินค้า</span><b>฿${Number(item.price).toLocaleString()}</b></div><p>เลขออเดอร์: <span class="order-no">${checkoutOrder.orderNo}</span></p><label>ช่องทางชำระเงิน</label><select id="payMethod"><option>โอนธนาคาร (Demo)</option><option>QR PromptPay (Demo)</option></select><div class="pay-demo"><b>ข้อมูลรับชำระ Demo</b><br>ชื่อบัญชี: eFootball Market Demo<br>เลขบัญชี: 000-000-0000<br>PromptPay: 0000000000</div><label>แนบหลักฐานการชำระเงิน</label><input type="file" id="paySlip" accept="image/*" onchange="previewSlip(this)"><div id="slipPreview"></div><button class="btn primary" onclick="submitOrder()">ยืนยันคำสั่งซื้อ</button></div>`;
-}
-function previewSlip(input){const f=input.files?.[0];if(!f)return;const u=URL.createObjectURL(f);document.getElementById('slipPreview').innerHTML=`<img src="${u}" style="max-width:220px;border-radius:12px;margin:10px 0"><small>แนบสลิปแล้ว: ${f.name}</small>`;}
-function submitOrder(){
- const method=document.getElementById('payMethod')?.value||'โอนธนาคาร (Demo)';
- const slip=document.getElementById('paySlip')?.files?.[0];
- checkoutOrder.paymentMethod=method; checkoutOrder.slipName=slip?.name||''; checkoutOrder.paymentStatus=slip?'รอตรวจสอบสลิป':'ยังไม่แนบสลิป';
- checkoutOrder.status='รอตรวจสอบการชำระเงิน';
- const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');os.unshift(checkoutOrder);localStorage.setItem('ef_orders',JSON.stringify(os));orders=os;
- notifications.unshift({text:`สร้างออเดอร์ ${checkoutOrder.orderNo} แล้ว — รอตรวจสอบการชำระเงิน`,type:'order',read:false,time:new Date().toLocaleString('th-TH')});localStorage.setItem('ef_notifications',JSON.stringify(notifications));syncAccountUI();showReceipt(checkoutOrder);
-}
-function showReceipt(o){document.getElementById('checkoutContent').innerHTML=`<div class="receipt-box"><h2>✅ สร้างออเดอร์แล้ว</h2><p>เลขออเดอร์ <span class="order-no">${o.orderNo}</span></p><p>${o.name} — ฿${Number(o.price).toLocaleString()}</p><div class="receipt-pay"><b>การชำระเงิน:</b> ${o.paymentMethod||'Demo'}<br><b>หลักฐาน:</b> ${o.slipName?'แนบแล้ว':'ยังไม่ได้แนบ'}</div><div class="status-track"><div class="status-step done"><span class="status-dot"></span>สร้างคำสั่งซื้อ</div><div class="status-step"><span class="status-dot"></span>รอตรวจสอบการชำระเงิน</div><div class="status-step"><span class="status-dot"></span>กำลังส่งข้อมูลไอดี</div><div class="status-step"><span class="status-dot"></span>ซื้อขายสำเร็จ</div></div><p class="demo-note">Demo: ไม่มีการตัดเงินจริง ระบบใช้ข้อมูลในเครื่องเท่านั้น</p><div class="receipt-actions"><button class="btn primary" onclick="viewOrders()">📦 ดูออเดอร์ของฉัน</button><button class="btn" onclick="closeCheckout()">ปิด</button></div></div>`;}
-function closeCheckout(){document.getElementById('checkoutModal').style.display='none';}
-function confirmReceipt(orderNo){
- const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');const o=os.find(x=>x.orderNo===orderNo);if(!o)return;
- if(!o.delivery){alert('ยังไม่มีข้อมูลส่งมอบ');return} if(o.buyer!== (currentUser?.email||'guest@demo.local')){alert('ไม่ใช่ออเดอร์ของบัญชีนี้');return}
- o.status='ซื้อขายสำเร็จ';o.receivedAt=new Date().toLocaleString('th-TH');
- if(!o.escrowReleased){const seller=o.sellerEmail||'seller@efootball.local';let all=JSON.parse(localStorage.getItem('ef_wallets')||'{}');let w=all[seller]||{balance:0,earned:0,spent:0};const amount=Number(o.netPrice||o.total||o.price||0);w.balance+=amount;w.earned+=amount;all[seller]=w;localStorage.setItem('ef_wallets',JSON.stringify(all));o.escrowReleased=true;o.escrowAmount=amount;o.escrowReleasedAt=new Date().toLocaleString('th-TH');}
- localStorage.setItem('ef_orders',JSON.stringify(os));orders=os;notifications.unshift({text:'ยืนยันรับไอดี '+orderNo+' สำเร็จ — ปล่อยยอดให้ผู้ขายแล้ว',type:'order',read:false,time:new Date().toLocaleString('th-TH')});localStorage.setItem('ef_notifications',JSON.stringify(notifications));syncAccountUI();viewOrders();
-}
-
-function viewOrders(){const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');document.getElementById('checkoutModal').style.display='flex';document.getElementById('checkoutContent').innerHTML=`<div class="receipt-box"><h2>📦 ออเดอร์ของฉัน</h2>${os.length?os.map(o=>`<div class="order-row"><div><b>${o.name}</b><br><span class="order-no">${o.orderNo}</span> · ฿${Number(o.price).toLocaleString()}<br><small>${o.created}</small></div><span class="status-pill">${o.status||'รอตรวจสอบการชำระเงิน'}</span>${o.delivery&&o.status==='กำลังส่งข้อมูลไอดี'?`<button class="btn primary" onclick="confirmReceipt('${o.orderNo}')">✅ ยืนยันรับไอดี</button>`:''}${o.status==='ซื้อขายสำเร็จ'&&!o.escrowReleased?`<small class="muted">รอปล่อยยอดให้ผู้ขาย</small>`:''}</div>`).join(''):'<p>ยังไม่มีออเดอร์</p>'}<button class="btn" onclick="closeCheckout()">ปิด</button></div>`;}
-</script>
-<div id="checkoutModal" class="modal" style="display:none"><div class="modal-card"><button class="close" onclick="closeCheckout()">×</button><div id="checkoutContent"></div></div></div>
-
-<div class="modal" id="sellerCenterModal"><div class="modal-card"><button class="close" onclick="closeSellerCenter()">×</button><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><div><h2>🏪 Seller Center</h2><p style="color:var(--muted);margin-top:-6px">ศูนย์จัดการร้านค้าแบบ Demo</p></div><span class="role-pill">SELLER</span></div><div class="seller-kpis"><div class="seller-kpi"><b id="sellerListingsCount">0</b><span>รายการของฉัน</span></div><div class="seller-kpi"><b>฿18,250</b><span>ยอดขายจำลอง</span></div><div class="seller-kpi"><b>4.9 ★</b><span>คะแนนร้าน</span></div></div><div class="seller-actions"><button class="btn primary" onclick="closeSellerCenter();openSell()">＋ ลงขายไอดี</button><button class="btn ghost" onclick="closeSellerCenter();openOrders()">🧾 ดูออเดอร์</button><button class="btn ghost" onclick="closeSellerCenter();openReview('ร้านของฉัน')">⭐ ดูตัวอย่างรีวิว</button><button class="btn ghost" onclick="openSellerInbox()">💬 กล่องข้อความ <span class="unread-pill" id="sellerUnread">0</span></button><button class="btn ghost" onclick="openKycCenter()">🪪 KYC / Verified</button></div><div class="seller-analytics"><h3>📊 สรุปยอดขายร้าน</h3><div class="seller-kpis"><div class="seller-kpi"><b id="sellerRevenue">฿0</b><span>ยอดขายสำเร็จ</span></div><div class="seller-kpi"><b id="sellerPending">฿0</b><span>ยอดรอรับ</span></div><div class="seller-kpi"><b id="sellerWithdrawable">฿0</b><span>ถอนได้</span></div></div><div id="sellerTopProducts"></div></div><h3>รายการในร้าน</h3><div id="sellerItems"></div></div></div>
-<div class="modal" id="accountModal"><div class="dialog"><button class="close" onclick="closeAccount()">×</button><h2>👤 บัญชีของฉัน</h2><p id="accountInfo" style="color:var(--muted)">ยังไม่ได้เข้าสู่ระบบ</p><div class="role-grid"><div class="role-card active" id="roleBuyer" onclick="setRole('buyer')"><b>🛒 Buyer</b><small> ซื้อและติดตามออเดอร์</small></div><div class="role-card" id="roleSeller" onclick="setRole('seller')"><b>🏪 Seller</b><small> ลงขายและจัดการสินค้า</small></div><div class="role-card" id="roleAdmin" onclick="setRole('admin')"><b>🛠️ Admin</b><small> จัดการร้านและออเดอร์</small></div></div><div style="margin-top:14px"><button class="btn primary" onclick="openAuth();closeAccount()">เปลี่ยนบัญชี</button> <button class="btn ghost" onclick="openProfile()">👤 โปรไฟล์</button> <button class="btn ghost" onclick="openAdminFull()">🛠️ แดชบอร์ด Admin</button> <button class="btn ghost" onclick="openSellerCenter();closeAccount()">🏪 Seller Center</button> <button class="btn ghost" onclick="logoutDemo()">ออกจากระบบ</button></div></div></div>
-<div class="modal" id="profileModal"><div class="modal-card"><button class="close" onclick="closeProfile()">×</button><h2>👤 โปรไฟล์ของฉัน</h2><div class="profile-head"><div class="avatar" id="profileAvatar">👤</div><div><h3 id="profileName">ผู้ใช้ Demo</h3><p id="profileEmail" style="color:var(--muted)">ยังไม่ได้เข้าสู่ระบบ</p></div></div><div class="profile-stats"><div><b id="profileOrders">0</b><span>ออเดอร์</span></div><div><b id="profileFavs">0</b><span>รายการโปรด</span></div><div><b id="profileReviews">0</b><span>รีวิว</span></div></div><div class="hero-card"><b>บทบาทบัญชี</b><p id="profileRole" style="color:var(--muted)">BUYER</p><button class="btn ghost" onclick="closeProfile();openOrders()">📦 ดูออเดอร์ของฉัน</button></div></div></div>
-<div class="modal" id="notifyModal"><div class="dialog"><button class="close" onclick="closeNotifications()">×</button><h2>🔔 การแจ้งเตือน</h2><div id="notifyList"></div></div></div>
-<div class="modal" id="reviewModal"><div class="dialog"><button class="close" onclick="closeReview()">×</button><h2>⭐ รีวิวผู้ขาย</h2><p id="reviewSeller" style="color:var(--muted)"></p><div class="field"><label>คะแนน</label><select id="reviewStars" class="filter"><option value="5">★★★★★ 5</option><option value="4">★★★★☆ 4</option><option value="3">★★★☆☆ 3</option><option value="2">★★☆☆☆ 2</option><option value="1">★☆☆☆☆ 1</option></select></div><div class="field"><label>ความคิดเห็น</label><textarea id="reviewText" placeholder="เขียนรีวิวการซื้อขาย"></textarea></div><button class="btn primary" onclick="submitReview()">ส่งรีวิว</button></div></div>
-
-
-<style>
-.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:15px 0}.admin-stat{background:var(--panel2);border:1px solid var(--line);border-radius:16px;padding:15px}.admin-stat b{display:block;font-size:24px;margin-top:4px}.admin-stat small{color:var(--muted);font-size:11px}.admin-pane{min-height:120px}.admin-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 15px}.admin-tab.active{background:var(--accent);color:#04120b}.admin-pane{display:none}.admin-pane.active{display:block}.admin-scroll{overflow:auto;max-height:390px}.admin-table td,.admin-table th{white-space:nowrap}.ban{color:var(--danger);font-weight:800}.admin-note{font-size:12px;color:var(--muted);margin-top:10px}
-.modal-card{width:min(760px,100%);max-height:90vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:22px;position:relative}.seller-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}.seller-kpi{background:#0c1320;border:1px solid var(--line);border-radius:14px;padding:14px}.seller-kpi b{display:block;font-size:21px}.seller-kpi span{color:var(--muted);font-size:11px}.seller-item{display:flex;justify-content:space-between;gap:12px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}.seller-actions{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:560px){.seller-kpis{grid-template-columns:1fr}.seller-item{align-items:flex-start;flex-direction:column}}
-@media(max-width:760px){.admin-stats{grid-template-columns:repeat(2,1fr)}}
-.profile-head{display:flex;align-items:center;gap:14px;padding:16px;background:#0c1320;border:1px solid var(--line);border-radius:16px}.avatar{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#182338;font-size:28px}.profile-head h3{margin:0 0 4px}.profile-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}.profile-stats>div{background:#0c1320;border:1px solid var(--line);border-radius:14px;padding:13px}.profile-stats b{display:block;font-size:21px}.profile-stats span{color:var(--muted);font-size:11px}@media(max-width:560px){.profile-stats{grid-template-columns:1fr}}.seller-analytics{margin:14px 0;padding:14px;border:1px solid var(--line);border-radius:16px;background:#0b1220}.seller-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.seller-kpi{background:#101a2b;border:1px solid var(--line);border-radius:14px;padding:12px}.seller-kpi b{display:block;font-size:20px}.seller-kpi span{color:var(--muted);font-size:11px}.top-product-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}@media(max-width:650px){.seller-kpis{grid-template-columns:1fr}}
-</style>
-
-<div class="modal" id="kycModal"><div class="modal-card"><button class="close" onclick="closeKycCenter()">×</button><h2>🪪 KYC & Trust Center</h2><p class="muted">ระบบยืนยันตัวตนผู้ขายสำหรับ Demo</p><div id="kycStatusBox"></div><div class="field"><label>ชื่อ-นามสกุล</label><input id="kycName" placeholder="ชื่อสำหรับตรวจสอบ"></div><div class="field"><label>เลขอ้างอิงเอกสาร</label><input id="kycDoc" placeholder="เช่น KYC-DEMO-001"></div><div class="field"><label>เบอร์/ช่องทางติดต่อ</label><input id="kycContact" placeholder="LINE หรือเบอร์โทร"></div><button class="btn primary" onclick="submitKyc()">ส่งคำขอตรวจสอบ</button><div style="margin-top:14px" class="hero-card"><b>Trust Score</b><div style="font-size:32px;font-weight:900;margin-top:5px" id="kycTrust">0/100</div><small class="muted">คะแนน Demo คำนวณจากสถานะ KYC + รีวิว + ประวัติออเดอร์</small></div></div></div>
-<div class="modal" id="deliveryModal"><div class="dialog" style="max-width:650px"><button class="close" onclick="closeDelivery()">×</button><h2>🔐 ส่งข้อมูลไอดีให้ผู้ซื้อ</h2><p id="deliveryOrderInfo" style="color:var(--muted)"></p><div class="field"><label>อีเมล/ID สำหรับเข้าสู่ระบบ</label><input id="deliveryLogin" placeholder="ตัวอย่าง: player@example.com"></div><div class="field"><label>รหัสผ่านไอดี</label><input id="deliveryPassword" type="text" placeholder="••••••••"></div><div class="field"><label>หมายเหตุจากผู้ขาย</label><textarea id="deliveryNote" placeholder="เช่น เปลี่ยนรหัสผ่านหลังรับมอบแล้ว"></textarea></div><button class="btn primary" onclick="saveDelivery()">บันทึกและส่งข้อมูล (Demo)</button></div></div>
-<div class="modal" id="adminFullModal"><div class="dialog" style="max-width:1050px;width:96%"><button class="close" onclick="closeAdminFull()">×</button><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><h2>🛠️ Admin Dashboard</h2><p class="muted">ศูนย์จัดการร้านค้า • Demo</p></div><span class="role-pill">ADMIN</span></div><div class="admin-stats"><div class="admin-stat">ผู้ใช้<b id="statUsers">0</b></div><div class="admin-stat">ผู้ขาย<b id="statSellers">0</b></div><div class="admin-stat">รายการสินค้า<b id="statListings">0</b></div><div class="admin-stat">ออเดอร์<b id="statOrders">0</b></div></div><div class="admin-tabs"><button class="btn admin-tab active" id="atUsers" onclick="showAdminPane('users')">👥 ผู้ใช้</button><button class="btn admin-tab" id="atListings" onclick="showAdminPane('listings')">📦 สินค้า</button><button class="btn admin-tab" id="atOrders" onclick="showAdminPane('orders')">🧾 ออเดอร์</button><button class="btn admin-tab" id="atReviews" onclick="showAdminPane('reviews')">⭐ รีวิว</button></div><div id="adminUsersPane" class="admin-pane active"><div class="admin-scroll"><table class="admin-table"><thead><tr><th>อีเมล</th><th>บทบาท</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody id="adminUsersRows"></tbody></table></div></div><div id="adminListingsPane" class="admin-pane"><div class="admin-scroll"><table class="admin-table"><thead><tr><th>สินค้า</th><th>ราคา</th><th>OVR</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody id="adminListingsRows"></tbody></table></div></div><div id="adminOrdersPane" class="admin-pane"><div class="admin-scroll"><table class="admin-table"><thead><tr><th>ออเดอร์</th><th>สินค้า</th><th>ราคา</th><th>สถานะ</th><th>จัดการ</th></tr></thead><tbody id="adminOrdersRows"></tbody></table></div></div><div id="adminReviewsPane" class="admin-pane"><div class="admin-scroll"><table class="admin-table"><thead><tr><th>ผู้ขาย</th><th>คะแนน</th><th>ความคิดเห็น</th><th>วันที่</th><th>จัดการ</th></tr></thead><tbody id="adminReviewsRows"></tbody></table></div></div><p class="admin-note">หมายเหตุ: ระบบนี้เป็นต้นแบบ Demo ข้อมูลถูกเก็บใน localStorage ของเบราว์เซอร์ ยังไม่มีระบบชำระเงินจริงหรือสิทธิ์แอดมินบนเซิร์ฟเวอร์</p></div></div>
-<script>
-function openSellerCenter(){if(currentRole!=='seller'){alert('ฟังก์ชันนี้สำหรับบทบาท SELLER ใน Demo เท่านั้น');return}refreshSellerCenter();document.getElementById('sellerCenterModal').classList.add('open')}
-function closeSellerCenter(){document.getElementById('sellerCenterModal').classList.remove('open')}
-function refreshSellerCenter(){document.getElementById('sellerListingsCount').textContent=listings.length;document.getElementById('sellerItems').innerHTML=listings.length?listings.map(x=>`<div class="seller-item"><div><b>${x.name}</b><div style="color:var(--muted);font-size:12px">OVR ${x.rating} · ฿${money(x.price)}</div></div><button class="btn ghost" onclick="openDetail(${x.id})">ดูสินค้า</button></div>`).join(''):'<p style="color:var(--muted)">ยังไม่มีรายการ</p>';refreshSellerAnalytics()}
-function refreshSellerAnalytics(){const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');let revenue=0,pending=0;const counts={};os.forEach(o=>{const price=Number(o.price)||0;const done=['ขายแล้ว','ซื้อขายสำเร็จ'].includes(o.status)||o.escrowReleased;if(done)revenue+=price;else if(!['ยกเลิก','Refund สำเร็จ'].includes(o.status))pending+=price;counts[o.name]=(counts[o.name]||0)+1});document.getElementById('sellerRevenue').textContent='฿'+money(revenue);document.getElementById('sellerPending').textContent='฿'+money(pending);document.getElementById('sellerWithdrawable').textContent='฿'+money(revenue);const top=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);document.getElementById('sellerTopProducts').innerHTML='<h4>🔥 สินค้าขายดี</h4>'+(top.length?top.map(([n,c],i)=>`<div class="top-product-row"><span>${i+1}. ${n}</span><b>${c} ออเดอร์</b></div>`).join(''):'<p style="color:var(--muted)">ยังไม่มีข้อมูลการขาย</p>')}
-let demoUsers=JSON.parse(localStorage.getItem('ef_users')||'null')||[
- {email:'admin@efootball.local',role:'admin',banned:false},{email:'seller@efootball.local',role:'seller',banned:false},{email:'buyer@efootball.local',role:'buyer',banned:false}
-];
-function saveAdminUsers(){localStorage.setItem('ef_users',JSON.stringify(demoUsers))}
-function openAdminFull(){
- if(currentRole!=='admin'){alert('ฟังก์ชันนี้สำหรับบทบาท ADMIN ใน Demo เท่านั้น');return}
- refreshAdminDashboard();document.getElementById('adminFullModal').classList.add('open')
-}
-function closeAdminFull(){document.getElementById('adminFullModal').classList.remove('open')}
-function showAdminPane(p){['users','listings','orders','reviews'].forEach(x=>{document.getElementById('admin'+x[0].toUpperCase()+x.slice(1)+'Pane').classList.toggle('active',x===p);document.getElementById('at'+x[0].toUpperCase()+x.slice(1)).classList.toggle('active',x===p)})}
-function toggleBanUser(i){demoUsers[i].banned=!demoUsers[i].banned;saveAdminUsers();refreshAdminDashboard()}
-function deleteAdminListing(id){removeListing(id);refreshAdminDashboard()}
-function setAdminOrderStatus(i,status){const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');if(!os[i])return;os[i].status=status;localStorage.setItem('ef_orders',JSON.stringify(os));orders=os;updateOrders();refreshAdminDashboard()}
-function deleteAdminReview(i){reviews.splice(i,1);localStorage.setItem('ef_reviews',JSON.stringify(reviews));refreshAdminDashboard()}
-let deliveryIndex=null;
-function openDelivery(i){const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');const o=os[i];if(!o)return;deliveryIndex=i;document.getElementById('deliveryOrderInfo').textContent='ออเดอร์ '+(o.orderNo||'-')+' • '+o.name+' • ฿'+money(o.price);document.getElementById('deliveryLogin').value=o.delivery?.login||'';document.getElementById('deliveryPassword').value=o.delivery?.password||'';document.getElementById('deliveryNote').value=o.delivery?.note||'';document.getElementById('deliveryModal').classList.add('open')}
-function closeDelivery(){document.getElementById('deliveryModal').classList.remove('open')}
-function saveDelivery(){if(deliveryIndex===null)return;const login=document.getElementById('deliveryLogin').value.trim(),password=document.getElementById('deliveryPassword').value.trim();if(!login||!password){alert('กรุณากรอกข้อมูลเข้าสู่ระบบให้ครบ');return}const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');if(!os[deliveryIndex])return;os[deliveryIndex].delivery={login,password,note:document.getElementById('deliveryNote').value.trim(),sentAt:new Date().toLocaleString('th-TH')};os[deliveryIndex].status='กำลังส่งข้อมูลไอดี';localStorage.setItem('ef_orders',JSON.stringify(os));orders=os;updateOrders();notifications.unshift({text:'มีข้อมูลไอดีสำหรับออเดอร์ '+(os[deliveryIndex].orderNo||'-')+' พร้อมรับแล้ว',read:false});localStorage.setItem('ef_notifications',JSON.stringify(notifications));syncAccountUI();closeDelivery();refreshAdminDashboard();alert('บันทึกข้อมูลไอดีแล้ว (Demo)')}
-function refreshAdminDashboard(){
- const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');orders=os;
- document.getElementById('statUsers').textContent=demoUsers.length;document.getElementById('statSellers').textContent=demoUsers.filter(u=>u.role==='seller').length;document.getElementById('statListings').textContent=listings.length;document.getElementById('statOrders').textContent=os.length;
- document.getElementById('adminUsersRows').innerHTML=demoUsers.map((u,i)=>`<tr><td>${u.email}</td><td><span class="role-pill">${u.role.toUpperCase()}</span></td><td class="${u.banned?'ban':''}">${u.banned?'ถูกระงับ':'ใช้งานปกติ'}</td><td><button class="btn ghost" onclick="toggleBanUser(${i})">${u.banned?'ปลดแบน':'ระงับ'}</button></td></tr>`).join('');
- document.getElementById('adminListingsRows').innerHTML=listings.length?listings.map(x=>`<tr><td>${x.name}</td><td>฿${money(x.price)}</td><td>${x.rating}</td><td>เปิดขาย</td><td><button class="btn ghost" onclick="deleteAdminListing(${x.id})">ลบ</button></td></tr>`).join(''):'<tr><td colspan="5">ไม่มีสินค้า</td></tr>';
- document.getElementById('adminOrdersRows').innerHTML=os.length?os.map((o,i)=>`<tr><td>${o.orderNo||'-'}</td><td>${o.name}</td><td>฿${money(o.price)}</td><td><select class="filter" onchange="setAdminOrderStatus(${i},this.value)"><option ${o.status==='รอดำเนินการ'?'selected':''}>รอดำเนินการ</option><option ${o.status==='รอตรวจสอบการชำระเงิน'?'selected':''}>รอตรวจสอบการชำระเงิน</option><option ${o.status==='กำลังส่งข้อมูลไอดี'?'selected':''}>กำลังส่งข้อมูลไอดี</option><option ${o.status==='ขายแล้ว'?'selected':''}>ขายแล้ว</option></select></td><td><button class="btn ghost" onclick="setAdminOrderStatus(${i},'ขายแล้ว')">ปิดงาน</button></td></tr>`).join(''):'<tr><td colspan="5">ยังไม่มีออเดอร์</td></tr>';
- document.getElementById('adminReviewsRows').innerHTML=reviews.length?reviews.map((r,i)=>`<tr><td>${r.seller}</td><td>${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</td><td>${String(r.text).replace(/</g,'&lt;')}</td><td>${r.created||'-'}</td><td><button class="btn ghost" onclick="deleteAdminReview(${i})">ลบ</button></td></tr>`).join(''):'<tr><td colspan="5">ยังไม่มีรีวิว</td></tr>';
-}
-</script>
-<script>
-// Profile, persistent chat and order detail extensions
-function openProfile(){
- const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');
- document.getElementById('profileEmail').textContent=currentUser?.email||'ยังไม่ได้เข้าสู่ระบบ';
- document.getElementById('profileName').textContent=currentUser?.email?.split('@')[0]||'ผู้ใช้ Demo';
- document.getElementById('profileRole').textContent=(currentRole||'buyer').toUpperCase();
- document.getElementById('profileOrders').textContent=os.length;
- document.getElementById('profileFavs').textContent=favorites.length;
- document.getElementById('profileReviews').textContent=reviews.length;
- document.getElementById('profileModal').classList.add('open');
-}
-function closeProfile(){document.getElementById('profileModal').classList.remove('open')}
-function chatKey(){return 'ef_chat_'+(currentDetailId||'general')}
-function loadChat(){
- const box=document.getElementById('chatBox'), saved=JSON.parse(localStorage.getItem(chatKey())||'[]');
- box.innerHTML=saved.length?saved.map(m=>`<div class="bubble ${m.me?'me':''}">${String(m.text).replace(/</g,'&lt;')}</div>`).join(''):'<div class="bubble">สวัสดีครับ สนใจไอดีนี้สอบถามรายละเอียดได้เลยครับ</div>';
- box.scrollTop=box.scrollHeight;
-}
-const _openChat=window.openChat;
-window.openChat=function(){closeDetail();loadChat();document.getElementById('chatModal').classList.add('open')}
-const _sendChat=window.sendChat;
-window.sendChat=function(){
- const i=document.getElementById('chatInput'),v=i.value.trim();if(!v)return;
- const arr=JSON.parse(localStorage.getItem(chatKey())||'[]');arr.push({text:v,me:true,at:new Date().toISOString()});
- localStorage.setItem(chatKey(),JSON.stringify(arr));
- document.getElementById('chatBox').insertAdjacentHTML('beforeend',`<div class="bubble me">${v.replace(/</g,'&lt;')}</div>`);
- i.value='';document.getElementById('chatBox').scrollTop=document.getElementById('chatBox').scrollHeight;
-}
-function orderStatusText(s){return typeof s==='number'?['สร้างคำสั่งซื้อ','รอตรวจสอบการชำระเงิน','กำลังส่งข้อมูลไอดี','ซื้อขายสำเร็จ'][s]||'รอดำเนินการ':(s||'รอดำเนินการ')}
-function openOrderDetail(i){
- const os=JSON.parse(localStorage.getItem('ef_orders')||'[]'),o=os[i];if(!o)return;
- const delivered=o.delivery&&o.status==='กำลังส่งข้อมูลไอดี'||o.delivery&&o.status==='ขายแล้ว';
- const stages=['สร้างคำสั่งซื้อ','รอตรวจสอบการชำระเงิน','กำลังส่งข้อมูลไอดี','ซื้อขายสำเร็จ'];
- const current=typeof o.status==='number'?o.status:(o.status==='ขายแล้ว'?3:o.status==='กำลังส่งข้อมูลไอดี'?2:o.status==='รอตรวจสอบการชำระเงิน'?1:0);
- document.getElementById('checkoutContent').innerHTML=`<div class="receipt-box"><h2>📦 รายละเอียดออเดอร์</h2><p><b>${o.name}</b></p><p>เลขออเดอร์ <span class="order-no">${o.orderNo||'-'}</span> · ฿${Number(o.price).toLocaleString()}</p><p style="color:var(--muted)">${o.created||''}</p><div class="status-track">${stages.map((x,n)=>`<div class="status-step ${n<=current?'done':''}"><span class="status-dot"></span>${x}</div>`).join('')}</div>${delivered?`<div class="hero-card"><h3>🔐 ข้อมูลไอดี</h3><p>Login: <b>${String(o.delivery.login).replace(/</g,'&lt;')}</b></p><p>Password: <b>${String(o.delivery.password).replace(/</g,'&lt;')}</b></p><p style="color:var(--muted)">${String(o.delivery.note||'').replace(/</g,'&lt;')}</p><button class="btn ghost" onclick="copyDelivery(${i})">📋 คัดลอกข้อมูล</button></div>`:`<p style="color:var(--muted)">ข้อมูลเข้าสู่ระบบจะแสดงเมื่อผู้ขายส่งมอบไอดีแล้ว</p>`}<div class="receipt-actions"><button class="btn" onclick="viewOrders()">ย้อนกลับ</button><button class="btn" onclick="closeCheckout()">ปิด</button></div></div>`;
-}
-function copyDelivery(i){const os=JSON.parse(localStorage.getItem('ef_orders')||'[]'),o=os[i];if(!o?.delivery)return;navigator.clipboard?.writeText(`Login: ${o.delivery.login}\nPassword: ${o.delivery.password}`).then(()=>alert('คัดลอกข้อมูลแล้ว (Demo)')).catch(()=>alert('ไม่สามารถคัดลอกอัตโนมัติได้'))}
-const _viewOrders=window.viewOrders;
-window.viewOrders=function(){
- const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');
- document.getElementById('checkoutContent').innerHTML=`<div class="receipt-box"><h2>📦 ออเดอร์ของฉัน</h2>${os.length?os.map((o,i)=>`<div class="status-step"><div style="flex:1"><b>${o.name}</b><br><span class="order-no">${o.orderNo||'-'}</span> · ฿${Number(o.price).toLocaleString()}<br><small>${o.created||''}</small><br><span class="status">${orderStatusText(o.status)}</span></div><button class="btn ghost" onclick="openOrderDetail(${i})">รายละเอียด</button></div>`).join(''):'<p>ยังไม่มีออเดอร์</p>'}<button class="btn" onclick="closeCheckout()">ปิด</button></div>`;
- document.getElementById('checkoutModal').style.display='flex';
-}
-</script>
-
-<div class="mobile-nav" aria-label="เมนูมือถือ">
-<button class="active" onclick="mobileGo('market',this)"><b>🏪</b>ตลาด</button>
-<button onclick="mobileGo('seller',this)"><b>👤</b>ร้านค้า</button>
-<button onclick="openOrdersFromNav()"><b>📦</b>ออเดอร์</button>
-<button onclick="openAccount()"><b>☰</b>บัญชี</button>
+  </div>
 </div>
-<div class="modal" id="sellerInboxModal"><div class="modal-card"><button class="close" onclick="closeSellerInbox()">×</button><h2>💬 กล่องข้อความร้านค้า</h2><p style="color:var(--muted)">ห้องสนทนากับลูกค้าในเครื่องนี้ (Demo)</p><div id="sellerInboxList"></div></div></div><div class="modal" id="compareModal"><div class="modal-box compare-modal"><div class="modal-head"><div><b>⚖️ เปรียบเทียบไอดี</b><div class="muted">เปรียบเทียบรายละเอียดก่อนซื้อ</div></div><button class="icon-btn" onclick="closeModal('compareModal')">×</button></div><div class="compare-wrap" id="compareContent"></div></div></div><div class="compare-bar" id="compareBar"><span>เลือกแล้ว <span class="compare-count" id="compareCount">0</span>/3</span><button class="btn primary" onclick="openCompare()">⚖️ เปรียบเทียบ</button><button class="btn" onclick="clearCompare()">ล้าง</button></div>
-<button class="to-top" id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="กลับขึ้นบน">↑</button>
-<script>window.addEventListener('scroll',()=>{const b=document.getElementById('toTop');if(b)b.style.display=scrollY>500?'grid':'none'});</script>
+
+
+<!-- SELL -->
+
+<div id="sellModal" class="modal">
+  <div class="modal-box">
+
+    <h2>ลงขายไอดี</h2>
+
+    <label>ชื่อรายการ</label>
+    <input id="sellTitle" placeholder="เช่น ไอดีทีมระดับสูง">
+
+    <label>รายละเอียด</label>
+    <textarea id="sellDescription"></textarea>
+
+    <label>ราคา (บาท)</label>
+    <input id="sellPrice" type="number" min="1">
+
+    <label>ข้อมูลไอดี</label>
+    <textarea
+      id="sellAccountData"
+      placeholder="ข้อมูลเข้าสู่ระบบไอดี จะถูกเก็บอย่างปลอดภัย"
+    ></textarea>
+
+    <div class="row">
+      <button class="primary" onclick="createListing()">ลงขาย</button>
+      <button class="secondary" onclick="closeModals()">ปิด</button>
+    </div>
+
+  </div>
+</div>
+
 
 <script>
-function chatStamp(iso){try{return new Date(iso).toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit'})}catch(e){return ''}}
-function chatPreset(v){const i=document.getElementById('chatInput');if(i){i.value=v;i.focus()}}
-function clearCurrentChat(){if(!confirm('ล้างประวัติแชตห้องนี้ในเครื่องนี้หรือไม่?'))return;localStorage.removeItem(chatKey());loadChat()}
-function loadChat(){
- const box=document.getElementById('chatBox');if(!box)return;const saved=JSON.parse(localStorage.getItem(chatKey())||'[]');
- if(!saved.length){box.innerHTML='<div class="bubble">สวัสดีครับ สนใจไอดีนี้สอบถามรายละเอียดได้เลยครับ</div>';return}
- box.innerHTML=saved.map(m=>'<div class="bubble '+(m.me?'me':'')+'">'+String(m.text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))+'<span class="chat-time">'+chatStamp(m.at)+'</span></div>').join('');box.scrollTop=box.scrollHeight;
+
+/* ================================
+   API
+================================ */
+
+const API_BASE_URL =
+  localStorage.getItem("ef_api_base_url") ||
+  "https://efootball-market-api.onrender.com";
+
+
+function getToken() {
+  return localStorage.getItem("ef_token") || "";
 }
-window.sendChat=function(){const i=document.getElementById('chatInput'),v=i?.value.trim();if(!v)return;const key=chatKey(),arr=JSON.parse(localStorage.getItem(key)||'[]');arr.push({text:v,me:true,at:new Date().toISOString()});localStorage.setItem(key,JSON.stringify(arr));i.value='';loadChat();setTimeout(()=>{const a=JSON.parse(localStorage.getItem(key)||'[]');a.push({text:'รับทราบครับ เดี๋ยวผมส่งรายละเอียดให้ครับ 👍',me:false,at:new Date().toISOString()});localStorage.setItem(key,JSON.stringify(a));if(document.getElementById('chatModal')?.classList.contains('open'))loadChat();},700)};
-function closeChat(){document.getElementById('chatModal')?.classList.remove('open')}
-function chatRooms(){const rooms=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.startsWith('ef_chat_')){const a=JSON.parse(localStorage.getItem(k)||'[]');if(a.length)rooms.push({key:k,last:a[a.length-1],count:a.filter(x=>!x.me).length})}}return rooms.sort((a,b)=>String(b.last.at).localeCompare(String(a.last.at)))}
-function openSellerInbox(){const box=document.getElementById('sellerInboxList');if(!box)return;const rooms=chatRooms();box.innerHTML=rooms.length?rooms.map(r=>{const id=r.key.replace('ef_chat_','');const item=listings.find(x=>String(x.id)===id);return '<div class="chat-room"><div><b>🏪 '+escapeHtml(item?.name||'ห้องแชตทั่วไป')+'</b><div class="chat-meta">'+escapeHtml(r.last.text)+' • '+chatStamp(r.last.at)+'</div></div><button class="btn primary" onclick="openSellerRoom(\''+escapeHtml(id)+'\')">เปิด</button></div>'}).join(''):'<div class="empty" style="display:block">ยังไม่มีข้อความจากลูกค้า</div>';document.getElementById('sellerInboxModal').classList.add('open');document.getElementById('sellerUnread').textContent=rooms.filter(r=>!r.last.me).length}
-function closeSellerInbox(){document.getElementById('sellerInboxModal')?.classList.remove('open')}
-function openSellerRoom(id){currentDetailId=isNaN(Number(id))?id:Number(id);closeSellerInbox();loadChat();document.getElementById('chatModal').classList.add('open')}
-</script>
-<button id="adminHubBtn" class="fab" onclick="adminHub()" title="Admin Control Center">🛡️</button>
 
-<script>
-(function(){
-  const esc = s => String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
-  window.exportOrdersCSV = function(){
-    const orders=JSON.parse(localStorage.getItem('ef_orders')||'[]');
-    const rows=[['Order','Date','Buyer','Product','Amount','Status','Payment']];
-    orders.forEach(o=>rows.push([o.id||'',o.createdAt||'',o.buyer||'',o.title||o.product||'',o.netPrice??o.price??0,o.status||'',o.paymentMethod||'']));
-    const csv='\\ufeff'+rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\\n');
-    const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download='efootball-orders-'+new Date().toISOString().slice(0,10)+'.csv'; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),500);
+
+async function api(path, options = {}) {
+
+  const headers = {
+    "Content-Type": "application/json",
+    ...(options.headers || {})
   };
-  window.showSalesReport = function(){
-    const orders=JSON.parse(localStorage.getItem('ef_orders')||'[]');
-    const done=orders.filter(o=>/สำเร็จ|completed|sold/i.test(o.status||''));
-    const map={}; done.forEach(o=>{const d=(o.createdAt||'').slice(0,10)||'ไม่ระบุ'; map[d]=(map[d]||0)+Number(o.netPrice??o.price??0)});
-    const days=Object.entries(map).sort((a,b)=>a[0].localeCompare(b[0])).slice(-14);
-    const total=done.reduce((n,o)=>n+Number(o.netPrice??o.price??0),0);
-    const modal=document.createElement('div'); modal.className='modal'; modal.innerHTML='<div class="modal-box" style="max-width:760px"><div class="modal-head"><b>📊 รายงานยอดขาย</b><button onclick="this.closest(\'.modal\').remove()">✕</button></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0"><div class="stat"><small>ยอดขายสำเร็จ</small><strong>฿'+total.toLocaleString()+'</strong></div><div class="stat"><small>ออเดอร์สำเร็จ</small><strong>'+done.length+'</strong></div></div><div style="height:260px;display:flex;align-items:end;gap:8px;padding:20px 8px;border-bottom:1px solid var(--line)">'+days.map(([d,v])=>{const max=Math.max(...days.map(x=>x[1]),1);const h=Math.max(6,Math.round(v/max*190));return '<div title="'+esc(d)+' ฿'+v.toLocaleString()+'" style="flex:1;text-align:center"><div style="height:'+h+'px;background:linear-gradient(180deg,#5ee7ff,#6677ff);border-radius:8px 8px 2px 2px"></div><small style="display:block;margin-top:6px;font-size:10px">'+esc(d.slice(5))+'</small></div>'}).join('')+'</div><div style="margin-top:14px;display:flex;justify-content:flex-end;gap:8px"><button class="btn primary" onclick="exportOrdersCSV()">⬇️ Export CSV</button></div></div>'; document.body.appendChild(modal);
-  };
-  const style=document.createElement('style'); style.textContent='.stat{background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:14px;padding:12px 16px;min-width:150px}.stat small{display:block;color:var(--muted)}.stat strong{font-size:22px}'; document.head.appendChild(style);
-  const hook=()=>{document.querySelectorAll('button').forEach(b=>{if(!b.dataset.analyticsHook && /analytics|วิเคราะห์|ยอดขาย/i.test(b.textContent)){b.dataset.analyticsHook=1; const x=document.createElement('button');x.className=b.className||'btn';x.textContent='📈 กราฟ/Export';x.onclick=showSalesReport;b.parentNode.insertBefore(x,b.nextSibling)}})};
-  setTimeout(hook,500); setInterval(hook,2000);
-})();
-</script>
-<button id="pwaInstallBtn" onclick="installApp()" style="display:none;position:fixed;right:16px;bottom:78px;z-index:9999;border:0;border-radius:999px;padding:12px 16px;background:#1d4ed8;color:#fff;font-weight:800;box-shadow:0 10px 30px #0006">📲 ติดตั้งแอป</button>
-<script>
-let deferredInstallPrompt=null;
-window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstallPrompt=e;const b=document.getElementById('pwaInstallBtn');if(b)b.style.display='block';});
-async function installApp(){if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;const b=document.getElementById('pwaInstallBtn');if(b)b.style.display='none';}
-window.addEventListener('appinstalled',()=>{const b=document.getElementById('pwaInstallBtn');if(b)b.style.display='none';});
-</script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}));}</script>
 
-<style>
-.dispute-list{display:grid;gap:10px}.dispute-card{border:1px solid var(--line);background:rgba(255,255,255,.04);border-radius:14px;padding:14px}.dispute-meta{color:var(--muted);font-size:13px}.dispute-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.badge-open{background:#7c2d12}.badge-review{background:#1d4ed8}.badge-wait{background:#854d0e}.badge-closed{background:#166534}.dispute-badge{display:inline-block;color:#fff;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800}
-</style>
-<div class="modal" id="disputeModal"><div class="modal-box" style="max-width:760px"><div class="modal-head"><div><b>⚖️ ศูนย์ข้อพิพาท</b><div class="muted">จัดการปัญหาจากการซื้อขาย</div></div><button class="icon-btn" onclick="closeDisputes()">×</button></div><div id="disputeContent"></div></div></div>
-<script>
-(function(){
- const KEY='ef_disputes';
- const get=()=>JSON.parse(localStorage.getItem(KEY)||'[]');
- const save=a=>localStorage.setItem(KEY,JSON.stringify(a));
- const esc=s=>String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
- function statusClass(s){return s==='ปิดเคส'?'badge-closed':s==='กำลังตรวจสอบ'?'badge-review':s==='รอข้อมูล'?'badge-wait':'badge-open'}
- function notify(text){let a=JSON.parse(localStorage.getItem('ef_notifications')||'[]');a.unshift({text,read:false,at:new Date().toISOString()});localStorage.setItem('ef_notifications',JSON.stringify(a));if(typeof notifications!=='undefined'){notifications=a;if(typeof syncAccountUI==='function')syncAccountUI()}}
- window.openDisputes=function(){
-  const a=get(), isAdmin=typeof currentUser!=='undefined'&&currentUser?.role==='admin';
-  const mine=isAdmin?a:a.filter(x=>!currentUser?.email||x.email===currentUser.email);
-  document.getElementById('disputeContent').innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px"><button class="btn primary" onclick="newDispute()">➕ เปิดเคสใหม่</button><span class="status">ทั้งหมด '+mine.length+'</span></div>'+ (mine.length?'<div class="dispute-list">'+mine.map((d,i)=>'<div class="dispute-card"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><div><b>เคส #'+esc(d.id)+'</b><div class="dispute-meta">ออเดอร์: '+esc(d.orderNo||'-')+' · '+esc(d.email||'-')+'</div></div><span class="dispute-badge '+statusClass(d.status)+'">'+esc(d.status)+'</span></div><p><b>'+esc(d.reason)+'</b></p><div>'+esc(d.detail)+'</div><div class="dispute-meta" style="margin-top:8px">สร้างเมื่อ '+esc(d.created)+'</div><div class="dispute-actions">'+(isAdmin?'<button class="btn ghost" onclick="updateDispute(\''+esc(d.id)+'\')">🔄 อัปเดตสถานะ</button>':'')+'<button class="btn ghost" onclick="viewDispute(\''+esc(d.id)+'\')">ดูรายละเอียด</button></div></div>').join('')+'</div>':'<div class="empty" style="display:block">ยังไม่มีข้อพิพาท</div>');
-  document.getElementById('disputeModal').classList.add('open');
- };
- window.closeDisputes=()=>document.getElementById('disputeModal')?.classList.remove('open');
- window.newDispute=function(){
-  const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');
-  const opts=os.map((o,i)=>i+': '+(o.orderNo||'-')+' · '+o.name).join('\n');
-  const idx=prompt('เลือกเลขรายการออเดอร์ (0,1,2...):\n'+(opts||'ยังไม่มีออเดอร์')); if(idx===null)return;
-  const o=os[Number(idx)]; if(!o){alert('ไม่พบออเดอร์');return}
-  const reason=prompt('เหตุผลของเคส เช่น ได้ข้อมูลไอดีไม่ครบ / ชำระเงินแล้ว / สินค้าไม่ตรงรายละเอียด'); if(!reason)return;
-  const detail=prompt('รายละเอียดเพิ่มเติม'); if(detail===null)return;
-  const a=get(), id='DSP-'+Date.now().toString().slice(-8);
-  a.unshift({id,orderNo:o.orderNo||'-',orderIndex:Number(idx),email:(typeof currentUser!=='undefined'&&currentUser?.email)||'guest@demo.local',reason,detail,status:'เปิดเคส',created:new Date().toLocaleString('th-TH'),updates:[]});save(a);notify('เปิดข้อพิพาท '+id+' สำหรับออเดอร์ '+(o.orderNo||'-')+' แล้ว');openDisputes();
- };
- window.viewDispute=function(id){const d=get().find(x=>x.id===id);if(!d)return;const u=d.updates||[];alert('เคส '+d.id+'\nสถานะ: '+d.status+'\nเหตุผล: '+d.reason+'\nรายละเอียด: '+d.detail+'\n\n'+(u.length?'ประวัติ:\n'+u.map(x=>x.at+' — '+x.text).join('\n'):'ยังไม่มีการอัปเดต'))};
- window.updateDispute=function(id){const a=get(),d=a.find(x=>x.id===id);if(!d)return;const s=prompt('สถานะใหม่:\n1 เปิดเคส\n2 กำลังตรวจสอบ\n3 รอข้อมูล\n4 ปิดเคส',d.status);if(!s)return;const map={'1':'เปิดเคส','2':'กำลังตรวจสอบ','3':'รอข้อมูล','4':'ปิดเคส'};d.status=map[s]||s;const note=prompt('บันทึกการดำเนินการ (ไม่บังคับ)','Admin อัปเดตสถานะเคส');d.updates=d.updates||[];d.updates.push({at:new Date().toLocaleString('th-TH'),text:note||('เปลี่ยนสถานะเป็น '+d.status)});save(a);notify('เคส '+d.id+' เปลี่ยนสถานะเป็น '+d.status);openDisputes()};
- const b=document.createElement('button');b.className='fab';b.textContent='⚖️';b.title='ศูนย์ข้อพิพาท';b.onclick=openDisputes;document.body.appendChild(b);
-})();
-</script>
+  const token = getToken();
 
+  if (token) {
+    headers.Authorization = "Bearer " + token;
+  }
 
-<style>
-.wallet-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0}.wallet-card{padding:15px;border:1px solid var(--line);border-radius:15px;background:rgba(255,255,255,.04)}.wallet-card b{font-size:22px}.wallet-list{display:grid;gap:8px;margin-top:12px}.wallet-row{padding:12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.025)}.wallet-tabs{display:flex;gap:8px;flex-wrap:wrap}.wallet-tabs button.active{outline:2px solid currentColor}.refund-badge{display:inline-block;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:800;background:#7c2d12;color:#fff}.refund-ok{background:#166534}.refund-pending{background:#854d0e}
-@media(max-width:700px){.wallet-grid{grid-template-columns:1fr}}
-</style>
-<div class="modal" id="walletModal"><div class="modal-box" style="max-width:820px"><div class="modal-head"><div><b>💰 กระเป๋าเงิน & การเงิน</b><div class="muted">ยอดเงินผู้ซื้อ · ยอดขายผู้ขาย · Refund</div></div><button class="icon-btn" onclick="closeWallet()">×</button></div><div id="walletContent"></div></div></div>
-<script>
-(function(){
- const WK='ef_wallets', RK='ef_refunds', PK='ef_payouts';
- const read=k=>JSON.parse(localStorage.getItem(k)||'{}'); const arr=k=>JSON.parse(localStorage.getItem(k)||'[]');
- const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
- const email=()=>typeof currentUser!=='undefined'&&currentUser?.email||'guest@demo.local';
- const role=()=>typeof currentUser!=='undefined'&&currentUser?.role||'buyer';
- const money=n=>Number(n||0).toLocaleString('th-TH',{minimumFractionDigits:2});
- function wallet(e){let w=read(WK); if(!w[e])w[e]={balance:0,earned:0,spent:0}; return w[e]}
- function saveWallet(e,w){let all=read(WK);all[e]=w;put(WK,all)}
- function notify2(t){if(typeof notify==='function')notify(t);else{let n=arr('ef_notifications');n.unshift({text:t,read:false,at:new Date().toISOString()});put('ef_notifications',n)}}
- window.closeWallet=()=>document.getElementById('walletModal')?.classList.remove('open');
- window.openWallet=function(){
-   const e=email(), w=wallet(e), admin=role()==='admin', seller=role()==='seller';
-   const refunds=arr(RK), payouts=arr(PK);
-   const mineR=admin?refunds:refunds.filter(x=>x.email===e), mineP=admin?payouts:payouts.filter(x=>x.email===e);
-   const refundHtml=mineR.length?mineR.map(function(x){return '<div class="wallet-row"><b>'+x.id+'</b> · ออเดอร์ '+(x.orderNo||'-')+'<br><span class="muted">฿'+money(x.amount)+' · '+x.reason+'</span><br><span class="refund-badge '+(x.status==='อนุมัติ'?'refund-ok':'refund-pending')+'">'+x.status+'</span>'+(admin&&x.status==='รอตรวจสอบ'?' <button class="btn ghost" onclick="reviewRefund(\''+x.id+'\',\'approve\')">อนุมัติ</button> <button class="btn ghost" onclick="reviewRefund(\''+x.id+'\',\'reject\')">ปฏิเสธ</button>':'')+'</div>';}).join(''):'<div class="empty" style="display:block">ยังไม่มีคำขอ Refund</div>';
-   const payoutHtml=mineP.length?mineP.map(function(x){return '<div class="wallet-row"><b>'+x.id+'</b> · '+x.email+'<br>฿'+money(x.amount)+' · '+(x.method||'โอนธนาคาร')+' · <span class="refund-badge '+(x.status==='อนุมัติ'?'refund-ok':'refund-pending')+'">'+x.status+'</span>'+(x.status==='รอตรวจสอบ'?' <button class="btn ghost" onclick="reviewPayout(\''+x.id+'\',\'approve\')">อนุมัติ</button> <button class="btn ghost" onclick="reviewPayout(\''+x.id+'\',\'reject\')">ปฏิเสธ</button>':'')+'</div>';}).join(''):'<div class="empty" style="display:block">ยังไม่มีคำขอถอนเงิน</div>';
-   document.getElementById('walletContent').innerHTML='<div class="wallet-grid"><div class="wallet-card"><div class="muted">ยอดคงเหลือ</div><b>฿'+money(w.balance)+'</b></div><div class="wallet-card"><div class="muted">ยอดรับทั้งหมด</div><b>฿'+money(w.earned)+'</b></div><div class="wallet-card"><div class="muted">ยอดใช้ทั้งหมด</div><b>฿'+money(w.spent)+'</b></div></div><div class="wallet-tabs">'+(seller||admin?'<button class="btn primary" onclick="sellerPayout()">💸 ขอถอนเงิน</button>':'')+'<button class="btn ghost" onclick="requestRefund()">↩️ ขอ Refund</button><button class="btn ghost" onclick="walletHistory()">📜 ประวัติธุรกรรม</button></div><div class="wallet-list"><h3>คำขอ Refund</h3>'+refundHtml+'</div>'+(admin?'<div class="wallet-list"><h3>คำขอถอนเงิน</h3>'+payoutHtml+'</div>':'');
-   document.getElementById('walletModal').classList.add('open');
- };
- window.requestRefund=function(){
-   const os=arr('ef_orders').filter(o=>!currentUser?.email||o.buyer===email()||o.email===email());
-   const idx=prompt('เลือกเลขออเดอร์สำหรับ Refund:\n'+os.map((o,i)=>i+': '+(o.orderNo||'-')+' ฿'+money(o.netPrice||o.total||o.price)).join('\n')); if(idx===null)return;
-   const o=os[Number(idx)]; if(!o){alert('ไม่พบออเดอร์');return} const amount=Number(o.netPrice||o.total||o.price||0); const reason=prompt('เหตุผลขอ Refund'); if(!reason)return;
-   const r=arr(RK); const id='RF-'+Date.now().toString().slice(-8); r.unshift({id,orderNo:o.orderNo||'-',email:email(),amount,reason,status:'รอตรวจสอบ',created:new Date().toLocaleString('th-TH')});put(RK,r);notify2('ส่งคำขอ Refund '+id+' แล้ว');openWallet();
- };
- window.reviewRefund=function(id,action){if(role()!=='admin')return;const r=arr(RK),x=r.find(v=>v.id===id);if(!x)return;x.status=action==='approve'?'อนุมัติ':'ปฏิเสธ';x.reviewedAt=new Date().toLocaleString('th-TH');if(action==='approve'){let w=wallet(x.email);w.balance+=Number(x.amount);w.earned+=Number(x.amount);saveWallet(x.email,w);let os=arr('ef_orders'),o=os.find(v=>v.orderNo===x.orderNo);if(o)o.refundStatus='คืนเงินแล้ว';put('ef_orders',os)}put(RK,r);notify2('Refund '+id+' '+x.status);openWallet()};
- window.sellerPayout=function(){const w=wallet(email());if(w.balance<=0){alert('ยอดคงเหลือไม่พอสำหรับถอนเงิน');return}const amount=Number(prompt('จำนวนเงินที่ต้องการถอน (สูงสุด ฿'+money(w.balance)+')',w.balance));if(!amount||amount<=0||amount>w.balance){alert('จำนวนเงินไม่ถูกต้อง');return}const method=prompt('ช่องทางรับเงิน','โอนธนาคาร');const p=arr(PK);p.unshift({id:'PO-'+Date.now().toString().slice(-8),email:email(),amount,method,status:'รอตรวจสอบ',created:new Date().toLocaleString('th-TH')});w.balance-=amount;saveWallet(email(),w);put(PK,p);notify2('ส่งคำขอถอนเงิน ฿'+money(amount)+' แล้ว');openWallet()};
- window.reviewPayout=function(id,action){if(role()!=='admin')return;const p=arr(PK),x=p.find(v=>v.id===id);if(!x)return;x.status=action==='approve'?'อนุมัติ':'ปฏิเสธ';x.reviewedAt=new Date().toLocaleString('th-TH');x.reference='EF-'+Date.now().toString().slice(-10);if(action==='reject'){let w=wallet(x.email);w.balance+=Number(x.amount);saveWallet(x.email,w)}put(PK,p);notify2('คำขอถอนเงิน '+id+' '+x.status);openWallet()};
-window.payoutReceipt=function(id){const x=arr(PK).find(v=>v.id===id);if(!x)return;alert('ใบเสร็จการถอนเงิน\n\nเลขที่: '+x.id+'\nผู้รับ: '+x.email+'\nจำนวน: ฿'+money(x.amount)+'\nช่องทาง: '+(x.method||'โอนธนาคาร')+'\nสถานะ: '+x.status+'\nวันที่สร้าง: '+(x.created||'-')+'\nวันที่ตรวจสอบ: '+(x.reviewedAt||'-')+'\nเลขอ้างอิง: '+(x.reference||'-'));};
- window.walletHistory=function(){const e=email(),r=arr(RK).filter(x=>x.email===e),p=arr(PK).filter(x=>x.email===e);alert('ประวัติการเงิน\n\nRefund:\n'+(r.map(x=>x.id+' · ฿'+money(x.amount)+' · '+x.status).join('\n')||'-')+'\n\nถอนเงิน:\n'+(p.map(x=>x.id+' · ฿'+money(x.amount)+' · '+x.status).join('\n')||'-'))};
- const b=document.createElement('button');b.className='fab';b.textContent='💰';b.title='กระเป๋าเงิน';b.onclick=openWallet;document.body.appendChild(b);
-})();
-</script>
+  const response = await fetch(
+    API_BASE_URL + path,
+    {
+      ...options,
+      headers
+    }
+  );
 
-<style>
-.delivery-proof{padding:12px;border:1px solid var(--line);border-radius:14px;margin-top:10px;background:rgba(255,255,255,.025)}
-.delivery-proof img{max-width:100%;max-height:220px;border-radius:10px;margin-top:8px}.proof-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.proof-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}@media(max-width:700px){.proof-grid{grid-template-columns:1fr}}
-</style>
-<div class="modal" id="deliveryModal"><div class="modal-box" style="max-width:820px"><div class="modal-head"><div><b>📦 หลักฐานการส่งมอบ</b><div class="muted">ตรวจสอบข้อมูลการส่งมอบของออเดอร์</div></div><button class="icon-btn" onclick="closeDeliveryProof()">×</button></div><div id="deliveryContent"></div></div></div>
-<script>
-(function(){
- const ORD='ef_orders';
- const readO=()=>{try{return JSON.parse(localStorage.getItem(ORD)||'[]')}catch(e){return[]}};
- const putO=x=>localStorage.setItem(ORD,JSON.stringify(x));
- const em=()=>window.currentUser?.email||localStorage.getItem('ef_user_email')||'guest@demo.local';
- const rl=()=>localStorage.getItem('ef_role')||window.currentUser?.role||'buyer';
- const note=t=>{try{if(typeof notify==='function')notify(t);else{let n=JSON.parse(localStorage.getItem('ef_notifications')||'[]');n.unshift({text:t,read:false,at:new Date().toISOString()});localStorage.setItem('ef_notifications',JSON.stringify(n))}}catch(e){}};
- window.closeDeliveryProof=()=>document.getElementById('deliveryModal')?.classList.remove('open');
- window.openDeliveryProof=function(orderNo){
-  const os=readO(),o=os.find(x=>x.orderNo===orderNo);if(!o)return alert('ไม่พบออเดอร์');
-  const isBuyer=o.buyer===em()||o.email===em(), isAdmin=rl()==='admin', isSeller=rl()==='seller';
-  window._proofOrder=orderNo;
-  let proof=o.deliveryProof;
-  document.getElementById('deliveryContent').innerHTML=`<div class="proof-grid"><div class="delivery-proof"><b>ออเดอร์</b><div>${o.orderNo||'-'}</div><div class="muted">สถานะ: ${o.status||'-'}</div></div><div class="delivery-proof"><b>การยืนยันรับมอบ</b><div>${o.receivedConfirmed?'✅ ยืนยันแล้ว':'⏳ ยังไม่ยืนยัน'}</div><div class="muted">${o.receivedAt||''}</div></div></div><div class="delivery-proof"><b>ข้อมูลส่งมอบ</b><p>${o.deliveryInfo?'มีข้อมูลไอดีส่งมอบแล้ว':'ยังไม่มีข้อมูลส่งมอบ'}</p>${o.deliveryInfo?'<pre style="white-space:pre-wrap">'+String(o.deliveryInfo).replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]))+'</pre>':''}</div><div class="delivery-proof"><b>หลักฐาน</b>${proof?.image?'<img src="'+proof.image+'">':'<div class="muted">ยังไม่มีรูปหลักฐาน</div>'}<div class="muted">${proof?.note||''}</div>${(isAdmin||isSeller)?'<div class="proof-actions"><label class="btn ghost">📎 แนบหลักฐาน<input id="proofFile" type="file" accept="image/*" hidden></label><button class="btn primary" onclick="saveDeliveryProof()">บันทึกหลักฐาน</button></div>':''}</div>${isBuyer&&!o.receivedConfirmed&&o.deliveryInfo?'<div class="proof-actions"><button class="btn primary" onclick="confirmDeliveryReceived()">✅ ยืนยันว่าได้รับไอดีแล้ว</button><button class="btn ghost" onclick="openDisputeFromOrder(window._proofOrder)">⚖️ เปิดข้อพิพาท</button></div>':''}`;
-  document.getElementById('deliveryModal').classList.add('open');
- };
- window.saveDeliveryProof=function(orderNo){orderNo=orderNo||window._proofOrder;const f=document.getElementById('proofFile')?.files?.[0];if(!f)return alert('กรุณาเลือกรูปหลักฐาน');const r=new FileReader();r.onload=()=>{const os=readO(),o=os.find(x=>x.orderNo===orderNo);if(!o)return;o.deliveryProof={image:r.result,note:'หลักฐานการส่งมอบ',uploadedBy:em(),uploadedAt:new Date().toLocaleString('th-TH')};putO(os);note('เพิ่มหลักฐานการส่งมอบออเดอร์ '+orderNo+' แล้ว');openDeliveryProof(orderNo)};r.readAsDataURL(f)};
- window.confirmDeliveryReceived=function(orderNo){orderNo=orderNo||window._proofOrder;const os=readO(),o=os.find(x=>x.orderNo===orderNo);if(!o)return;if(o.receivedConfirmed)return alert('ออเดอร์นี้ยืนยันรับมอบแล้ว');o.receivedConfirmed=true;o.receivedAt=new Date().toLocaleString('th-TH');o.status='ซื้อขายสำเร็จ';o.deliveryConfirmedBy=em();putO(os);note('ผู้ซื้อยืนยันรับมอบออเดอร์ '+orderNo+' แล้ว');try{let ws=JSON.parse(localStorage.getItem('ef_wallets')||'{}');const seller=o.sellerEmail||o.seller;const amt=Number(o.netPrice||o.total||o.price||0);if(seller&&amt&&o.escrowReleased!==true){ws[seller]=ws[seller]||{balance:0,earned:0,spent:0};ws[seller].balance+=amt;ws[seller].earned+=amt;o.escrowReleased=true;putO(os);localStorage.setItem('ef_wallets',JSON.stringify(ws));}}catch(e){}alert('ยืนยันรับมอบสำเร็จ');openDeliveryProof(orderNo)};
- window.openDisputeFromOrder=function(orderNo){if(typeof openDispute==='function'){openDispute(orderNo);return}alert('เปิดข้อพิพาทสำหรับออเดอร์ '+orderNo+' ได้จากศูนย์ข้อพิพาท');};
- window.showDeliveryForOrder=function(orderNo){openDeliveryProof(orderNo)};
-})();
-</script>
+  const text = await response.text();
 
-<style>
-.admin-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.admin-toolbar input,.admin-toolbar select{background:#0b1320;color:#fff;border:1px solid var(--line);border-radius:10px;padding:10px}.admin-order-table{width:100%;border-collapse:collapse;min-width:850px}.admin-order-table th,.admin-order-table td{padding:10px;border-bottom:1px solid var(--line);font-size:12px;text-align:left;vertical-align:top}.admin-order-wrap{overflow:auto;border:1px solid var(--line);border-radius:14px}.admin-mini{font-size:11px;color:var(--muted)}.admin-finance-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}.admin-finance-card{background:#0c1320;border:1px solid var(--line);border-radius:14px;padding:14px}.admin-finance-card b{font-size:20px;display:block;margin-top:4px}.admin-case{border:1px solid var(--line);border-radius:14px;padding:12px;margin:8px 0;background:#0c1320}.admin-case-head{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}@media(max-width:700px){.admin-finance-grid{grid-template-columns:1fr}.admin-order-table{min-width:700px}}
-</style>
-<script>
-(function(){
- const arr=k=>{try{return JSON.parse(localStorage.getItem(k)||'[]')}catch(e){return[]}};
- const put=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
- const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
- const money=n=>Number(n||0).toLocaleString('th-TH',{minimumFractionDigits:2});
- const isAdmin=()=>{const r=window.currentUser?.role||localStorage.getItem('ef_role')||'';return String(r).toLowerCase()==='admin'};
- const note=t=>{try{if(typeof notify==='function')notify(t);else{let n=arr('ef_notifications');n.unshift({text:t,read:false,at:new Date().toISOString()});put('ef_notifications',n)}}catch(e){}};
- window.adminHub=function(){
-  if(!isAdmin()){alert('เฉพาะ Admin เท่านั้น');return}
-  document.getElementById('adminHubModal')?.remove();
-  document.body.insertAdjacentHTML('beforeend',`<div class="modal open" id="adminHubModal"><div class="modal-card wide"><button class="modal-x" onclick="document.getElementById('adminHubModal').remove()">×</button><h2>🛡️ Admin Control Center</h2><div id="adminKpis"></div><div class="admin-tabs"><button onclick="adminTabX('orders')">📦 ออเดอร์</button><button onclick="adminTabX('finance')">💰 การเงิน</button><button onclick="adminTabX('disputes')">⚖️ ข้อพิพาท</button><button onclick="adminTabX('members')">👥 สมาชิก</button><button onclick="adminTabX('reports')">🚩 รายงาน</button></div><div id="adminPanelX" class="admin-panel active"></div></div></div>`);
-  adminTabX('orders');
- };
- window.adminTabX=function(tab){
-  const p=document.getElementById('adminPanelX');if(!p)return;
-  if(tab==='orders')renderOrders(); else if(tab==='finance')renderFinance(); else if(tab==='disputes')renderDisputes(); else if(tab==='members')renderMembers(); else renderReports();
- };
- function kpis(){const o=arr('ef_orders'),r=arr('ef_refunds'),p=arr('ef_payouts'),d=arr('ef_disputes');document.getElementById('adminKpis').innerHTML=`<div class="admin-kpi-grid"><div class="admin-kpi">ออเดอร์<b>${o.length}</b></div><div class="admin-kpi">ยอดขาย<b>฿${money(o.reduce((a,x)=>a+Number(x.netPrice||x.total||x.price||0),0))}</b></div><div class="admin-kpi">Refund รอตรวจ<b>${r.filter(x=>x.status==='รอตรวจสอบ').length}</b></div><div class="admin-kpi">ข้อพิพาทเปิด<b>${d.filter(x=>!['ปิดเคส','closed','resolved'].includes(x.status)).length}</b></div></div>`}
- function renderOrders(){kpis();const o=arr('ef_orders').slice().reverse();document.getElementById('adminPanelX').innerHTML=`<div class="admin-toolbar"><input id="aoSearch" placeholder="ค้นหาเลขออเดอร์ / ผู้ซื้อ / สินค้า" oninput="filterAdminOrders()"><select id="aoStatus" onchange="filterAdminOrders()"><option value="">ทุกสถานะ</option><option>รอตรวจสอบการชำระเงิน</option><option>กำลังส่งข้อมูลไอดี</option><option>ซื้อขายสำเร็จ</option><option>คืนเงินแล้ว</option></select><button class="btn ghost" onclick="exportAdminOrders()">📥 Export CSV</button></div><div class="admin-order-wrap"><table class="admin-order-table"><thead><tr><th>ออเดอร์</th><th>สินค้า</th><th>ผู้ซื้อ</th><th>ยอด</th><th>สถานะ</th><th>การส่งมอบ</th><th>จัดการ</th></tr></thead><tbody id="adminOrdersBody">${orderRows(o)}</tbody></table></div>`}
- function orderRows(list){return list.map((x,i)=>`<tr data-search="${esc((x.orderNo||'')+' '+(x.buyer||x.email||'')+' '+(x.productName||x.itemName||''))}" data-status="${esc(x.status||'')}"><td><b>${esc(x.orderNo||'-')}</b><div class="admin-mini">${esc(x.createdAt||x.created||'')}</div></td><td>${esc(x.productName||x.itemName||'ไอดี')}</td><td>${esc(x.buyer||x.email||'-')}</td><td>฿${money(x.netPrice||x.total||x.price)}</td><td><span class="status-pill">${esc(x.status||'-')}</span></td><td>${x.receivedConfirmed?'✅ รับมอบแล้ว':x.deliveryInfo?'📦 ส่งข้อมูลแล้ว':'⏳ รอส่ง'}${x.deliveryProof?' · 📎 หลักฐาน':''}</td><td><div class="admin-actions"><button class="btn ghost" onclick="adminOrderStatus('${esc(x.orderNo||'')}','กำลังส่งข้อมูลไอดี')">ส่งข้อมูล</button><button class="btn ghost" onclick="adminOrderStatus('${esc(x.orderNo||'')}','ซื้อขายสำเร็จ')">สำเร็จ</button><button class="btn ghost" onclick="openDeliveryProof('${esc(x.orderNo||'')}')">ดูออเดอร์</button></div></td></tr>`).join('')||'<tr><td colspan="7" class="muted">ไม่มีออเดอร์</td></tr>'}
- window.filterAdminOrders=function(){const q=(document.getElementById('aoSearch')?.value||'').toLowerCase(),st=document.getElementById('aoStatus')?.value||'';document.querySelectorAll('#adminOrdersBody tr').forEach(r=>{const okq=(r.dataset.search||'').toLowerCase().includes(q),oks=!st||r.dataset.status===st;r.style.display=okq&&oks?'':'none'})};
- window.adminOrderStatus=function(no,status){if(!isAdmin())return;const o=arr('ef_orders'),x=o.find(v=>v.orderNo===no);if(!x)return;x.status=status;x.updatedAt=new Date().toLocaleString('th-TH');if(status==='ซื้อขายสำเร็จ')x.adminCompleted=true;put('ef_orders',o);note('Admin อัปเดตออเดอร์ '+no+' เป็น '+status);renderOrders()};
- function renderFinance(){kpis();const r=arr('ef_refunds'),p=arr('ef_payouts'),approvedR=r.filter(x=>x.status==='อนุมัติ').reduce((a,x)=>a+Number(x.amount||0),0),approvedP=p.filter(x=>x.status==='อนุมัติ').reduce((a,x)=>a+Number(x.amount||0),0);document.getElementById('adminPanelX').innerHTML=`<div class="admin-finance-grid"><div class="admin-finance-card">Refund อนุมัติ<b>฿${money(approvedR)}</b></div><div class="admin-finance-card">ถอนเงินอนุมัติ<b>฿${money(approvedP)}</b></div><div class="admin-finance-card">คำขอค้าง<b>${r.filter(x=>x.status==='รอตรวจสอบ').length+p.filter(x=>x.status==='รอตรวจสอบ').length}</b></div></div><h3>↩️ Refund</h3>${r.map(x=>`<div class="admin-row"><div><b>${esc(x.id)}</b> · ${esc(x.orderNo||'-')}<div class="muted">${esc(x.email||'-')} · ฿${money(x.amount)} · ${esc(x.reason||'')}</div></div><div class="admin-actions">${x.status==='รอตรวจสอบ'?`<button class="btn ghost" onclick="reviewRefund('${esc(x.id)}','approve');adminTabX('finance')">อนุมัติ</button><button class="btn ghost" onclick="reviewRefund('${esc(x.id)}','reject');adminTabX('finance')">ปฏิเสธ</button>`:`<span class="status-pill">${esc(x.status)}</span>`}</div></div>`).join('')||'<p class="muted">ไม่มี Refund</p>'}<h3>💸 ถอนเงิน</h3>${p.map(x=>`<div class="admin-row"><div><b>${esc(x.id)}</b> · ${esc(x.email||'-')}<div class="muted">฿${money(x.amount)} · ${esc(x.method||'')}</div></div><div class="admin-actions">${x.status==='รอตรวจสอบ'?`<button class="btn ghost" onclick="reviewPayout('${esc(x.id)}','approve');adminTabX('finance')">อนุมัติ</button><button class="btn ghost" onclick="reviewPayout('${esc(x.id)}','reject');adminTabX('finance')">ปฏิเสธ</button>`:`<span class="status-pill">${esc(x.status)}</span>`}</div></div>`).join('')||'<p class="muted">ไม่มีคำขอถอนเงิน</p>'}`}
- function renderDisputes(){kpis();const d=arr('ef_disputes');document.getElementById('adminPanelX').innerHTML=d.length?d.map((x,i)=>`<div class="admin-case"><div class="admin-case-head"><b>${esc(x.id||'DISPUTE')} · ${esc(x.orderNo||'-')}</b><span class="status-pill">${esc(x.status||'เปิดเคส')}</span></div><div class="muted">${esc(x.email||x.buyer||'-')} · ${esc(x.reason||'ไม่ระบุเหตุผล')}</div><p>${esc(x.detail||x.description||'')}</p><div class="admin-actions"><button class="btn ghost" onclick="adminDisputeStatus(${i},'กำลังตรวจสอบ')">ตรวจสอบ</button><button class="btn ghost" onclick="adminDisputeStatus(${i},'รอข้อมูล')">รอข้อมูล</button><button class="btn primary" onclick="adminDisputeStatus(${i},'ปิดเคส')">ปิดเคส</button></div></div>`).join(''):'<p class="muted">ไม่มีข้อพิพาท</p>'}
- window.adminDisputeStatus=function(i,status){if(!isAdmin())return;const d=arr('ef_disputes');if(!d[i])return;d[i].status=status;d[i].updatedAt=new Date().toLocaleString('th-TH');d[i].history=d[i].history||[];d[i].history.push({status,at:d[i].updatedAt,by:'Admin'});put('ef_disputes',d);note('ข้อพิพาท '+(d[i].id||'')+' อัปเดตเป็น '+status);renderDisputes()};
- function renderMembers(){const u=arr('ef_users');document.getElementById('adminPanelX').innerHTML=u.map((x,i)=>`<div class="admin-row"><div><b>${esc(x.name||x.email||'ผู้ใช้')}</b><div class="muted">${esc(x.email||'')} · ${esc(x.role||'Buyer')}</div></div><button class="btn ghost" onclick="adminBanX(${i})">${x.banned?'ปลดแบน':'แบน'}</button></div>`).join('')||'<p class="muted">ไม่มีสมาชิก</p>'}
- window.adminBanX=function(i){const u=arr('ef_users');if(!u[i])return;u[i].banned=!u[i].banned;put('ef_users',u);renderMembers()};
- function renderReports(){const r=arr('ef_reports');document.getElementById('adminPanelX').innerHTML=r.map((x,i)=>`<div class="admin-row"><div><b>${esc(x.reason||'รายงาน')}</b><div class="muted">${esc(x.productName||x.listingId||'-')}</div></div><button class="btn ghost" onclick="adminCloseReportX(${i})">ปิดรายงาน</button></div>`).join('')||'<p class="muted">ไม่มีรายงาน</p>'}
- window.adminCloseReportX=function(i){const r=arr('ef_reports');if(r[i])r[i].status='closed';put('ef_reports',r);renderReports()};
- window.exportAdminOrders=function(){const o=arr('ef_orders');const rows=[['orderNo','product','buyer','amount','status','received'],...o.map(x=>[x.orderNo||'',x.productName||x.itemName||'',x.buyer||x.email||'',x.netPrice||x.total||x.price||0,x.status||'',x.receivedConfirmed?'yes':'no'])];const csv=rows.map(a=>a.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');const blob=new Blob(['\ufeff'+csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='efootball-orders.csv';a.click();URL.revokeObjectURL(url)};
-})();
-</script>
+  let data = {};
 
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    data = {
+      message: text
+    };
+  }
 
-<script>
-function kycKey(){return 'ef_kyc_'+((typeof currentUser!=='undefined'&&currentUser&&currentUser.email)||'guest')}
-function getKyc(){return JSON.parse(localStorage.getItem(kycKey())||'null')}
-function calcTrust(k){const reviews=JSON.parse(localStorage.getItem('ef_reviews')||'[]');const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');let score=30;if(k&&k.status==='verified')score+=45;else if(k&&k.status==='pending')score+=15;const mine=reviews.filter(r=>r.sellerEmail===((typeof currentUser!=='undefined'&&currentUser&&currentUser.email)||''));if(mine.length)score+=Math.min(15,Math.round(mine.reduce((a,r)=>a+Number(r.stars||0),0)/mine.length*3));score+=Math.min(10,os.length*2);return Math.min(100,score)}
-function openKycCenter(){if(typeof currentRole==='undefined'||currentRole!=='seller'){alert('เฉพาะ SELLER เท่านั้น');return}document.getElementById('kycModal').classList.add('open');refreshKyc()}
-function closeKycCenter(){document.getElementById('kycModal').classList.remove('open')}
-function refreshKyc(){const k=getKyc();const status=k?.status||'not_submitted';const labels={not_submitted:'ยังไม่ได้ส่งคำขอ',pending:'รอตรวจสอบ',verified:'ยืนยันแล้ว ✓',rejected:'ถูกปฏิเสธ — ส่งใหม่ได้'};document.getElementById('kycStatusBox').innerHTML='<div class="hero-card"><b>สถานะ: '+labels[status]+'</b><p class="muted">'+(k?.updatedAt?new Date(k.updatedAt).toLocaleString('th-TH'):'')+'</p></div>';if(k){kycName.value=k.name||'';kycDoc.value=k.doc||'';kycContact.value=k.contact||''}document.getElementById('kycTrust').textContent=calcTrust(k)+'/100'}
-function submitKyc(){const name=kycName.value.trim(),doc=kycDoc.value.trim(),contact=kycContact.value.trim();if(!name||!doc||!contact){alert('กรอกข้อมูลให้ครบ');return}localStorage.setItem(kycKey(),JSON.stringify({name,doc,contact,status:'pending',updatedAt:new Date().toISOString()}));addNotification('ส่งคำขอ KYC แล้ว — รอ Admin ตรวจสอบ');refreshKyc();alert('ส่งคำขอตรวจสอบแล้ว')}
-</script>
-<button class="btn ghost" style="position:fixed;right:14px;bottom:14px;z-index:80;border-radius:999px;box-shadow:0 8px 24px #0006" onclick="openUnifiedInbox()">📥 Inbox <span class="unread-pill" id="unifiedUnread">0</span></button>
-<div class="modal" id="unifiedInboxModal"><div class="modal-card"><button class="close" onclick="closeUnifiedInbox()">×</button><h2>📥 Inbox ศูนย์รวม</h2><p style="color:var(--muted)">รวมแชต ออเดอร์ การชำระเงิน และข้อพิพาท</p><div id="unifiedInboxList"></div></div></div>
-<script>
-function unifiedEvents(){
- const out=[];
- try{const n=JSON.parse(localStorage.getItem('ef_notifications')||'[]');n.filter(x=>!x.read).slice(0,12).forEach((x,i)=>out.push({kind:'🔔 แจ้งเตือน',text:x.text||'แจ้งเตือน',time:x.time||x.at||'',fn:"unifiedReadNotify("+i+")"}));}catch(e){}
- try{const os=JSON.parse(localStorage.getItem('ef_orders')||'[]');os.slice().reverse().filter(o=>o.status&&o.status!=='ซื้อขายสำเร็จ').slice(0,8).forEach(o=>out.push({kind:'🧾 ออเดอร์',text:(o.orderNo||'-')+' • '+(o.status||''),time:o.createdAt||'',fn:"openUnifiedOrder('"+String(o.orderNo||'').replace(/'/g,"\\'")+"')"}));}catch(e){}
- try{chatRooms().slice().reverse().slice(0,8).forEach(r=>{const id=r.key.replace('ef_chat_','');out.push({kind:'💬 แชต',text:(listings.find(x=>String(x.id)===id)?.name||'ห้องแชต')+' • '+(r.last?.text||''),time:chatStamp(r.last?.at),fn:"openSellerRoom('"+id.replace(/'/g,"\\'")+"')"})})}catch(e){}
- return out;
+  if (!response.ok) {
+    throw new Error(
+      data.message ||
+      data.error ||
+      `HTTP ${response.status}`
+    );
+  }
+
+  return data;
 }
-function renderUnifiedInbox(){const box=document.getElementById('unifiedInboxList'),items=unifiedEvents();document.getElementById('unifiedUnread').textContent=items.length;if(!box)return;box.innerHTML=items.length?items.map(x=>`<div class="chat-room"><div><b>${escapeHtml(x.kind)}</b><div class="chat-meta">${escapeHtml(x.text)}</div><div class="chat-meta">${escapeHtml(String(x.time||''))}</div></div><button class="btn primary" onclick="${x.fn}">เปิด</button></div>`).join(''):'<div class="empty" style="display:block">ไม่มีรายการใหม่ 🎉</div>';}
-function openUnifiedInbox(){renderUnifiedInbox();document.getElementById('unifiedInboxModal')?.classList.add('open')}
-function closeUnifiedInbox(){document.getElementById('unifiedInboxModal')?.classList.remove('open')}
-function unifiedReadNotify(i){let n=JSON.parse(localStorage.getItem('ef_notifications')||'[]');if(n[i])n[i].read=true;localStorage.setItem('ef_notifications',JSON.stringify(n));notifications=n;syncAccountUI();renderUnifiedInbox()}
-function openUnifiedOrder(no){closeUnifiedInbox();try{const os=JSON.parse(localStorage.getItem('ef_orders')||'[]'),i=os.findIndex(o=>String(o.orderNo)===String(no));if(i>=0&&typeof openOrderDetail==='function')openOrderDetail(i);else if(typeof viewOrders==='function')viewOrders()}catch(e){}}
-renderUnifiedInbox();
+
+
+/* ================================
+   HEALTH
+================================ */
+
+async function checkAPI() {
+
+  const status = document.getElementById("apiStatus");
+
+  try {
+
+    const data = await api("/health");
+
+    if (data.ok) {
+
+      status.textContent =
+        "🟢 API ออนไลน์";
+
+      status.className =
+        "status online";
+
+    } else {
+
+      throw new Error("API ไม่พร้อมใช้งาน");
+
+    }
+
+  } catch (error) {
+
+    console.error(error);
+
+    status.textContent =
+      "🔴 API ออฟไลน์";
+
+    status.className =
+      "status offline";
+
+  }
+}
+
+
+/* ================================
+   AUTH
+================================ */
+
+async function register() {
+
+  const email =
+    document.getElementById("registerEmail").value.trim();
+
+  const password =
+    document.getElementById("registerPassword").value;
+
+  if (!email || !password) {
+    alert("กรุณากรอกอีเมลและรหัสผ่าน");
+    return;
+  }
+
+  try {
+
+    await api(
+      "/api/auth/register",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          email,
+          password
+        })
+      }
+    );
+
+    alert("สมัครสมาชิกสำเร็จ");
+
+    closeModals();
+
+    openLogin();
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+}
+
+
+async function login() {
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  if (!email || !password) {
+    alert("กรุณากรอกข้อมูลให้ครบ");
+    return;
+  }
+
+  try {
+
+    const data =
+      await api(
+        "/api/auth/login",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email,
+            password
+          })
+        }
+      );
+
+    if (!data.token) {
+      throw new Error("API ไม่ส่ง Token กลับมา");
+    }
+
+    localStorage.setItem(
+      "ef_token",
+      data.token
+    );
+
+    closeModals();
+
+    await loadMe();
+
+    alert("เข้าสู่ระบบสำเร็จ");
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+}
+
+
+async function loadMe() {
+
+  const token = getToken();
+
+  const userText =
+    document.getElementById("userText");
+
+  const roleText =
+    document.getElementById("roleText");
+
+  if (!token) {
+
+    userText.textContent =
+      "ยังไม่ได้เข้าสู่ระบบ";
+
+    roleText.textContent =
+      "";
+
+    return;
+
+  }
+
+  try {
+
+    const data =
+      await api("/api/me");
+
+    const user =
+      data.user || data;
+
+    userText.textContent =
+      user.email || "เข้าสู่ระบบแล้ว";
+
+    roleText.textContent =
+      "สิทธิ์: " +
+      (user.role || "buyer");
+
+  } catch (error) {
+
+    console.error(error);
+
+    localStorage.removeItem("ef_token");
+
+    userText.textContent =
+      "ยังไม่ได้เข้าสู่ระบบ";
+
+    roleText.textContent =
+      "";
+
+  }
+}
+
+
+function logout() {
+
+  localStorage.removeItem("ef_token");
+
+  loadMe();
+
+  alert("ออกจากระบบแล้ว");
+
+}
+
+
+/* ================================
+   LISTINGS
+================================ */
+
+async function loadListings() {
+
+  const container =
+    document.getElementById("listings");
+
+  container.innerHTML =
+    `<div class="empty">กำลังโหลด...</div>`;
+
+  try {
+
+    const data =
+      await api("/api/listings");
+
+    const listings =
+      Array.isArray(data)
+        ? data
+        : (
+            data.listings ||
+            data.items ||
+            []
+          );
+
+    if (!listings.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          ยังไม่มีรายการขาย
+        </div>`;
+
+      return;
+    }
+
+    container.innerHTML =
+      listings
+        .map(renderListing)
+        .join("");
+
+  } catch (error) {
+
+    console.error(error);
+
+    container.innerHTML =
+      `<div class="empty">
+        โหลดรายการไม่ได้<br>
+        <small>${escapeHTML(error.message)}</small>
+      </div>`;
+
+  }
+}
+
+
+function renderListing(item) {
+
+  const id =
+    item.id;
+
+  const title =
+    item.title ||
+    item.name ||
+    "eFootball Account";
+
+  const description =
+    item.description ||
+    "ไม่มีรายละเอียด";
+
+  const price =
+    Number(item.price || 0);
+
+  return `
+    <div class="card">
+
+      <h3>
+        ${escapeHTML(title)}
+      </h3>
+
+      <p class="muted">
+        ${escapeHTML(description)}
+      </p>
+
+      <div class="price">
+        ฿${price.toLocaleString("th-TH")}
+      </div>
+
+      <button
+        class="primary"
+        onclick="createOrder('${id}')"
+      >
+        🛒 ซื้อไอดี
+      </button>
+
+    </div>
+  `;
+}
+
+
+/* ================================
+   SELL
+================================ */
+
+function openSell() {
+
+  if (!getToken()) {
+
+    alert(
+      "กรุณาเข้าสู่ระบบก่อนลงขาย"
+    );
+
+    openLogin();
+
+    return;
+  }
+
+  openModal("sellModal");
+
+}
+
+
+async function createListing() {
+
+  const title =
+    document.getElementById("sellTitle")
+      .value.trim();
+
+  const description =
+    document.getElementById("sellDescription")
+      .value.trim();
+
+  const price =
+    Number(
+      document.getElementById("sellPrice")
+        .value
+    );
+
+  const accountData =
+    document.getElementById("sellAccountData")
+      .value;
+
+  if (!title || !price || !accountData) {
+
+    alert(
+      "กรุณากรอกชื่อ ราคา และข้อมูลไอดี"
+    );
+
+    return;
+  }
+
+  try {
+
+    await api(
+      "/api/listings",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          title,
+          description,
+          price,
+          account_data: accountData
+        })
+      }
+    );
+
+    alert("ลงขายสำเร็จ");
+
+    closeModals();
+
+    await loadListings();
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+}
+
+
+/* ================================
+   ORDER
+================================ */
+
+async function createOrder(listingId) {
+
+  if (!getToken()) {
+
+    alert(
+      "กรุณาเข้าสู่ระบบก่อนซื้อ"
+    );
+
+    openLogin();
+
+    return;
+  }
+
+  if (
+    !confirm(
+      "ต้องการสร้าง Order สำหรับรายการนี้หรือไม่?"
+    )
+  ) {
+    return;
+  }
+
+  try {
+
+    const data =
+      await api(
+        "/api/orders",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            listing_id: listingId
+          })
+        }
+      );
+
+    alert(
+      "สร้าง Order สำเร็จ\nOrder ID: " +
+      (data.order?.id ||
+       data.id ||
+       "-")
+    );
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+}
+
+
+/* ================================
+   MY LISTINGS
+================================ */
+
+async function loadMyListings() {
+
+  if (!getToken()) {
+
+    alert(
+      "กรุณาเข้าสู่ระบบก่อน"
+    );
+
+    openLogin();
+
+    return;
+  }
+
+  try {
+
+    const data =
+      await api(
+        "/api/my-listings"
+      );
+
+    const items =
+      Array.isArray(data)
+        ? data
+        : (
+            data.listings ||
+            data.items ||
+            []
+          );
+
+    const container =
+      document.getElementById("listings");
+
+    if (!items.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          ยังไม่มีรายการของคุณ
+        </div>`;
+
+      return;
+    }
+
+    container.innerHTML =
+      items
+        .map(renderListing)
+        .join("");
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+}
+
+
+/* ================================
+   ORDERS
+================================ */
+
+async function loadOrders() {
+
+  if (!getToken()) {
+
+    alert(
+      "กรุณาเข้าสู่ระบบก่อน"
+    );
+
+    openLogin();
+
+    return;
+  }
+
+  try {
+
+    const data =
+      await api("/api/orders");
+
+    const orders =
+      Array.isArray(data)
+        ? data
+        : (
+            data.orders ||
+            data.items ||
+            []
+          );
+
+    const container =
+      document.getElementById("listings");
+
+    if (!orders.length) {
+
+      container.innerHTML =
+        `<div class="empty">
+          ยังไม่มี Order
+        </div>`;
+
+      return;
+    }
+
+    container.innerHTML =
+      orders
+        .map(order => `
+
+          <div class="card">
+
+            <h3>
+              Order #${escapeHTML(
+                String(order.id || "")
+              )}
+            </h3>
+
+            <p>
+              สถานะ:
+              <strong>
+                ${escapeHTML(
+                  order.status || "-"
+                )}
+              </strong>
+            </p>
+
+            <p>
+              การชำระเงิน:
+              ${escapeHTML(
+                order.payment_status || "-"
+              )}
+            </p>
+
+            ${
+              (
+                order.payment_status === "paid" ||
+                order.status === "paid" ||
+                order.status === "completed"
+              )
+              ? `
+                <button
+                  class="primary"
+                  onclick="getDelivery('${order.id}')"
+                >
+                  🔐 รับข้อมูลไอดี
+                </button>
+              `
+              : ""
+            }
+
+          </div>
+
+        `)
+        .join("");
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+}
+
+
+/* ================================
+   DELIVERY
+================================ */
+
+async function getDelivery(orderId) {
+
+  if (
+    !confirm(
+      "ต้องการรับข้อมูลไอดีหรือไม่?"
+    )
+  ) {
+    return;
+  }
+
+  try {
+
+    const data =
+      await api(
+        `/api/orders/${orderId}/delivery`
+      );
+
+    const delivery =
+      data.delivery ||
+      data.account_data ||
+      data;
+
+    alert(
+      "ข้อมูลไอดี:\n\n" +
+      JSON.stringify(
+        delivery,
+        null,
+        2
+      )
+    );
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+}
+
+
+/* ================================
+   MODAL
+================================ */
+
+function openModal(id) {
+
+  document
+    .getElementById(id)
+    .classList
+    .add("active");
+
+}
+
+
+function closeModals() {
+
+  document
+    .querySelectorAll(".modal")
+    .forEach(
+      modal =>
+        modal.classList.remove("active")
+    );
+
+}
+
+
+function openLogin() {
+
+  closeModals();
+
+  openModal("loginModal");
+
+}
+
+
+function openRegister() {
+
+  closeModals();
+
+  openModal("registerModal");
+
+}
+
+
+/* ================================
+   SECURITY / HTML
+================================ */
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* ================================
+   START
+================================ */
+
+async function start() {
+
+  await checkAPI();
+
+  await loadMe();
+
+  await loadListings();
+
+}
+
+
+start();
+
 </script>
-<script>
-(function(){
-  const API_BASE_URL = localStorage.getItem('ef_api_base_url') || '';
-  window.EF_API_BASE_URL = API_BASE_URL.replace(/\/$/,'');
-  window.efApi = async function(path, options={}){
-    const token=localStorage.getItem('ef_api_token');
-    const headers={'Content-Type':'application/json',...(options.headers||{})};
-    if(token) headers.Authorization='Bearer '+token;
-    const r=await fetch(window.EF_API_BASE_URL+path,{...options,headers});
-    const data=await r.json().catch(()=>({}));
-    if(!r.ok) throw new Error(data.error||('HTTP '+r.status));
-    return data;
-  };
-  window.efApiLogin=async function(email,password){
-    const d=await efApi('/api/auth/login',{method:'POST',body:JSON.stringify({email,password})});
-    localStorage.setItem('ef_api_token',d.token); localStorage.setItem('ef_api_user',JSON.stringify(d.user)); return d;
-  };
-  window.efApiRegister=async function(email,password,role='buyer'){
-    const d=await efApi('/api/auth/register',{method:'POST',body:JSON.stringify({email,password,role})});
-    localStorage.setItem('ef_api_token',d.token); localStorage.setItem('ef_api_user',JSON.stringify(d.user)); return d;
-  };
-  window.efApiLogout=function(){localStorage.removeItem('ef_api_token');localStorage.removeItem('ef_api_user');};
-  window.efApiHealth=()=>efApi('/api/health',{method:'GET'});
-  window.efApiListings=()=>efApi('/api/listings',{method:'GET'});
-  window.efApiOrders=()=>efApi('/api/orders',{method:'GET'});
-  window.efApiCreateOrder=(listing_id)=>efApi('/api/orders',{method:'POST',body:JSON.stringify({listing_id})});
-  window.efApiCreateListing=(title,price)=>efApi('/api/listings',{method:'POST',body:JSON.stringify({title,price})});
-})();
-</script>
+
 </body>
-<script>
-(function(){
-  const K='ef_account_security';
-  const em=()=>localStorage.getItem('ef_user_email')||'guest@demo.local';
-  const get=()=>{try{return JSON.parse(localStorage.getItem(K)||'{}')}catch(e){return {}}};
-  const save=x=>localStorage.setItem(K,JSON.stringify(x));
-  window.accountCenter=function(){
-    const e=em(), u=(JSON.parse(localStorage.getItem('ef_users')||'[]')).find(x=>x.email===e)||{};
-    const orders=JSON.parse(localStorage.getItem('ef_orders')||'[]').filter(x=>(x.email||x.buyer)===e);
-    const pays=JSON.parse(localStorage.getItem('ef_payouts')||'[]').filter(x=>x.email===e);
-    const st=get()[e]||{};
-    const box=document.createElement('div');box.id='accountCenterX';box.className='modal';box.style.display='flex';
-    box.innerHTML='<div class="modal-card" style="max-width:720px"><div class="modal-head"><h2>👤 บัญชีของฉัน</h2><button class="btn ghost" onclick="document.getElementById(\'accountCenterX\').remove()">ปิด</button></div><div class="card" style="margin-bottom:12px"><b>'+(u.name||e)+'</b><div class="muted">'+e+' · '+(u.role||'Buyer')+'</div></div><div class="grid2"><div class="card"><b>📦 ออเดอร์</b><h2>'+orders.length+'</h2></div><div class="card"><b>💸 ถอนเงิน</b><h2>'+pays.length+'</h2></div></div><h3>🔐 ความปลอดภัย</h3><div class="form-grid"><label>ชื่อแสดงผล<input id="accName" value="'+String(u.name||'').replace(/"/g,'&quot;')+'"></label><label>รหัสผ่านใหม่<input id="accPass" type="password" placeholder="เว้นว่างถ้าไม่เปลี่ยน"></label></div><h3>💳 ช่องทางรับเงิน</h3><div class="form-grid"><label>ธนาคาร/ช่องทาง<input id="accBank" value="'+String(st.bank||'').replace(/"/g,'&quot;')+'" placeholder="เช่น ธนาคาร Demo"></label><label>เลขบัญชี/PromptPay<input id="accPay" value="'+String(st.pay||'').replace(/"/g,'&quot;')+'"></label></div><button class="btn primary" onclick="saveAccountCenter()">💾 บันทึกข้อมูล</button></div>';
-    document.body.appendChild(box);
-  };
-  window.saveAccountCenter=function(){
-    const e=em(), users=JSON.parse(localStorage.getItem('ef_users')||'[]'),u=users.find(x=>x.email===e);
-    if(u){u.name=document.getElementById('accName').value.trim()||u.name;const p=document.getElementById('accPass').value;if(p){if(p.length<6)return alert('รหัสผ่านต้องมีอย่างน้อย 6 ตัวอักษร');u.password=p;}localStorage.setItem('ef_users',JSON.stringify(users));}
-    const all=get();all[e]={bank:document.getElementById('accBank').value.trim(),pay:document.getElementById('accPay').value.trim(),updatedAt:new Date().toLocaleString('th-TH')};save(all);alert('บันทึกข้อมูลบัญชีแล้ว');document.getElementById('accountCenterX')?.remove();
-  };
-})();
-</script>
-</html><script>document.addEventListener("DOMContentLoaded",()=>{if(typeof updateCompareUI==="function")updateCompareUI()});</script>
+</html>
