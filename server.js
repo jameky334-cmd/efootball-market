@@ -192,7 +192,21 @@ async function audit(client, userId, action, entityType, entityId, details = {})
     [userId || null, action, entityType, entityId || null, JSON.stringify(details)]
   );
 }
+async function initializeDatabase() {
+  const client = await pool.connect();
+  try {
+    await client.query("BEGIN");
 
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id BIGSERIAL PRIMARY KEY,
+        email TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        role TEXT NOT NULL DEFAULT 'buyer'
+          CHECK (role IN ('buyer','seller','admin')),
+        created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+      )
+    `);
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
     `);
