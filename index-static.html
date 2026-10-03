@@ -2,2299 +2,1145 @@
 <html lang="th">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#07111f">
-<meta name="description" content="eFootball Market TH - ตลาดซื้อขายไอดี eFootball">
-<title>eFootball Market TH</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>eFOOTBALL MARKET</title>
 <style>
-:root{
-  --bg:#060b14;
-  --panel:#0d1626;
-  --panel2:#111d31;
-  --line:#22324b;
-  --text:#f7fafc;
-  --muted:#91a0b7;
-  --green:#20e88a;
-  --red:#ff6474;
-  --shadow:0 18px 60px #0008;
-}
-
 *{box-sizing:border-box}
-
-html{scroll-behavior:smooth}
-
-body{
-  margin:0;
-  background:
-    radial-gradient(circle at 80% -10%,#123c2c55,transparent 35%),
-    var(--bg);
-  color:var(--text);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-a{color:inherit;text-decoration:none}
-
-.container{
-  width:min(1180px,calc(100% - 28px));
-  margin:auto;
-}
-
-.header{
-  position:sticky;
-  top:0;
-  z-index:50;
-  background:#060b14e8;
-  border-bottom:1px solid var(--line);
-  backdrop-filter:blur(16px);
-}
-
-.nav{
-  height:68px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-
-.brand{
-  font-size:20px;
-  font-weight:950;
-  letter-spacing:.3px;
-}
-
-.brand span{color:var(--green)}
-
-.navlinks{
-  display:flex;
-  gap:22px;
-  color:var(--muted);
-  font-size:14px;
-}
-
-.navlinks a:hover{color:#fff}
-
-.navactions{
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-.btn{
-  border:1px solid transparent;
-  border-radius:12px;
-  padding:11px 15px;
-  font-weight:850;
-  transition:.18s;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:7px;
-}
-
-.btn:hover{transform:translateY(-1px)}
-
-.primary{
-  background:var(--green);
-  color:#04110a;
-}
-
-.primary:hover{background:#46f3a3}
-
-.secondary{
-  background:var(--panel2);
-  border-color:var(--line);
-  color:#fff;
-}
-
-.danger{
-  background:#32151a;
-  border-color:#5c252d;
-  color:#ff9ba5;
-}
-
-.hero{
-  padding:62px 0 34px;
-  display:grid;
-  grid-template-columns:1.15fr .85fr;
-  gap:30px;
-  align-items:center;
-}
-
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:7px;
-  border:1px solid #176b48;
-  background:#09241a;
-  color:#6ff3ad;
-  padding:7px 11px;
-  border-radius:999px;
-  font-size:12px;
-  font-weight:850;
-}
-
-.hero h1{
-  font-size:clamp(38px,6vw,72px);
-  line-height:.98;
-  margin:15px 0 18px;
-  letter-spacing:-2px;
-}
-
-.hero h1 span{color:var(--green)}
-
-.hero p{
-  color:var(--muted);
-  font-size:17px;
-  line-height:1.7;
-  max-width:650px;
-}
-
-.hero-actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-top:22px;
-}
-
-.hero-card{
-  background:linear-gradient(145deg,#101d31,#0b1321);
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:24px;
-  box-shadow:var(--shadow);
-}
-
-.hero-card h3{margin:0 0 8px}
-
-.api-box{
-  margin-top:18px;
-  padding:14px;
-  border:1px solid var(--line);
-  background:#07101c;
-  border-radius:14px;
-  color:var(--muted);
-  font-size:13px;
-  word-break:break-all;
-}
-
-.dot{
-  display:inline-block;
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:var(--green);
-  box-shadow:0 0 14px var(--green);
-  margin-right:7px;
-}
-
-.stats{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin-top:25px;
-}
-
-.stat{
-  padding:14px;
-  background:#0a1220;
-  border:1px solid var(--line);
-  border-radius:15px;
-}
-
-.stat b{
-  display:block;
-  font-size:23px;
-  margin-bottom:2px;
-}
-
-.muted{color:var(--muted)}
-
-.section{padding:34px 0}
-
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  gap:15px;
-  margin-bottom:15px;
-}
-
-.section-head h2{
-  margin:0;
-  font-size:28px;
-}
-
-.toolbar{
-  display:grid;
-  grid-template-columns:1fr 160px 160px;
-  gap:10px;
-  margin-bottom:18px;
-}
-
-.input,
-.select,
-.textarea{
-  width:100%;
-  background:#08111e;
-  color:#fff;
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:12px 13px;
-  outline:none;
-}
-
-.input:focus,
-.select:focus,
-.textarea:focus{
-  border-color:#2c9d70;
-  box-shadow:0 0 0 3px #20e88a18;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:16px;
-}
-
-.card{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:18px;
-  overflow:hidden;
-  box-shadow:0 10px 35px #0003;
-}
-
-.cover{
-  height:155px;
-  display:grid;
-  place-items:center;
-  background:linear-gradient(135deg,#12213a,#0c1728);
-  font-size:58px;
-  position:relative;
-}
-
-.cover:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:radial-gradient(
-    circle at 70% 30%,
-    #20e88a22,
-    transparent 40%
-  );
-}
-
-.cover>*{
-  position:relative;
-  z-index:1;
-}
-
-.price-tag{
-  position:absolute;
-  right:10px;
-  top:10px;
-  background:#06100cf2;
-  color:#73f5ae;
-  border:1px solid #236d4c;
-  padding:6px 9px;
-  border-radius:9px;
-  font-size:13px;
-  font-weight:900;
-}
-
-.card-body{padding:16px}
-
-.card-title{
-  margin:0 0 6px;
-  font-size:18px;
-}
-
-.card-desc{
-  min-height:42px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.55;
-}
-
-.card-meta{
-  font-size:12px;
-  color:var(--muted);
-  margin:10px 0;
-}
-
-.card-foot{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  margin-top:13px;
-}
-
-.price{
-  font-size:20px;
-  font-weight:950;
-  color:var(--green);
-}
-
-.status{
-  font-size:11px;
-  font-weight:850;
-  border-radius:999px;
-  padding:5px 8px;
-  background:#123421;
-  color:#78f2ad;
-}
-
-.status.off{
-  background:#32171c;
-  color:#ff9ba5;
-}
-
-.empty{
-  padding:45px 20px;
-  text-align:center;
-  border:1px dashed var(--line);
-  border-radius:17px;
-  color:var(--muted);
-  display:none;
-}
-
-.steps{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:15px;
-}
-
-.step{
-  padding:20px;
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:18px;
-}
-
-.step-num{
-  width:34px;
-  height:34px;
-  border-radius:10px;
-  background:#123523;
-  color:var(--green);
-  display:grid;
-  place-items:center;
-  font-weight:950;
-}
-
-.step h3{margin:14px 0 7px}
-
-.dashboard{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:12px;
-}
-
-.kpi{
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:16px;
-  padding:16px;
-}
-
-.kpi b{
-  display:block;
-  font-size:20px;
-  margin-top:6px;
-  word-break:break-word;
-}
-
-.footer{
-  border-top:1px solid var(--line);
-  padding:30px 0 90px;
-  color:var(--muted);
-  text-align:center;
-  font-size:13px;
-}
-
-.modal{
-  position:fixed;
-  inset:0;
-  background:#000b;
-  z-index:100;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:16px;
-}
-
-.modal.open{display:flex}
-
-.dialog{
-  width:min(560px,100%);
-  max-height:90vh;
-  overflow:auto;
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:20px;
-  box-shadow:var(--shadow);
-}
-
-.dialog.wide{
-  width:min(850px,100%);
-}
-
-.dialog-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:8px;
-}
-
-.dialog-head h2{margin:0}
-
-.close{
-  background:none;
-  border:0;
-  color:#fff;
-  font-size:30px;
-  line-height:1;
-}
-
-.tabs{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin:15px 0;
-}
-
-.tab{
-  background:#0a1320;
-  color:var(--muted);
-  border:1px solid var(--line);
-  border-radius:11px;
-  padding:11px;
-  font-weight:850;
-}
-
-.tab.active{
-  background:#123523;
-  color:var(--green);
-  border-color:#246f4c;
-}
-
-.field{margin:13px 0}
-
-.field label{
-  display:block;
-  font-size:12px;
-  color:var(--muted);
-  margin-bottom:6px;
-}
-
-.notice{
-  padding:12px 13px;
-  border:1px solid var(--line);
-  background:#091321;
-  border-radius:12px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.55;
-}
-
-.order{
-  display:flex;
-  justify-content:space-between;
-  gap:15px;
-  padding:14px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  margin:9px 0;
-  background:#091321;
-}
-
-.order strong{
-  display:block;
-  margin-bottom:4px;
-}
-
-.toast{
-  position:fixed;
-  right:14px;
-  bottom:14px;
-  z-index:300;
-  background:#111d30;
-  border:1px solid var(--line);
-  border-radius:13px;
-  padding:12px 15px;
-  box-shadow:var(--shadow);
-  display:none;
-  max-width:min(92vw,430px);
-}
-
-.toast.show{display:block}
-
-.bottom{display:none}
-
-@media(max-width:900px){
-
-  .hero{
-    grid-template-columns:1fr;
-  }
-
-  .grid{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .dashboard{
-    grid-template-columns:repeat(2,1fr);
-  }
-
-  .navlinks{
-    display:none;
-  }
-}
-
-@media(max-width:620px){
-
-  .container{
-    width:min(100% - 20px,1180px);
-  }
-
-  .nav{
-    height:60px;
-  }
-
-  .brand{
-    font-size:16px;
-  }
-
-  .navactions .orders-btn{
-    display:none;
-  }
-
-  .hero{
-    padding-top:38px;
-  }
-
-  .hero h1{
-    font-size:44px;
-  }
-
-  .hero-card{
-    padding:18px;
-  }
-
-  .stats{
-    grid-template-columns:1fr 1fr 1fr;
-  }
-
-  .stat{
-    padding:10px;
-  }
-
-  .stat b{
-    font-size:18px;
-  }
-
-  .grid,
-  .steps{
-    grid-template-columns:1fr;
-  }
-
-  .toolbar{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .toolbar .search{
-    grid-column:1/-1;
-  }
-
-  .dashboard{
-    grid-template-columns:1fr 1fr;
-  }
-
-  .bottom{
-    position:fixed;
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    left:9px;
-    right:9px;
-    bottom:9px;
-    z-index:80;
-    background:#0b1422f5;
-    border:1px solid var(--line);
-    border-radius:17px;
-    padding:5px;
-    backdrop-filter:blur(15px);
-  }
-
-  .bottom button{
-    background:none;
-    border:0;
-    color:var(--muted);
-    font-size:11px;
-    padding:6px;
-  }
-
-  .bottom b{
-    display:block;
-    font-size:17px;
-    margin-bottom:2px;
-  }
-
-  .footer{
-    padding-bottom:100px;
-  }
-
-  .order{
-    flex-direction:column;
-  }
+body{margin:0;background:#050b14;color:#e8eef8;font-family:Arial,sans-serif}
+button,input,select{font:inherit}
+button{cursor:pointer;border:0;border-radius:10px;padding:10px 14px}
+.primary{background:#18e889;color:#00150b;font-weight:700}
+.secondary{background:#17243a;color:#dbeafe}
+.danger{background:#ef4444;color:#fff}
+.muted{color:#94a3b8}
+.small{font-size:13px}
+.container{max-width:1100px;margin:auto;padding:20px}
+header{position:sticky;top:0;z-index:10;background:#07101eee;border-bottom:1px solid #1d304b}
+.header-inner{max-width:1100px;margin:auto;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-size:20px;font-weight:900}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.card{background:#0a1423;border:1px solid #20334f;border-radius:16px;padding:18px;margin-bottom:16px}
+.hero{padding:35px 20px;text-align:center;background:linear-gradient(135deg,#071827,#0a1528);border-radius:20px;margin-bottom:18px}
+.hero h1{font-size:32px;margin:0 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.stat{background:#07101e;border:1px solid #263a5b;border-radius:14px;padding:15px}
+.stat b{display:block;font-size:25px;margin-top:6px}
+input,select{width:100%;padding:11px;margin:7px 0;background:#07101e;border:1px solid #304664;color:#fff;border-radius:9px}
+.modal{display:none;position:fixed;inset:0;background:#000b;z-index:50;padding:20px;overflow:auto}
+.modal-box{max-width:900px;margin:40px auto;background:#091423;border:1px solid #29415f;border-radius:18px;padding:20px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1}
+.list{display:grid;gap:10px}
+.item{background:#07101e;border:1px solid #263a5b;border-radius:12px;padding:13px}
+.admin-tabs{display:flex;gap:8px;overflow:auto;margin:14px 0}
+.admin-tabs button{white-space:nowrap}
+.admin-tab{display:none}
+.admin-tab.active{display:block}
+.admin-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:12px 0}
+.admin-stat{background:#07101e;border:1px solid #263a5b;border-radius:14px;padding:14px}
+.admin-stat b{display:block;font-size:22px;margin-top:5px}
+.admin-list{display:grid;gap:10px;margin-top:10px}
+.admin-item{background:#07101e;border:1px solid #263a5b;border-radius:12px;padding:12px}
+.admin-item-title{font-weight:bold;word-break:break-word}
+.admin-item-meta{color:#94a3b8;font-size:12px;line-height:1.6;margin-top:5px}
+.badge{display:inline-block;border-radius:999px;padding:3px 8px;font-size:11px;background:#17243a;color:#cbd5e1}
+.badge.ok{color:#7ff7bb}
+.admin-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+footer{text-align:center;padding:30px;color:#64748b}
+@media(max-width:600px){
+ .hero h1{font-size:25px}
+ .container{padding:12px}
+ .header-inner{padding:12px}
+ .nav button{padding:8px}
 }
 </style>
 </head>
 
 <body>
 
-<header class="header">
-
-  <div class="container nav">
-
-    <a class="brand" href="#">
-      eFOOTBALL <span>MARKET</span>
-    </a>
-
-    <nav class="navlinks">
-      <a href="#market">ตลาด</a>
-      <a href="#how">วิธีซื้อ</a>
-      <a href="#account">บัญชี</a>
-    </nav>
-
-    <div class="navactions">
-
-      <button
-        class="btn secondary orders-btn"
-        onclick="openOrders()">
-        🧾 ออเดอร์
-        <span id="orderCount">0</span>
-      </button>
-
-      <button
-        class="btn secondary"
-        onclick="openAuth()">
-        👤
-        <span id="userLabel">เข้าสู่ระบบ</span>
-      </button>
-
-      <button
-        class="btn primary"
-        onclick="openSell()">
-        ＋ ลงขาย
-      </button>
-
-    </div>
-
-  </div>
-
+<header>
+<div class="header-inner">
+<div class="logo">⚽ eFOOTBALL MARKET</div>
+<div class="nav">
+<button onclick="showMarket()">ตลาด</button>
+<button onclick="showOrders()">ออเดอร์</button>
+<button onclick="openLogin()" id="loginBtn">เข้าสู่ระบบ</button>
+<button onclick="openAdmin()">⚙️ Admin</button>
+<button class="primary" onclick="openSell()">＋ ลงขาย</button>
+</div>
+</div>
 </header>
-
-
-<section class="container hero">
-
-  <div>
-
-    <span class="badge">
-      ● MARKETPLACE • THAILAND
-    </span>
-
-    <h1>
-      ตลาดซื้อขาย<br>
-      <span>ไอดี eFootball</span>
-    </h1>
-
-    <p>
-      ค้นหารายการ ดูราคา สร้างออเดอร์
-      และจัดการบัญชีผ่านระบบ Backend บน Render
-    </p>
-
-    <div class="hero-actions">
-
-      <button
-        class="btn primary"
-        onclick="scrollToId('market')">
-        🛒 ดูตลาด
-      </button>
-
-      <button
-        class="btn secondary"
-        onclick="openSell()">
-        🏷️ ลงขาย
-      </button>
-
-    </div>
-
-    <div class="stats">
-
-      <div class="stat">
-        <b id="statListings">0</b>
-        <span class="muted">รายการ</span>
-      </div>
-
-      <div class="stat">
-        <b id="statUsers">—</b>
-        <span class="muted">สมาชิก</span>
-      </div>
-
-      <div class="stat">
-        <b id="statApi">…</b>
-        <span class="muted">API</span>
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <div class="hero-card">
-
-    <h3>🔐 ระบบสมาชิก</h3>
-
-    <p class="muted">
-      สมัครใหม่จะเป็น “ผู้ซื้อ” โดยอัตโนมัติ
-      ส่วนสิทธิ์ผู้ขายต้องได้รับจากระบบ
-    </p>
-
-    <div class="api-box">
-
-      <span class="dot"></span>
-
-      <span id="apiStatus">
-        กำลังตรวจสอบ API...
-      </span>
-
-      <br>
-
-      <span id="apiUrl"></span>
-
-    </div>
-
-  </div>
-
-</section>
-
 
 <main class="container">
 
-<section id="market" class="section">
+<section id="marketPage">
 
-  <div class="section-head">
+<div class="hero">
+<h1>ตลาดซื้อขายไอดี eFootball</h1>
+<p class="muted">ซื้อขายไอดีอย่างเป็นระบบ พร้อมระบบสมาชิกและออเดอร์</p>
+<div class="row">
+<button class="primary" onclick="loadListings()">🔄 รีเฟรชตลาด</button>
+<button class="secondary" onclick="openSell()">＋ ลงขายไอดี</button>
+</div>
+</div>
 
-    <div>
-      <h2>🛒 ตลาดไอดี</h2>
-      <span class="muted">
-        รายการที่เปิดขายอยู่
-      </span>
-    </div>
+<div class="grid">
+<div class="stat">
+รายการขาย
+<b id="listingCount">0</b>
+</div>
 
-    <button
-      class="btn secondary"
-      onclick="loadListings()">
-      ↻ รีเฟรช
-    </button>
+<div class="stat">
+สมาชิก
+<b id="memberCount">—</b>
+</div>
 
-  </div>
+<div class="stat">
+API
+<b id="apiStatus">กำลังตรวจสอบ</b>
+</div>
+</div>
 
+<div class="card">
+<h2>🏷️ รายการขาย</h2>
+<div id="listings" class="list">
+<p class="muted">กำลังโหลด...</p>
+</div>
+</div>
 
-  <div class="toolbar">
-
-    <input
-      id="search"
-      class="input search"
-      placeholder="ค้นหาชื่อรายการ..."
-      oninput="renderListings()">
-
-    <select
-      id="sort"
-      class="select"
-      onchange="renderListings()">
-
-      <option value="new">
-        ล่าสุด
-      </option>
-
-      <option value="low">
-        ราคาต่ำ → สูง
-      </option>
-
-      <option value="high">
-        ราคาสูง → ต่ำ
-      </option>
-
-    </select>
-
-
-    <select
-      id="max"
-      class="select"
-      onchange="renderListings()">
-
-      <option value="0">
-        ทุกราคา
-      </option>
-
-      <option value="1000">
-        ไม่เกิน 1,000
-      </option>
-
-      <option value="5000">
-        ไม่เกิน 5,000
-      </option>
-
-      <option value="10000">
-        ไม่เกิน 10,000
-      </option>
-
-    </select>
-
-  </div>
-
-
-  <div id="grid" class="grid"></div>
-
-  <div id="empty" class="empty">
-    ไม่พบรายการที่ตรงกับการค้นหา
-  </div>
+<div class="card">
+<h2>👤 บัญชีของฉัน</h2>
+<div id="accountBox">
+<p class="muted">ยังไม่ได้เข้าสู่ระบบ</p>
+</div>
+</div>
 
 </section>
 
-
-<section id="how" class="section">
-
-  <div class="section-head">
-
-    <div>
-      <h2>📌 วิธีใช้งาน</h2>
-
-      <span class="muted">
-        ขั้นตอนพื้นฐานของตลาด
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="steps">
-
-    <div class="step">
-
-      <div class="step-num">1</div>
-
-      <h3>
-        สมัคร / เข้าสู่ระบบ
-      </h3>
-
-      <p class="muted">
-        สร้างบัญชีใหม่หรือใช้บัญชีเดิม
-      </p>
-
-    </div>
-
-
-    <div class="step">
-
-      <div class="step-num">2</div>
-
-      <h3>
-        เลือกประกาศ
-      </h3>
-
-      <p class="muted">
-        ตรวจสอบรายละเอียดและราคาก่อนสร้างออเดอร์
-      </p>
-
-    </div>
-
-
-    <div class="step">
-
-      <div class="step-num">3</div>
-
-      <h3>
-        ติดตามออเดอร์
-      </h3>
-
-      <p class="muted">
-        ดูสถานะออเดอร์จากบัญชีของคุณ
-      </p>
-
-    </div>
-
-  </div>
-
-</section>
-
-
-<section id="account" class="section">
-
-  <div class="section-head">
-
-    <div>
-
-      <h2>
-        👤 บัญชีของฉัน
-      </h2>
-
-      <span class="muted">
-        สถานะบัญชีและระบบ
-      </span>
-
-    </div>
-
-  </div>
-
-
-  <div class="dashboard">
-
-    <div class="kpi">
-      <span class="muted">ผู้ใช้</span>
-      <b id="dashUser">Guest</b>
-    </div>
-
-    <div class="kpi">
-      <span class="muted">บทบาท</span>
-      <b id="dashRole">—</b>
-    </div>
-
-    <div class="kpi">
-      <span class="muted">ออเดอร์</span>
-      <b id="dashOrders">0</b>
-    </div>
-
-    <div class="kpi">
-      <span class="muted">สถานะ API</span>
-      <b id="dashApi">ตรวจสอบ...</b>
-    </div>
-
-  </div>
-
-
-  <div
-    id="accountActions"
-    style="margin-top:12px">
-  </div>
-
+<section id="ordersPage" style="display:none">
+<div class="card">
+<h2>📦 ออเดอร์ของฉัน</h2>
+<div id="orders" class="list">
+<p class="muted">กำลังโหลด...</p>
+</div>
+</div>
 </section>
 
 </main>
 
-
-<footer class="footer">
-
-  © 2026 eFootball Market TH · ระบบตลาดทดลอง
-
-</footer>
-
-
-<div class="bottom">
-
-  <button onclick="scrollToId('market')">
-    <b>🛒</b>
-    ตลาด
-  </button>
-
-  <button onclick="openOrders()">
-    <b>🧾</b>
-    ออเดอร์
-  </button>
-
-  <button onclick="openAuth()">
-    <b>👤</b>
-    บัญชี
-  </button>
-
-  <button onclick="openSell()">
-    <b>＋</b>
-    ลงขาย
-  </button>
-
+<!-- LOGIN -->
+<div id="loginModal" class="modal">
+<div class="modal-box">
+<div class="row">
+<div>
+<h2>เข้าสู่ระบบ</h2>
+<p class="muted">เข้าสู่บัญชี eFootball Market</p>
+</div>
+<button class="secondary" onclick="closeModal('loginModal')">✕</button>
 </div>
 
+<input id="loginEmail" type="email" placeholder="อีเมล">
+<input id="loginPassword" type="password" placeholder="รหัสผ่าน">
 
-<div id="toast" class="toast"></div>
-
-
-<!-- AUTH -->
-
-<div id="auth" class="modal">
-
-  <div class="dialog">
-
-    <div class="dialog-head">
-
-      <h2>
-        🔐 สมาชิก
-      </h2>
-
-      <button
-        class="close"
-        onclick="closeM('auth')">
-        ×
-      </button>
-
-    </div>
-
-
-    <div class="tabs">
-
-      <button
-        id="loginTab"
-        class="tab active"
-        onclick="setMode('login')">
-        เข้าสู่ระบบ
-      </button>
-
-      <button
-        id="regTab"
-        class="tab"
-        onclick="setMode('register')">
-        สมัครสมาชิก
-      </button>
-
-    </div>
-
-
-    <div
-      id="registerNotice"
-      class="notice"
-      style="display:none">
-
-      บัญชีใหม่จะเป็น
-      <b>ผู้ซื้อ</b>
-      อัตโนมัติ
-
-      <br>
-
-      หากต้องการลงขาย
-      ต้องได้รับสิทธิ์ Seller จากระบบก่อน
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        อีเมล
-      </label>
-
-      <input
-        id="email"
-        class="input"
-        type="email"
-        autocomplete="email"
-        placeholder="you@example.com">
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        รหัสผ่าน
-      </label>
-
-      <input
-        id="password"
-        class="input"
-        type="password"
-        autocomplete="current-password"
-        placeholder="อย่างน้อย 8 ตัวอักษร">
-
-    </div>
-
-
-    <button
-      id="authBtn"
-      class="btn primary"
-      style="width:100%"
-      onclick="auth()">
-
-      เข้าสู่ระบบ
-
-    </button>
-
-  </div>
-
+<div class="row">
+<button class="primary" onclick="login()">เข้าสู่ระบบ</button>
+<button class="secondary" onclick="register()">สมัครสมาชิก</button>
 </div>
-
+</div>
+</div>
 
 <!-- SELL -->
-
 <div id="sellModal" class="modal">
-
-  <div class="dialog">
-
-    <div class="dialog-head">
-
-      <h2>
-        🏷️ ลงขายไอดี
-      </h2>
-
-      <button
-        class="close"
-        onclick="closeM('sellModal')">
-        ×
-      </button>
-
-    </div>
-
-
-    <div
-      id="sellPermission"
-      class="notice">
-
-      กำลังตรวจสอบสิทธิ์...
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        ชื่อรายการ
-      </label>
-
-      <input
-        id="title"
-        class="input"
-        maxlength="150"
-        placeholder="เช่น eFootball ทีมรวม Epic 8 ใบ">
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        ราคา (บาท)
-      </label>
-
-      <input
-        id="price"
-        class="input"
-        type="number"
-        min="1"
-        max="100000000"
-        step="0.01"
-        placeholder="เช่น 2500">
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        รายละเอียด
-      </label>
-
-      <textarea
-        id="description"
-        class="textarea"
-        maxlength="3000"
-        placeholder="รายละเอียดไอดี นักเตะเด่น สิ่งที่ได้รับ ฯลฯ">
-      </textarea>
-
-    </div>
-
-
-    <button
-      class="btn primary"
-      style="width:100%"
-      onclick="createListing()">
-
-      เผยแพร่ประกาศ
-
-    </button>
-
-  </div>
-
+<div class="modal-box">
+<div class="row">
+<h2>🏷️ ลงขายไอดี</h2>
+<button class="secondary" onclick="closeModal('sellModal')">✕</button>
 </div>
 
+<input id="sellTitle" placeholder="ชื่อรายการ">
+<input id="sellPrice" type="number" placeholder="ราคา">
+<input id="sellDescription" placeholder="รายละเอียด">
+<textarea id="sellAccount" style="width:100%;min-height:120px;background:#07101e;color:white;border:1px solid #304664;border-radius:9px;padding:10px" placeholder="ข้อมูลบัญชีสำหรับส่งมอบหลังชำระเงิน"></textarea>
 
-<!-- ORDERS -->
-
-<div id="ordersModal" class="modal">
-
-  <div class="dialog wide">
-
-    <div class="dialog-head">
-
-      <h2>
-        🧾 ออเดอร์
-      </h2>
-
-      <button
-        class="close"
-        onclick="closeM('ordersModal')">
-        ×
-      </button>
-
-    </div>
-
-
-    <div id="ordersList"></div>
-
-  </div>
-
+<button class="primary" onclick="createListing()">เผยแพร่รายการ</button>
+</div>
 </div>
 
+<!-- ADMIN -->
+<div id="adminModal" class="modal">
+<div class="modal-box">
+
+<div class="row" style="justify-content:space-between;align-items:center">
+<div>
+<h3 style="margin:0">⚙️ Admin Dashboard</h3>
+<p class="small muted">จัดการสมาชิก ตรวจสอบระบบ และดูรายการขาย</p>
+</div>
+<button class="secondary" onclick="closeModal('adminModal')">✕</button>
+</div>
+
+<div id="adminBootstrapBox" style="margin-top:14px">
+<div class="card">
+<b>🔐 เปิดใช้งาน Admin ครั้งแรก</b>
+<p class="small muted">ใช้เฉพาะกรณีที่ระบบยังไม่มี Admin</p>
+<input id="adminSecret" type="password" placeholder="Admin Bootstrap Secret">
+<button class="primary" onclick="bootstrapAdmin()">เปิดใช้งาน Admin</button>
+</div>
+</div>
+
+<div class="admin-tabs">
+<button class="secondary" onclick="showAdminTab('overview')">📊 ภาพรวม</button>
+<button class="secondary" onclick="showAdminTab('users');loadAdminUsers()">👥 สมาชิก</button>
+<button class="secondary" onclick="showAdminTab('listings');loadAdminListings()">🏷️ รายการขาย</button>
+<button class="secondary" onclick="showAdminTab('audit');loadAdminAudit()">🧾 Audit Log</button>
+</div>
+
+<section id="adminTab-overview" class="admin-tab active">
+
+<div id="adminStats" class="admin-stats">
+<div class="admin-stat">ผู้ใช้<b>—</b></div>
+<div class="admin-stat">รายการ<b>—</b></div>
+<div class="admin-stat">ออเดอร์<b>—</b></div>
+<div class="admin-stat">สถานะ API<b>—</b></div>
+</div>
+
+<div class="admin-actions">
+<button class="primary" onclick="loadAdminStats()">🔄 รีเฟรชสถิติ</button>
+<button class="secondary" onclick="loadAdminUsers()">👥 โหลดสมาชิก</button>
+</div>
+
+</section>
+
+<section id="adminTab-users" class="admin-tab">
+
+<div class="admin-actions">
+<button class="primary" onclick="loadAdminUsers()">🔄 โหลดสมาชิก</button>
+</div>
+
+<div id="adminUsers" class="admin-list">
+<p class="muted">กดโหลดสมาชิก</p>
+</div>
+
+</section>
+
+<section id="adminTab-listings" class="admin-tab">
+
+<p class="small muted">
+รายการที่แสดงมาจากตลาดปัจจุบัน
+</p>
+
+<div class="admin-actions">
+<button class="primary" onclick="loadAdminListings()">🔄 โหลดรายการ</button>
+</div>
+
+<div id="adminListings" class="admin-list">
+<p class="muted">กดโหลดรายการ</p>
+</div>
+
+</section>
+
+<section id="adminTab-audit" class="admin-tab">
+
+<div class="admin-actions">
+<button class="primary" onclick="loadAdminAudit()">🔄 โหลด Audit Log</button>
+</div>
+
+<div id="adminAudit" class="admin-list">
+<p class="muted">กดโหลด Audit Log</p>
+</div>
+
+</section>
+
+</div>
+</div>
+
+<footer>
+eFOOTBALL MARKET
+</footer>
 
 <script>
 
-const API =
-"https://efootball-market-api.onrender.com";
-
-let mode="login";
-let listings=[];
-let orders=[];
-
-
-const $ =
-id => document.getElementById(id);
-
-
-const esc =
-s =>
-String(s ?? "")
-.replace(
-  /[&<>"']/g,
-  c => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[c])
-);
-
-
-function toast(msg){
-
-  $("toast").textContent=msg;
-
-  $("toast").classList.add("show");
-
-  clearTimeout(window.__toast);
-
-  window.__toast =
-    setTimeout(
-      () => $("toast").classList.remove("show"),
-      3000
-    );
-}
-
-
-function openM(id){
-  $(id).classList.add("open");
-}
-
-
-function closeM(id){
-  $(id).classList.remove("open");
-}
-
-
-function scrollToId(id){
-
-  $(id).scrollIntoView({
-    behavior:"smooth"
-  });
-
-}
-
-
-function getUser(){
-
-  try{
-
-    return JSON.parse(
-      localStorage.getItem("ef_api_user") || "null"
-    );
-
-  }catch{
-
-    return null;
-
-  }
-
-}
-
+const API="https://efootball-market-api.onrender.com";
 
 function getToken(){
+return localStorage.getItem("ef_token") ||
+localStorage.getItem("ef_api_token") ||
+"";
+}
 
-  return localStorage.getItem(
-    "ef_api_token"
-  ) || "";
+function getUser(){
+try{
+return JSON.parse(localStorage.getItem("ef_api_user")||localStorage.getItem("ef_user")||"null");
+}catch{
+return null;
+}
+}
+
+function escapeHTML(value){
+return String(value??"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+}
+
+async function api(path,options={}){
+const headers={
+"Content-Type":"application/json",
+...(options.headers||{})
+};
+
+const token=getToken();
+
+if(token){
+headers.Authorization="Bearer "+token;
+}
+
+const response=await fetch(API+path,{
+...options,
+headers
+});
+
+let data={};
+
+try{
+data=await response.json();
+}catch{}
+
+if(!response.ok){
+throw new Error(data.error||data.message||"เกิดข้อผิดพลาด");
+}
+
+return data;
+}
+
+function openModal(id){
+document.getElementById(id).style.display="block";
+}
+
+function closeModal(id){
+document.getElementById(id).style.display="none";
+}
+
+function openLogin(){
+openModal("loginModal");
+}
+
+function showMarket(){
+document.getElementById("marketPage").style.display="block";
+document.getElementById("ordersPage").style.display="none";
+loadListings();
+}
+
+function showOrders(){
+if(!getToken()){
+alert("กรุณาเข้าสู่ระบบก่อน");
+openLogin();
+return;
+}
+
+document.getElementById("marketPage").style.display="none";
+document.getElementById("ordersPage").style.display="block";
+loadOrders();
+}
+
+async function login(){
+
+const email=document.getElementById("loginEmail").value.trim();
+const password=document.getElementById("loginPassword").value;
+
+if(!email||!password){
+alert("กรุณากรอกอีเมลและรหัสผ่าน");
+return;
+}
+
+try{
+
+const data=await api("/api/auth/login",{
+method:"POST",
+body:JSON.stringify({
+email,
+password
+})
+});
+
+if(data.token){
+localStorage.setItem("ef_token",data.token);
+}
+
+if(data.user){
+localStorage.setItem("ef_api_user",JSON.stringify(data.user));
+}
+
+closeModal("loginModal");
+
+await loadMe();
+await loadListings();
+
+alert("เข้าสู่ระบบสำเร็จ");
+
+}catch(error){
+alert(error.message);
+}
 
 }
 
+async function register(){
 
-async function api(path,opt={}){
+const email=document.getElementById("loginEmail").value.trim();
+const password=document.getElementById("loginPassword").value;
 
-  const headers={
-    "Content-Type":"application/json",
-    ...(opt.headers||{})
-  };
+if(!email||!password){
+alert("กรุณากรอกอีเมลและรหัสผ่าน");
+return;
+}
 
-  const token=getToken();
+try{
 
-  if(token){
+await api("/api/auth/register",{
+method:"POST",
+body:JSON.stringify({
+email,
+password
+})
+});
 
-    headers.Authorization =
-      "Bearer "+token;
+alert("สมัครสมาชิกสำเร็จ กรุณาเข้าสู่ระบบ");
 
-  }
-
-  const r =
-    await fetch(
-      API+path,
-      {
-        ...opt,
-        headers
-      }
-    );
-
-
-  const raw =
-    await r.text();
-
-  let data={};
-
-  try{
-
-    data =
-      raw
-      ? JSON.parse(raw)
-      : {};
-
-  }catch{}
-
-
-  if(!r.ok){
-
-    throw new Error(
-      data.error ||
-      data.message ||
-      ("HTTP "+r.status)
-    );
-
-  }
-
-  return data;
+}catch(error){
+alert(error.message);
+}
 
 }
 
+async function loadMe(){
 
-function setMode(m){
+try{
 
-  mode=m;
+const data=await api("/api/me");
 
-  $("loginTab")
-    .classList
-    .toggle(
-      "active",
-      m==="login"
-    );
+const user=data.user||data;
 
-  $("regTab")
-    .classList
-    .toggle(
-      "active",
-      m==="register"
-    );
+localStorage.setItem("ef_api_user",JSON.stringify(user));
 
-  $("registerNotice")
-    .style
-    .display =
-      m==="register"
-      ? "block"
-      : "none";
+document.getElementById("accountBox").innerHTML=
+"<b>"+escapeHTML(user.email||"สมาชิก")+"</b>"+
+"<br>สิทธิ์: <span class='badge'>"+
+escapeHTML(user.role||"buyer")+
+"</span>";
 
-  $("authBtn")
-    .textContent =
-      m==="register"
-      ? "สมัครสมาชิก"
-      : "เข้าสู่ระบบ";
+document.getElementById("loginBtn").textContent="ออกจากระบบ";
+
+}catch{
+
+document.getElementById("accountBox").innerHTML=
+"<p class='muted'>ยังไม่ได้เข้าสู่ระบบ</p>";
+
+document.getElementById("loginBtn").textContent="เข้าสู่ระบบ";
+}
 
 }
 
+document.getElementById("loginBtn").onclick=function(){
 
-function openAuth(){
-
-  openM("auth");
-
+if(getToken()){
+logout();
+}else{
+openLogin();
 }
 
-
-function openSell(){
-
-  const u=getUser();
-
-
-  if(!u){
-
-    toast(
-      "กรุณาเข้าสู่ระบบก่อนลงขาย"
-    );
-
-    openAuth();
-
-    return;
-
-  }
-
-
-  if(
-    !["seller","admin"]
-    .includes(u.role)
-  ){
-
-    toast(
-      "บัญชีนี้ยังไม่มีสิทธิ์ผู้ขาย"
-    );
-
-    return;
-
-  }
-
-
-  $("sellPermission")
-    .innerHTML =
-      "บัญชี <b>"+
-      esc(u.email)+
-      "</b> · สิทธิ์ <b>"+
-      esc(u.role)+
-      "</b>";
-
-
-  openM("sellModal");
-
-}
-
-
-function openOrders(){
-
-  if(!getUser()){
-
-    toast(
-      "กรุณาเข้าสู่ระบบก่อน"
-    );
-
-    openAuth();
-
-    return;
-
-  }
-
-  openM("ordersModal");
-
-  loadOrders();
-
-}
-
-
-async function auth(){
-
-  const email =
-    $("email")
-    .value
-    .trim()
-    .toLowerCase();
-
-  const password =
-    $("password").value;
-
-
-  if(
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    .test(email)
-  ){
-
-    toast(
-      "กรุณากรอกอีเมลให้ถูกต้อง"
-    );
-
-    return;
-
-  }
-
-
-  if(password.length<8){
-
-    toast(
-      "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    const data =
-      await api(
-        mode==="register"
-        ? "/api/auth/register"
-        : "/api/auth/login",
-        {
-          method:"POST",
-          body:JSON.stringify({
-            email,
-            password
-          })
-        }
-      );
-
-
-    if(
-      !data.token ||
-      !data.user
-    ){
-
-      throw new Error(
-        "ข้อมูลจากเซิร์ฟเวอร์ไม่ครบ"
-      );
-
-    }
-
-
-    localStorage.setItem(
-      "ef_api_token",
-      data.token
-    );
-
-    localStorage.setItem(
-      "ef_api_user",
-      JSON.stringify(data.user)
-    );
-
-
-    closeM("auth");
-
-    sync();
-
-    await loadOrders();
-
-
-    toast(
-      mode==="register"
-      ? "สมัครสมาชิกสำเร็จ"
-      : "เข้าสู่ระบบสำเร็จ"
-    );
-
-
-  }catch(e){
-
-    toast(
-      "ไม่สำเร็จ: "+
-      e.message
-    );
-
-  }
-
-}
-
+};
 
 function logout(){
 
-  localStorage.removeItem(
-    "ef_api_token"
-  );
+localStorage.removeItem("ef_token");
+localStorage.removeItem("ef_api_token");
+localStorage.removeItem("ef_api_user");
+localStorage.removeItem("ef_user");
 
-  localStorage.removeItem(
-    "ef_api_user"
-  );
-
-  orders=[];
-
-  sync();
-
-  toast(
-    "ออกจากระบบแล้ว"
-  );
+location.reload();
 
 }
-
-
-function sync(){
-
-  const u=getUser();
-
-
-  $("userLabel").textContent =
-    u
-    ? u.email
-    : "เข้าสู่ระบบ";
-
-
-  $("dashUser").textContent =
-    u
-    ? u.email
-    : "Guest";
-
-
-  $("dashRole").textContent =
-    u
-    ? u.role
-    : "—";
-
-
-  $("dashOrders").textContent =
-    orders.length;
-
-
-  $("orderCount").textContent =
-    orders.length;
-
-
-  $("accountActions").innerHTML =
-    u
-
-    ? `
-      <button
-        class="btn danger"
-        onclick="logout()">
-        ออกจากระบบ
-      </button>
-      `
-
-    : `
-      <button
-        class="btn primary"
-        onclick="openAuth()">
-        เข้าสู่ระบบ / สมัครสมาชิก
-      </button>
-      `;
-
-}
-
 
 async function loadListings(){
 
-  $("grid").innerHTML =
-    `
-    <div
-      class="notice"
-      style="grid-column:1/-1;text-align:center">
-      กำลังโหลดรายการ...
-    </div>
-    `;
+const box=document.getElementById("listings");
 
+box.innerHTML="<p class='muted'>กำลังโหลด...</p>";
 
-  try{
+try{
 
-    const data =
-      await api(
-        "/api/listings?limit=100"
-      );
+const data=await api("/api/listings");
 
+const listings=data.listings||[];
 
-    listings =
-      Array.isArray(data)
-      ? data
-      : (data.listings || []);
+document.getElementById("listingCount").textContent=listings.length;
 
+if(!listings.length){
 
-    $("statListings")
-      .textContent =
-        listings.length;
-
-
-    $("statApi")
-      .textContent =
-        "ออนไลน์";
-
-
-    $("statApi")
-      .style
-      .color =
-        "var(--green)";
-
-
-    renderListings();
-
-
-  }catch(e){
-
-    $("statApi")
-      .textContent =
-        "ออฟไลน์";
-
-
-    $("statApi")
-      .style
-      .color =
-        "var(--red)";
-
-
-    $("grid").innerHTML =
-      `
-      <div
-        class="notice"
-        style="grid-column:1/-1">
-
-        โหลดรายการไม่ได้:
-        ${esc(e.message)}
-
-      </div>
-      `;
-
-  }
+box.innerHTML="<p class='muted'>ยังไม่มีรายการขาย</p>";
+return;
 
 }
 
+box.innerHTML=listings.map(x=>{
 
-function renderListings(){
+const id=escapeHTML(x.id);
+const title=escapeHTML(x.title||x.name||"ไอดี eFootball");
+const price=escapeHTML(x.price??"-");
+const status=escapeHTML(x.status||"active");
 
-  const q =
-    $("search")
-    .value
-    .trim()
-    .toLowerCase();
+return `
+<div class="item">
 
+<b>${title}</b>
 
-  const max =
-    +$("max").value;
+<div class="small muted">
+สถานะ: ${status}
+</div>
 
+<h3>฿${price}</h3>
 
-  const sort =
-    $("sort").value;
+<button class="primary" onclick="createOrder('${id}')">
+ซื้อรายการนี้
+</button>
 
+</div>
+`;
 
-  let rows =
-    listings.filter(x => {
+}).join("");
 
-      const title =
-        String(
-          x.title || ""
-        ).toLowerCase();
+}catch(error){
 
-
-      const price =
-        Number(x.price) || 0;
-
-
-      return (
-        (!q || title.includes(q)) &&
-        (!max || price<=max)
-      );
-
-    });
-
-
-  rows.sort((a,b)=>{
-
-    if(sort==="low"){
-
-      return (
-        Number(a.price) -
-        Number(b.price)
-      );
-
-    }
-
-
-    if(sort==="high"){
-
-      return (
-        Number(b.price) -
-        Number(a.price)
-      );
-
-    }
-
-
-    return (
-      Number(b.id) -
-      Number(a.id)
-    );
-
-  });
-
-
-  $("empty")
-    .style
-    .display =
-      rows.length
-      ? "none"
-      : "block";
-
-
-  $("grid").innerHTML =
-    rows.map(x=>{
-
-      const price =
-        Number(x.price) || 0;
-
-
-      const active =
-        x.status==="active";
-
-
-      return `
-
-      <article class="card">
-
-        <div class="cover">
-
-          ⚽
-
-          <span class="price-tag">
-
-            ${price.toLocaleString()}
-            ฿
-
-          </span>
-
-        </div>
-
-
-        <div class="card-body">
-
-          <h3 class="card-title">
-
-            ${esc(
-              x.title ||
-              ("ไอดี #"+x.id)
-            )}
-
-          </h3>
-
-
-          <div class="card-desc">
-
-            ${esc(
-              x.description ||
-              "ไม่มีรายละเอียด"
-            )}
-
-          </div>
-
-
-          <div class="card-meta">
-
-            รายการ #${esc(x.id)}
-            · ผู้ขาย #${esc(x.seller_id||"-")}
-
-          </div>
-
-
-          <span
-            class="status ${
-              active ? "" : "off"
-            }">
-
-            ${
-              active
-              ? "พร้อมขาย"
-              : "ไม่พร้อมขาย"
-            }
-
-          </span>
-
-
-          <div class="card-foot">
-
-            <span class="price">
-
-              ${price.toLocaleString()}
-              ฿
-
-            </span>
-
-
-            <button
-              class="btn ${
-                active
-                ? "primary"
-                : "secondary"
-              }"
-              ${
-                active
-                ? `onclick="buy(${Number(x.id)})"`
-                : "disabled"
-              }>
-
-              ${
-                active
-                ? "สั่งซื้อ"
-                : "ปิดการขาย"
-              }
-
-            </button>
-
-          </div>
-
-        </div>
-
-      </article>
-
-      `;
-
-    }).join("");
+box.innerHTML=
+"<p class='muted'>โหลดตลาดไม่สำเร็จ: "+
+escapeHTML(error.message)+
+"</p>";
 
 }
 
+}
 
-async function buy(id){
+function openSell(){
 
-  const u=getUser();
+if(!getToken()){
 
+alert("กรุณาเข้าสู่ระบบก่อน");
 
-  if(!u){
+openLogin();
 
-    openAuth();
-
-    return;
-
-  }
-
-
-  const item =
-    listings.find(
-      x =>
-        Number(x.id) ===
-        Number(id)
-    );
-
-
-  if(!item)return;
-
-
-  const price =
-    Number(item.price)||0;
-
-
-  if(
-    !confirm(
-      "ยืนยันสร้างออเดอร์รายการนี้ ราคา "+
-      price.toLocaleString()+
-      " บาท?"
-    )
-  ){
-
-    return;
-
-  }
-
-
-  try{
-
-    const data =
-      await api(
-        "/api/orders",
-        {
-          method:"POST",
-          body:JSON.stringify({
-            listing_id:Number(id)
-          })
-        }
-      );
-
-
-    toast(
-      "สร้างออเดอร์ #"+
-      (data.order?.id||"")+
-      " สำเร็จ"
-    );
-
-
-    await loadListings();
-
-    await loadOrders();
-
-    openOrders();
-
-
-  }catch(e){
-
-    toast(
-      "สร้างออเดอร์ไม่สำเร็จ: "+
-      e.message
-    );
-
-  }
+return;
 
 }
 
+const user=getUser();
+
+if(user && user.role!=="seller" && user.role!=="admin"){
+
+alert("บัญชีนี้ยังไม่มีสิทธิ์ผู้ขาย");
+
+return;
+
+}
+
+openModal("sellModal");
+
+}
 
 async function createListing(){
 
-  const title =
-    $("title")
-    .value
-    .trim();
+const title=document.getElementById("sellTitle").value.trim();
+const price=document.getElementById("sellPrice").value;
+const description=document.getElementById("sellDescription").value.trim();
+const account=document.getElementById("sellAccount").value;
 
+if(!title||!price||!account){
 
-  const price =
-    Number(
-      $("price").value
-    );
+alert("กรุณากรอกข้อมูลให้ครบ");
 
-
-  const description =
-    $("description")
-    .value
-    .trim();
-
-
-  if(!title){
-
-    toast(
-      "กรุณากรอกชื่อรายการ"
-    );
-
-    return;
-
-  }
-
-
-  if(
-    !Number.isFinite(price) ||
-    price<=0
-  ){
-
-    toast(
-      "กรุณากรอกราคาให้ถูกต้อง"
-    );
-
-    return;
-
-  }
-
-
-  try{
-
-    const data =
-      await api(
-        "/api/listings",
-        {
-          method:"POST",
-          body:JSON.stringify({
-            title,
-            price,
-            description
-          })
-        }
-      );
-
-
-    $("title").value="";
-    $("price").value="";
-    $("description").value="";
-
-
-    closeM("sellModal");
-
-
-    toast(
-      "ลงขายสำเร็จ #"+
-      (data.listing?.id||"")
-    );
-
-
-    await loadListings();
-
-
-  }catch(e){
-
-    toast(
-      "ลงขายไม่สำเร็จ: "+
-      e.message
-    );
-
-  }
+return;
 
 }
 
-
-async function loadOrders(){
-
-  const u=getUser();
-
-
-  if(!u){
-
-    orders=[];
-
-    sync();
-
-    return;
-
-  }
-
-
-  try{
-
-    const data =
-      await api(
-        "/api/orders?limit=100"
-      );
-
-
-    orders =
-      Array.isArray(data)
-      ? data
-      : (data.orders || []);
-
-
-    sync();
-
-
-    $("ordersList").innerHTML =
-      orders.length
-
-      ? orders.map(o=>`
-
-        <div class="order">
-
-          <div>
-
-            <strong>
-
-              Order #${esc(o.id)}
-              ·
-              ${esc(
-                o.title ||
-                ("Listing #"+o.listing_id)
-              )}
-
-            </strong>
-
-
-            <div class="muted">
-
-              ราคา
-              ${Number(o.price||0).toLocaleString()}
-              บาท
-
-            </div>
-
-
-            <div class="muted">
-
-              สร้างเมื่อ
-              ${esc(o.created_at||"-")}
-
-            </div>
-
-          </div>
-
-
-          <span class="status">
-
-            ${esc(o.status||"pending")}
-
-          </span>
-
-        </div>
-
-      `).join("")
-
-      : `
-        <div
-          class="empty"
-          style="display:block">
-
-          ยังไม่มีออเดอร์
-
-        </div>
-      `;
-
-
-  }catch(e){
-
-    $("ordersList").innerHTML =
-      `
-      <div class="notice">
-
-        โหลดออเดอร์ไม่ได้:
-        ${esc(e.message)}
-
-      </div>
-      `;
-
-  }
-
-}
-
-
-async function health(){
-
-  try{
-
-    await api("/health");
-
-
-    $("apiStatus")
-      .textContent =
-        "API เชื่อมต่อแล้ว";
-
-
-    $("dashApi")
-      .textContent =
-        "ออนไลน์";
-
-
-  }catch{
-
-    $("apiStatus")
-      .textContent =
-        "API ยังไม่พร้อมใช้งาน";
-
-
-    $("dashApi")
-      .textContent =
-        "ออฟไลน์";
-
-  }
-
-}
-
-
-document.addEventListener(
-  "click",
-  e=>{
-
-    if(
-      e.target.classList.contains(
-        "modal"
-      )
-    ){
-
-      e.target.classList.remove(
-        "open"
-      );
-
-    }
-
-  }
-);
-
-
-$("apiUrl").textContent=API;
-
-setMode("login");
-
-sync();
+try{
+
+await api("/api/listings",{
+method:"POST",
+body:JSON.stringify({
+title,
+price:Number(price),
+description,
+account_data:account
+})
+});
+
+alert("ลงขายสำเร็จ");
+
+closeModal("sellModal");
 
 loadListings();
 
-loadOrders();
+}catch(error){
 
-health();
+alert(error.message);
+
+}
+
+}
+
+async function createOrder(listingId){
+
+if(!getToken()){
+
+alert("กรุณาเข้าสู่ระบบก่อน");
+
+openLogin();
+
+return;
+
+}
+
+try{
+
+const data=await api("/api/orders",{
+method:"POST",
+body:JSON.stringify({
+listing_id:listingId
+})
+});
+
+alert("สร้างออเดอร์แล้ว #"+(data.order?.id||""));
+
+showOrders();
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+async function loadOrders(){
+
+const box=document.getElementById("orders");
+
+box.innerHTML="<p class='muted'>กำลังโหลด...</p>";
+
+try{
+
+const data=await api("/api/orders");
+
+const orders=data.orders||[];
+
+if(!orders.length){
+
+box.innerHTML="<p class='muted'>ยังไม่มีออเดอร์</p>";
+
+return;
+
+}
+
+box.innerHTML=orders.map(x=>`
+
+<div class="item">
+
+<b>Order #${escapeHTML(x.id)}</b>
+
+<div class="small muted">
+สถานะ: ${escapeHTML(x.status||"-")}
+<br>
+Payment: ${escapeHTML(x.payment_status||"-")}
+</div>
+
+${x.status==="paid" ? `
+<button class="primary" onclick="loadDelivery('${escapeHTML(x.id)}')">
+📦 รับข้อมูลบัญชี
+</button>
+`:""}
+
+</div>
+
+`).join("");
+
+}catch(error){
+
+box.innerHTML=
+"<p class='muted'>โหลดออเดอร์ไม่สำเร็จ: "+
+escapeHTML(error.message)+
+"</p>";
+
+}
+
+}
+
+async function loadDelivery(id){
+
+try{
+
+const data=await api("/api/orders/"+encodeURIComponent(id)+"/delivery");
+
+const delivery=data.delivery||data;
+
+alert(
+"ข้อมูลบัญชี:\n\n"+
+JSON.stringify(delivery,null,2)
+);
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+/* =========================
+ADMIN
+========================= */
+
+function showAdminTab(name){
+
+document.querySelectorAll(".admin-tab")
+.forEach(x=>x.classList.remove("active"));
+
+const el=document.getElementById("adminTab-"+name);
+
+if(el){
+el.classList.add("active");
+}
+
+}
+
+function openAdmin(){
+
+if(!getToken()){
+
+alert("กรุณาเข้าสู่ระบบก่อน");
+
+openLogin();
+
+return;
+
+}
+
+openModal("adminModal");
+
+showAdminTab("overview");
+
+loadAdminStats();
+
+}
+
+async function bootstrapAdmin(){
+
+const secret=document.getElementById("adminSecret").value;
+
+if(!secret){
+
+alert("กรุณากรอก Admin Bootstrap Secret");
+
+return;
+
+}
+
+try{
+
+await api("/api/admin/bootstrap",{
+method:"POST",
+body:JSON.stringify({secret})
+});
+
+document.getElementById("adminSecret").value="";
+
+alert("เปิดใช้งาน Admin สำเร็จ");
+
+await loadMe();
+await loadAdminStats();
+await loadAdminUsers();
+
+}catch(error){
+
+document.getElementById("adminSecret").value="";
+
+alert(error.message);
+
+}
+
+}
+
+async function loadAdminStats(){
+
+const box=document.getElementById("adminStats");
+
+try{
+
+const data=await api("/api/stats");
+
+const users=data.users ??
+data.total_users ??
+data.members ??
+"—";
+
+const listings=data.listings ??
+data.total_listings ??
+"—";
+
+const orders=data.orders ??
+data.total_orders ??
+"—";
+
+box.innerHTML=`
+
+<div class="admin-stat">
+ผู้ใช้
+<b>${escapeHTML(users)}</b>
+</div>
+
+<div class="admin-stat">
+รายการ
+<b>${escapeHTML(listings)}</b>
+</div>
+
+<div class="admin-stat">
+ออเดอร์
+<b>${escapeHTML(orders)}</b>
+</div>
+
+<div class="admin-stat">
+สถานะ API
+<b>ออนไลน์</b>
+</div>
+
+`;
+
+}catch(error){
+
+box.innerHTML=
+"<div class='admin-stat' style='grid-column:1/-1'>"+
+"โหลดสถิติไม่สำเร็จ: "+
+escapeHTML(error.message)+
+"</div>";
+
+}
+
+}
+
+async function loadAdminUsers(){
+
+const box=document.getElementById("adminUsers");
+
+box.innerHTML=
+"<p class='muted'>กำลังโหลดผู้ใช้...</p>";
+
+try{
+
+const data=await api("/api/admin/users");
+
+const users=data.users||[];
+
+if(!users.length){
+
+box.innerHTML="<p class='muted'>ยังไม่มีสมาชิก</p>";
+
+return;
+
+}
+
+box.innerHTML=users.map(renderAdminUser).join("");
+
+}catch(error){
+
+box.innerHTML=
+"<p class='muted'>โหลดสมาชิกไม่สำเร็จ: "+
+escapeHTML(error.message)+
+"</p>";
+
+}
+
+}
+
+function renderAdminUser(user){
+
+const id=escapeHTML(String(user.id||""));
+const email=escapeHTML(String(user.email||"-"));
+const role=escapeHTML(String(user.role||"buyer"));
+
+const created=user.created_at
+?escapeHTML(new Date(user.created_at).toLocaleString("th-TH"))
+:"-";
+
+return `
+
+<div class="admin-item">
+
+<div class="admin-item-title">
+👤 ${email}
+
+<span class="badge">
+${role}
+</span>
+
+</div>
+
+<div class="admin-item-meta">
+
+ID: ${id}
+<br>
+สมัคร: ${created}
+
+</div>
+
+<div class="admin-actions">
+
+<button class="primary"
+onclick="changeUserRole('${id}','seller')">
+Seller
+</button>
+
+<button class="secondary"
+onclick="changeUserRole('${id}','buyer')">
+Buyer
+</button>
+
+<button class="danger"
+onclick="changeUserRole('${id}','admin')">
+Admin
+</button>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+async function changeUserRole(userId,role){
+
+if(!confirm("ยืนยันเปลี่ยนสิทธิ์เป็น "+role+" ?")){
+
+return;
+
+}
+
+try{
+
+await api(
+"/api/admin/users/"+
+encodeURIComponent(userId)+
+"/role",
+{
+method:"PATCH",
+body:JSON.stringify({role})
+}
+);
+
+alert("เปลี่ยนสิทธิ์สำเร็จ");
+
+await loadAdminUsers();
+await loadAdminStats();
+await loadMe();
+
+}catch(error){
+
+alert(error.message);
+
+}
+
+}
+
+async function loadAdminListings(){
+
+const box=document.getElementById("adminListings");
+
+box.innerHTML=
+"<p class='muted'>กำลังโหลดรายการ...</p>";
+
+try{
+
+const data=await api("/api/listings");
+
+const listings=data.listings||[];
+
+if(!listings.length){
+
+box.innerHTML=
+"<p class='muted'>ยังไม่มีรายการขาย</p>";
+
+return;
+
+}
+
+box.innerHTML=listings.map(x=>{
+
+const id=escapeHTML(String(x.id||""));
+const title=escapeHTML(String(x.title||x.name||"ไม่ระบุชื่อ"));
+const price=escapeHTML(String(x.price??"-"));
+const status=escapeHTML(String(x.status||"active"));
+const seller=escapeHTML(
+String(x.seller_email||x.seller||"")
+);
+
+return `
+
+<div class="admin-item">
+
+<div class="admin-item-title">
+
+🏷️ ${title}
+
+<span class="badge ${status==="active"?"ok":""}">
+${status}
+</span>
+
+</div>
+
+<div class="admin-item-meta">
+
+ID: ${id}
+<br>
+ราคา: ${price}
+<br>
+ผู้ขาย: ${seller}
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+}catch(error){
+
+box.innerHTML=
+"<p class='muted'>โหลดรายการไม่สำเร็จ: "+
+escapeHTML(error.message)+
+"</p>";
+
+}
+
+}
+
+async function loadAdminAudit(){
+
+const box=document.getElementById("adminAudit");
+
+box.innerHTML=
+"<p class='muted'>กำลังโหลด Audit Log...</p>";
+
+try{
+
+const data=await api("/api/admin/audit-logs");
+
+const logs=data.logs||
+data.audit_logs||
+[];
+
+if(!logs.length){
+
+box.innerHTML=
+"<p class='muted'>ยังไม่มี Audit Log</p>";
+
+return;
+
+}
+
+box.innerHTML=logs.map(x=>{
+
+const action=escapeHTML(
+String(x.action||x.event||"event")
+);
+
+const actor=escapeHTML(
+String(
+x.actor_email||
+x.user_email||
+x.actor_id||
+"-"
+)
+);
+
+const at=x.created_at
+?escapeHTML(
+new Date(x.created_at)
+.toLocaleString("th-TH")
+)
+:"-";
+
+let details="";
+
+try{
+
+details=escapeHTML(
+typeof x.details==="string"
+?x.details
+:JSON.stringify(x.details||{})
+);
+
+}catch{}
+
+return `
+
+<div class="admin-item">
+
+<div class="admin-item-title">
+🧾 ${action}
+</div>
+
+<div class="admin-item-meta">
+
+ผู้ทำรายการ: ${actor}
+<br>
+เวลา: ${at}
+<br>
+${details}
+
+</div>
+
+</div>
+
+`;
+
+}).join("");
+
+}catch(error){
+
+box.innerHTML=
+"<p class='muted'>โหลด Audit Log ไม่สำเร็จ: "+
+escapeHTML(error.message)+
+"</p>";
+
+}
+
+}
+
+async function checkAPI(){
+
+try{
+
+await api("/health");
+
+document.getElementById("apiStatus")
+.textContent="ออนไลน์";
+
+}catch{
+
+document.getElementById("apiStatus")
+.textContent="ออฟไลน์";
+
+}
+
+}
+
+window.addEventListener("load",()=>{
+
+loadMe();
+loadListings();
+checkAPI();
+
+});
 
 </script>
 
