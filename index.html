@@ -11,63 +11,22 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #050a14;
       color: #f8fafc;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: #07101e;
-      border-bottom: 1px solid #1d2b43;
-    }
-
-    .nav {
-      max-width: 1200px;
-      margin: auto;
-      padding: 14px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      justify-content: space-between;
-    }
-
-    .logo {
-      font-size: 20px;
-      font-weight: 900;
-      white-space: nowrap;
-    }
-
-    .logo span {
-      color: #38f5a3;
-    }
-
-    .user-box {
-      background: #101d31;
-      border: 1px solid #263a5b;
-      border-radius: 14px;
-      padding: 10px 15px;
-      min-width: 200px;
-    }
-
-    .user-email {
-      font-weight: bold;
-    }
-
-    .user-role {
-      color: #38f5a3;
-      font-size: 13px;
-      margin-top: 3px;
+      padding-bottom: 90px;
     }
 
     button {
       border: 0;
-      border-radius: 10px;
-      padding: 11px 15px;
+      border-radius: 12px;
+      padding: 12px 15px;
       cursor: pointer;
       font-weight: bold;
       font-size: 14px;
@@ -98,29 +57,92 @@
       border: 1px solid #263a5b;
     }
 
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #07101e;
+      border-bottom: 1px solid #1d2b43;
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: auto;
+      padding: 12px 15px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      font-size: 19px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: #38f5a3;
+    }
+
+    .user-box {
+      background: #101d31;
+      border: 1px solid #263a5b;
+      border-radius: 14px;
+      padding: 9px 13px;
+      min-width: 190px;
+      margin-left: auto;
+    }
+
+    .user-email {
+      font-weight: bold;
+      word-break: break-word;
+    }
+
+    .user-role {
+      color: #38f5a3;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .header-buttons {
+      display: flex;
+      gap: 7px;
+    }
+
     main {
       max-width: 1200px;
       margin: auto;
-      padding: 25px 15px 80px;
+      padding: 20px 15px 60px;
     }
 
     .hero {
       background:
-        radial-gradient(circle at top right, #12345c, transparent 45%),
+        radial-gradient(
+          circle at top right,
+          #12345c,
+          transparent 45%
+        ),
         #0b1525;
       border: 1px solid #1e3150;
       border-radius: 18px;
-      padding: 28px;
-      margin-bottom: 22px;
+      padding: 25px;
+      margin-bottom: 18px;
     }
 
     .hero h1 {
-      margin: 0 0 8px;
-      font-size: 32px;
+      margin: 0 0 10px;
+      font-size: 34px;
+      line-height: 1.15;
+    }
+
+    .hero h1 span {
+      color: #38f5a3;
     }
 
     .hero p {
       color: #94a3b8;
+      line-height: 1.7;
+      margin-bottom: 15px;
     }
 
     .status {
@@ -128,7 +150,6 @@
       padding: 7px 12px;
       border-radius: 30px;
       font-size: 13px;
-      margin-top: 8px;
     }
 
     .online {
@@ -141,11 +162,16 @@
       color: #ff8b96;
     }
 
+    /* ปุ่มหลัก */
     .toolbar {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-bottom: 22px;
+    }
+
+    .toolbar button {
+      min-height: 48px;
     }
 
     .section-title {
@@ -200,11 +226,12 @@
       color: #94a3b8;
     }
 
+    /* Modal */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: #000000b8;
+      background: #000000c4;
       z-index: 500;
       align-items: center;
       justify-content: center;
@@ -292,7 +319,7 @@
 
     .admin-role {
       color: #94a3b8;
-      margin: 5px 0 10px;
+      margin: 6px 0 12px;
       font-size: 13px;
     }
 
@@ -300,13 +327,17 @@
       font-size: 12px;
     }
 
-    footer {
-      text-align: center;
-      padding: 30px 15px;
-      color: #64748b;
+    /* มือถือ */
+    .mobile-nav {
+      display: none;
     }
 
     @media (max-width: 700px) {
+
+      body {
+        padding-bottom: 88px;
+      }
+
       .nav {
         flex-wrap: wrap;
       }
@@ -318,14 +349,65 @@
       .user-box {
         flex: 1;
         min-width: 0;
+        margin-left: 0;
+      }
+
+      .header-buttons {
+        display: none;
+      }
+
+      .hero {
+        padding: 20px;
       }
 
       .hero h1 {
-        font-size: 25px;
+        font-size: 27px;
+      }
+
+      .toolbar {
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .toolbar button {
-        flex: 1;
+        width: 100%;
+      }
+
+      .mobile-nav {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 400;
+        background: #07101e;
+        border: 1px solid #263a5b;
+        border-radius: 18px 18px 0 0;
+        padding: 8px;
+        gap: 5px;
+      }
+
+      .mobile-nav button {
+        background: transparent;
+        color: #cbd5e1;
+        padding: 8px 3px;
+        font-size: 12px;
+      }
+
+      .mobile-nav button span {
+        display: block;
+        font-size: 20px;
+        margin-bottom: 3px;
+      }
+
+      .mobile-nav .admin-mobile {
+        color: #38f5a3;
+      }
+    }
+
+    @media (min-width: 701px) {
+      .mobile-nav {
+        display: none !important;
       }
     }
   </style>
@@ -348,47 +430,35 @@
       <div id="roleText" class="user-role"></div>
     </div>
 
-    <div class="row">
-
+    <div class="header-buttons">
       <button
         class="secondary"
         onclick="openLogin()">
         เข้าสู่ระบบ
       </button>
-       <button
-      class="secondary"
-  onclick="openAdmin()"
-  style="margin-left:8px;">
-  ⚙️ Admin
-</button>
+
       <button
         class="primary"
         onclick="openRegister()">
         สมัครสมาชิก
       </button>
-
-      <button
-        class="danger"
-        onclick="logout()">
-        ออกจากระบบ
-      </button>
-
     </div>
 
   </div>
 </header>
 
-
 <main>
 
   <section class="hero">
 
-    <h1>⚽ ตลาดซื้อขายไอดี eFootball</h1>
+    <h1>
+      ตลาดซื้อขาย<br>
+      <span>ไอดี eFootball</span>
+    </h1>
 
     <p>
-      ตลาดซื้อขายไอดี eFootball
-      พร้อมระบบสมาชิก ร้านค้า Order
-      และระบบส่งมอบข้อมูลหลังชำระเงิน
+      ค้นหารายการ ดูราคา สร้างออเดอร์
+      และจัดการบัญชีผ่านระบบ Backend บน Render
     </p>
 
     <span
@@ -399,25 +469,19 @@
 
   </section>
 
-
+  <!-- ปุ่มหลัก -->
   <div class="toolbar">
 
     <button
       class="blue"
       onclick="loadListings()">
-      🔄 รีเฟรชรายการ
+      🔄 รีเฟรช
     </button>
 
     <button
       class="primary"
       onclick="openSell()">
-      ＋ ลงขายไอดี
-    </button>
-
-    <button
-      class="secondary"
-      onclick="loadMyListings()">
-      📦 รายการของฉัน
+      🏷️ ลงขาย
     </button>
 
     <button
@@ -426,6 +490,7 @@
       🧾 Orders
     </button>
 
+    <!-- Admin อยู่ตรงนี้ เห็นบนมือถือ -->
     <button
       class="secondary"
       onclick="openAdmin()">
@@ -434,16 +499,17 @@
 
   </div>
 
-
   <section>
 
     <div class="section-title">
+
       <div>
         <h2>🛒 ตลาดไอดี</h2>
         <div class="muted">
           รายการที่เปิดขายอยู่
         </div>
       </div>
+
     </div>
 
     <div
@@ -461,9 +527,33 @@
 </main>
 
 
-<footer>
-  eFootball Market © 2026
-</footer>
+<!-- MOBILE NAV -->
+
+<div class="mobile-nav">
+
+  <button onclick="loadListings()">
+    <span>🛒</span>
+    ตลาด
+  </button>
+
+  <button onclick="loadOrders()">
+    <span>🧾</span>
+    ออเดอร์
+  </button>
+
+  <button onclick="openLogin()">
+    <span>👤</span>
+    บัญชี
+  </button>
+
+  <button
+    class="admin-mobile"
+    onclick="openAdmin()">
+    <span>⚙️</span>
+    Admin
+  </button>
+
+</div>
 
 
 <!-- LOGIN -->
@@ -481,14 +571,14 @@
     <input
       id="loginEmail"
       type="email"
-      placeholder="example@gmail.com">
+      placeholder="you@example.com">
 
     <label>รหัสผ่าน</label>
 
     <input
       id="loginPassword"
       type="password"
-      placeholder="รหัสผ่าน">
+      placeholder="อย่างน้อย 8 ตัวอักษร">
 
     <div class="row">
 
@@ -526,7 +616,7 @@
     <input
       id="registerEmail"
       type="email"
-      placeholder="example@gmail.com">
+      placeholder="you@example.com">
 
     <label>รหัสผ่าน</label>
 
@@ -564,11 +654,10 @@
 
   <div class="modal-box">
 
-    <h2>＋ ลงขายไอดี</h2>
+    <h2>🏷️ ลงขายไอดี</h2>
 
     <p class="muted small">
-      ต้องมีสิทธิ์ Seller หรือ Admin
-      จึงสามารถลงขายได้
+      ต้องมีสิทธิ์ Seller หรือ Admin จึงสามารถลงขายได้
     </p>
 
     <label>ชื่อรายการ</label>
@@ -595,7 +684,7 @@
 
     <textarea
       id="sellAccountData"
-      placeholder="ข้อมูลเข้าสู่ระบบไอดี จะถูกเข้ารหัสในระบบ"></textarea>
+      placeholder="ข้อมูลเข้าสู่ระบบไอดี"></textarea>
 
     <div class="row">
 
@@ -632,8 +721,7 @@
       สำหรับผู้ดูแลระบบเท่านั้น
     </p>
 
-
-    <h3>เปิดใช้งาน Admin ครั้งแรก</h3>
+    <h3>🔐 เปิดใช้งาน Admin ครั้งแรก</h3>
 
     <p class="small muted">
       ใช้เฉพาะกรณีที่ระบบยังไม่มี Admin
@@ -654,9 +742,7 @@
       🔐 เปิดใช้งาน Admin
     </button>
 
-
     <hr>
-
 
     <h3>👥 ผู้ใช้งาน</h3>
 
@@ -671,7 +757,6 @@
         กดโหลดผู้ใช้
       </p>
     </div>
-
 
     <div style="margin-top:20px">
 
@@ -690,9 +775,9 @@
 
 <script>
 
-/* =====================================================
+/* ================================
    API
-===================================================== */
+================================ */
 
 const API_BASE_URL =
   localStorage.getItem("ef_api_base_url") ||
@@ -720,13 +805,14 @@ async function api(path, options = {}) {
       "Bearer " + token;
   }
 
-  const response = await fetch(
-    API_BASE_URL + path,
-    {
-      ...options,
-      headers
-    }
-  );
+  const response =
+    await fetch(
+      API_BASE_URL + path,
+      {
+        ...options,
+        headers
+      }
+    );
 
   const text =
     await response.text();
@@ -734,18 +820,13 @@ async function api(path, options = {}) {
   let data = {};
 
   try {
-
-    data =
-      text
-        ? JSON.parse(text)
-        : {};
-
+    data = text
+      ? JSON.parse(text)
+      : {};
   } catch {
-
     data = {
       message: text
     };
-
   }
 
   if (!response.ok) {
@@ -759,13 +840,12 @@ async function api(path, options = {}) {
   }
 
   return data;
-
 }
 
 
-/* =====================================================
+/* ================================
    API HEALTH
-===================================================== */
+================================ */
 
 async function checkAPI() {
 
@@ -810,21 +890,25 @@ async function checkAPI() {
 }
 
 
-/* =====================================================
+/* ================================
    REGISTER
-===================================================== */
+================================ */
 
 async function register() {
 
   const email =
     document
-      .getElementById("registerEmail")
+      .getElementById(
+        "registerEmail"
+      )
       .value
       .trim();
 
   const password =
     document
-      .getElementById("registerPassword")
+      .getElementById(
+        "registerPassword"
+      )
       .value;
 
   if (!email || !password) {
@@ -834,7 +918,6 @@ async function register() {
     );
 
     return;
-
   }
 
   if (password.length < 8) {
@@ -844,7 +927,6 @@ async function register() {
     );
 
     return;
-
   }
 
   try {
@@ -878,21 +960,25 @@ async function register() {
 }
 
 
-/* =====================================================
+/* ================================
    LOGIN
-===================================================== */
+================================ */
 
 async function login() {
 
   const email =
     document
-      .getElementById("loginEmail")
+      .getElementById(
+        "loginEmail"
+      )
       .value
       .trim();
 
   const password =
     document
-      .getElementById("loginPassword")
+      .getElementById(
+        "loginPassword"
+      )
       .value;
 
   if (!email || !password) {
@@ -902,7 +988,6 @@ async function login() {
     );
 
     return;
-
   }
 
   try {
@@ -952,14 +1037,11 @@ async function login() {
 }
 
 
-/* =====================================================
+/* ================================
    ME
-===================================================== */
+================================ */
 
 async function loadMe() {
-
-  const token =
-    getToken();
 
   const userText =
     document.getElementById(
@@ -971,7 +1053,7 @@ async function loadMe() {
       "roleText"
     );
 
-  if (!token) {
+  if (!getToken()) {
 
     userText.textContent =
       "ยังไม่ได้เข้าสู่ระบบ";
@@ -980,7 +1062,6 @@ async function loadMe() {
       "";
 
     return;
-
   }
 
   try {
@@ -1018,9 +1099,9 @@ async function loadMe() {
 }
 
 
-/* =====================================================
+/* ================================
    LOGOUT
-===================================================== */
+================================ */
 
 function logout() {
 
@@ -1037,9 +1118,9 @@ function logout() {
 }
 
 
-/* =====================================================
+/* ================================
    LISTINGS
-===================================================== */
+================================ */
 
 async function loadListings() {
 
@@ -1077,7 +1158,6 @@ async function loadListings() {
         </div>`;
 
       return;
-
     }
 
     container.innerHTML =
@@ -1086,8 +1166,6 @@ async function loadListings() {
         .join("");
 
   } catch (error) {
-
-    console.error(error);
 
     container.innerHTML =
       `<div class="empty">
@@ -1108,7 +1186,7 @@ async function loadListings() {
 function renderListing(item) {
 
   const id =
-    item.id;
+    String(item.id || "");
 
   const title =
     item.title ||
@@ -1120,9 +1198,7 @@ function renderListing(item) {
     "ไม่มีรายละเอียด";
 
   const price =
-    Number(
-      item.price || 0
-    );
+    Number(item.price || 0);
 
   return `
     <div class="card">
@@ -1141,19 +1217,18 @@ function renderListing(item) {
 
       <button
         class="primary"
-        onclick="createOrder('${escapeHTML(String(id))}')">
+        onclick="createOrder('${escapeHTML(id)}')">
         🛒 ซื้อไอดี
       </button>
 
     </div>
   `;
-
 }
 
 
-/* =====================================================
+/* ================================
    SELL
-===================================================== */
+================================ */
 
 function openSell() {
 
@@ -1166,7 +1241,6 @@ function openSell() {
     openLogin();
 
     return;
-
   }
 
   openModal(
@@ -1180,26 +1254,34 @@ async function createListing() {
 
   const title =
     document
-      .getElementById("sellTitle")
+      .getElementById(
+        "sellTitle"
+      )
       .value
       .trim();
 
   const description =
     document
-      .getElementById("sellDescription")
+      .getElementById(
+        "sellDescription"
+      )
       .value
       .trim();
 
   const price =
     Number(
       document
-        .getElementById("sellPrice")
+        .getElementById(
+          "sellPrice"
+        )
         .value
     );
 
   const accountData =
     document
-      .getElementById("sellAccountData")
+      .getElementById(
+        "sellAccountData"
+      )
       .value;
 
   if (
@@ -1213,7 +1295,6 @@ async function createListing() {
     );
 
     return;
-
   }
 
   try {
@@ -1266,9 +1347,9 @@ async function createListing() {
 }
 
 
-/* =====================================================
-   ORDER
-===================================================== */
+/* ================================
+   ORDERS
+================================ */
 
 async function createOrder(
   listingId
@@ -1283,7 +1364,6 @@ async function createOrder(
     openLogin();
 
     return;
-
   }
 
   if (
@@ -1291,9 +1371,7 @@ async function createOrder(
       "ต้องการสร้าง Order สำหรับรายการนี้หรือไม่?"
     )
   ) {
-
     return;
-
   }
 
   try {
@@ -1332,84 +1410,6 @@ async function createOrder(
 }
 
 
-/* =====================================================
-   MY LISTINGS
-===================================================== */
-
-async function loadMyListings() {
-
-  if (!getToken()) {
-
-    alert(
-      "กรุณาเข้าสู่ระบบก่อน"
-    );
-
-    openLogin();
-
-    return;
-
-  }
-
-  const container =
-    document.getElementById(
-      "listings"
-    );
-
-  container.innerHTML =
-    `<div class="empty">
-      กำลังโหลด...
-    </div>`;
-
-  try {
-
-    const data =
-      await api(
-        "/api/my-listings"
-      );
-
-    const items =
-      Array.isArray(data)
-        ? data
-        : (
-          data.listings ||
-          data.items ||
-          []
-        );
-
-    if (!items.length) {
-
-      container.innerHTML =
-        `<div class="empty">
-          📦 ยังไม่มีรายการของคุณ
-        </div>`;
-
-      return;
-
-    }
-
-    container.innerHTML =
-      items
-        .map(renderListing)
-        .join("");
-
-  } catch (error) {
-
-    container.innerHTML =
-      `<div class="empty">
-        ${escapeHTML(
-          error.message
-        )}
-      </div>`;
-
-  }
-
-}
-
-
-/* =====================================================
-   ORDERS
-===================================================== */
-
 async function loadOrders() {
 
   if (!getToken()) {
@@ -1421,7 +1421,6 @@ async function loadOrders() {
     openLogin();
 
     return;
-
   }
 
   const container =
@@ -1458,7 +1457,6 @@ async function loadOrders() {
         </div>`;
 
       return;
-
     }
 
     container.innerHTML =
@@ -1483,9 +1481,7 @@ async function loadOrders() {
 function renderOrder(order) {
 
   const id =
-    String(
-      order.id || ""
-    );
+    String(order.id || "");
 
   const status =
     order.status || "-";
@@ -1519,29 +1515,28 @@ function renderOrder(order) {
 
       ${
         canDelivery
-        ? `
-          <button
-            class="primary"
-            onclick="getDelivery('${escapeHTML(id)}')">
-            🔐 รับข้อมูลไอดี
-          </button>
-        `
-        : `
-          <p class="muted">
-            ⏳ รอยืนยันการชำระเงิน
-          </p>
-        `
+          ? `
+            <button
+              class="primary"
+              onclick="getDelivery('${escapeHTML(id)}')">
+              🔐 รับข้อมูลไอดี
+            </button>
+          `
+          : `
+            <p class="muted">
+              ⏳ รอยืนยันการชำระเงิน
+            </p>
+          `
       }
 
     </div>
   `;
-
 }
 
 
-/* =====================================================
+/* ================================
    DELIVERY
-===================================================== */
+================================ */
 
 async function getDelivery(
   orderId
@@ -1552,9 +1547,7 @@ async function getDelivery(
       "ต้องการรับข้อมูลไอดีหรือไม่?"
     )
   ) {
-
     return;
-
   }
 
   try {
@@ -1587,9 +1580,9 @@ async function getDelivery(
 }
 
 
-/* =====================================================
+/* ================================
    ADMIN
-===================================================== */
+================================ */
 
 function openAdmin() {
 
@@ -1602,21 +1595,14 @@ function openAdmin() {
     openLogin();
 
     return;
-
   }
 
   openModal(
     "adminModal"
   );
 
-  loadAdminUsers();
-
 }
 
-
-/* =====================================================
-   ADMIN BOOTSTRAP
-===================================================== */
 
 async function bootstrapAdmin() {
 
@@ -1634,7 +1620,6 @@ async function bootstrapAdmin() {
     );
 
     return;
-
   }
 
   try {
@@ -1675,10 +1660,6 @@ async function bootstrapAdmin() {
 }
 
 
-/* =====================================================
-   ADMIN USERS
-===================================================== */
-
 async function loadAdminUsers() {
 
   const box =
@@ -1709,7 +1690,6 @@ async function loadAdminUsers() {
         </p>`;
 
       return;
-
     }
 
     box.innerHTML =
@@ -1734,9 +1714,7 @@ async function loadAdminUsers() {
 function renderAdminUser(user) {
 
   const id =
-    String(
-      user.id || ""
-    );
+    String(user.id || "");
 
   const email =
     escapeHTML(
@@ -1759,9 +1737,7 @@ function renderAdminUser(user) {
         ID: ${escapeHTML(id)}
         <br>
         สิทธิ์ปัจจุบัน:
-        <strong>
-          ${role}
-        </strong>
+        <strong>${role}</strong>
       </div>
 
       <div class="row">
@@ -1788,13 +1764,8 @@ function renderAdminUser(user) {
 
     </div>
   `;
-
 }
 
-
-/* =====================================================
-   CHANGE ROLE
-===================================================== */
 
 async function changeUserRole(
   userId,
@@ -1808,18 +1779,14 @@ async function changeUserRole(
       " ใช่หรือไม่?"
     )
   ) {
-
     return;
-
   }
 
   try {
 
     await api(
       "/api/admin/users/" +
-      encodeURIComponent(
-        userId
-      ) +
+      encodeURIComponent(userId) +
       "/role",
       {
         method: "PATCH",
@@ -1847,9 +1814,9 @@ async function changeUserRole(
 }
 
 
-/* =====================================================
+/* ================================
    MODALS
-===================================================== */
+================================ */
 
 function openModal(id) {
 
@@ -1857,11 +1824,9 @@ function openModal(id) {
     document.getElementById(id);
 
   if (modal) {
-
     modal.classList.add(
       "active"
     );
-
   }
 
 }
@@ -1870,9 +1835,7 @@ function openModal(id) {
 function closeModals() {
 
   document
-    .querySelectorAll(
-      ".modal"
-    )
+    .querySelectorAll(".modal")
     .forEach(
       modal =>
         modal.classList.remove(
@@ -1905,9 +1868,9 @@ function openRegister() {
 }
 
 
-/* =====================================================
+/* ================================
    ESCAPE HTML
-===================================================== */
+================================ */
 
 function escapeHTML(value) {
 
@@ -1938,9 +1901,9 @@ function escapeHTML(value) {
 }
 
 
-/* =====================================================
-   CLOSE MODAL WHEN CLICK BACKGROUND
-===================================================== */
+/* ================================
+   CLOSE MODAL BACKGROUND
+================================ */
 
 document
   .querySelectorAll(".modal")
@@ -1966,9 +1929,9 @@ document
   });
 
 
-/* =====================================================
+/* ================================
    START
-===================================================== */
+================================ */
 
 async function start() {
 
