@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>eFootball Market</title>
 
   <style>
@@ -13,42 +14,75 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f6f8;
-      color: #111827;
+      background: #050a14;
+      color: #f8fafc;
     }
 
     header {
-      background: #111827;
-      color: white;
-      padding: 16px;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 100;
+      background: #07101e;
+      border-bottom: 1px solid #1d2b43;
     }
 
     .nav {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: auto;
+      padding: 14px;
       display: flex;
       align-items: center;
+      gap: 12px;
       justify-content: space-between;
-      gap: 10px;
     }
 
     .logo {
       font-size: 20px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .logo span {
+      color: #38f5a3;
+    }
+
+    .user-box {
+      background: #101d31;
+      border: 1px solid #263a5b;
+      border-radius: 14px;
+      padding: 10px 15px;
+      min-width: 200px;
+    }
+
+    .user-email {
       font-weight: bold;
+    }
+
+    .user-role {
+      color: #38f5a3;
+      font-size: 13px;
+      margin-top: 3px;
     }
 
     button {
       border: 0;
-      border-radius: 8px;
-      padding: 10px 14px;
+      border-radius: 10px;
+      padding: 11px 15px;
       cursor: pointer;
       font-weight: bold;
+      font-size: 14px;
+    }
+
+    button:active {
+      transform: scale(.98);
     }
 
     .primary {
+      background: #38f5a3;
+      color: #03130d;
+    }
+
+    .blue {
       background: #2563eb;
       color: white;
     }
@@ -59,83 +93,119 @@
     }
 
     .secondary {
-      background: #e5e7eb;
-      color: #111827;
+      background: #142239;
+      color: white;
+      border: 1px solid #263a5b;
     }
 
     main {
-      max-width: 1100px;
-      margin: 25px auto;
-      padding: 0 15px;
+      max-width: 1200px;
+      margin: auto;
+      padding: 25px 15px 80px;
     }
 
     .hero {
-      background: white;
-      padding: 25px;
-      border-radius: 14px;
-      margin-bottom: 20px;
-      box-shadow: 0 2px 10px #00000012;
+      background:
+        radial-gradient(circle at top right, #12345c, transparent 45%),
+        #0b1525;
+      border: 1px solid #1e3150;
+      border-radius: 18px;
+      padding: 28px;
+      margin-bottom: 22px;
     }
 
     .hero h1 {
-      margin-top: 0;
+      margin: 0 0 8px;
+      font-size: 32px;
+    }
+
+    .hero p {
+      color: #94a3b8;
     }
 
     .status {
       display: inline-block;
-      padding: 7px 10px;
-      border-radius: 20px;
+      padding: 7px 12px;
+      border-radius: 30px;
       font-size: 13px;
       margin-top: 8px;
     }
 
     .online {
-      background: #dcfce7;
-      color: #166534;
+      background: #063b27;
+      color: #38f5a3;
     }
 
     .offline {
-      background: #fee2e2;
-      color: #991b1b;
+      background: #40141a;
+      color: #ff8b96;
     }
 
     .toolbar {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 20px;
+      gap: 10px;
+      margin-bottom: 22px;
     }
 
-    .listings {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
     }
 
-    .card {
-      background: white;
-      border-radius: 14px;
-      padding: 18px;
-      box-shadow: 0 2px 10px #00000012;
-    }
-
-    .price {
-      font-size: 22px;
-      font-weight: bold;
-      color: #2563eb;
+    .section-title h2 {
+      font-size: 28px;
       margin: 10px 0;
     }
 
     .muted {
-      color: #6b7280;
+      color: #94a3b8;
+    }
+
+    .listings {
+      display: grid;
+      grid-template-columns:
+        repeat(auto-fit, minmax(270px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: #0b1525;
+      border: 1px solid #1d304e;
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: 0 8px 30px #00000022;
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+
+    .price {
+      font-size: 25px;
+      font-weight: 900;
+      color: #38f5a3;
+      margin: 12px 0;
+    }
+
+    .empty {
+      grid-column: 1 / -1;
+      background: #0b1525;
+      border: 1px dashed #263a5b;
+      border-radius: 16px;
+      padding: 45px 20px;
+      text-align: center;
+      color: #94a3b8;
     }
 
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: #00000080;
-      z-index: 50;
+      background: #000000b8;
+      z-index: 500;
       align-items: center;
       justify-content: center;
       padding: 15px;
@@ -147,59 +217,115 @@
 
     .modal-box {
       width: 100%;
-      max-width: 450px;
-      background: white;
-      border-radius: 14px;
-      padding: 22px;
+      max-width: 520px;
       max-height: 90vh;
       overflow-y: auto;
+      background: #0b1525;
+      border: 1px solid #263a5b;
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .modal-box h2 {
+      margin-top: 0;
     }
 
     input,
-    textarea {
+    textarea,
+    select {
       width: 100%;
-      padding: 11px;
-      margin: 7px 0 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
+      padding: 12px;
+      margin: 7px 0 13px;
+      background: #07101e;
+      color: white;
+      border: 1px solid #263a5b;
+      border-radius: 10px;
       font-size: 15px;
+      outline: none;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #38f5a3;
     }
 
     textarea {
-      min-height: 100px;
+      min-height: 110px;
       resize: vertical;
+    }
+
+    label {
+      display: block;
+      color: #cbd5e1;
+      font-size: 14px;
     }
 
     .row {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
     }
 
     .row > * {
       flex: 1;
     }
 
-    .empty {
-      background: white;
-      padding: 30px;
-      text-align: center;
-      border-radius: 14px;
+    hr {
+      border: 0;
+      border-top: 1px solid #263a5b;
+      margin: 20px 0;
     }
 
-    .user-box {
+    .admin-user {
+      background: #07101e;
+      border: 1px solid #263a5b;
+      border-radius: 12px;
+      padding: 14px;
+      margin-top: 10px;
+    }
+
+    .admin-user-email {
+      font-weight: bold;
+      word-break: break-word;
+    }
+
+    .admin-role {
+      color: #94a3b8;
+      margin: 5px 0 10px;
       font-size: 13px;
-      text-align: right;
     }
 
-    @media (max-width: 600px) {
+    .small {
+      font-size: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 15px;
+      color: #64748b;
+    }
+
+    @media (max-width: 700px) {
       .nav {
-        flex-direction: column;
-        align-items: stretch;
+        flex-wrap: wrap;
+      }
+
+      .logo {
+        width: 100%;
       }
 
       .user-box {
-        text-align: left;
+        flex: 1;
+        min-width: 0;
+      }
+
+      .hero h1 {
+        font-size: 25px;
+      }
+
+      .toolbar button {
+        flex: 1;
       }
     }
   </style>
@@ -209,131 +335,359 @@
 
 <header>
   <div class="nav">
-    <div class="logo">⚽ eFootball Market</div>
+
+    <div class="logo">
+      eFOOTBALL <span>MARKET</span>
+    </div>
 
     <div class="user-box">
-      <div id="userText">ยังไม่ได้เข้าสู่ระบบ</div>
-      <div id="roleText"></div>
+      <div id="userText" class="user-email">
+        ยังไม่ได้เข้าสู่ระบบ
+      </div>
+
+      <div id="roleText" class="user-role"></div>
     </div>
 
     <div class="row">
-      <button class="secondary" onclick="openLogin()">เข้าสู่ระบบ</button>
-      <button class="primary" onclick="openRegister()">สมัครสมาชิก</button>
-      <button class="danger" onclick="logout()">ออกจากระบบ</button>
+
+      <button
+        class="secondary"
+        onclick="openLogin()">
+        เข้าสู่ระบบ
+      </button>
+
+      <button
+        class="primary"
+        onclick="openRegister()">
+        สมัครสมาชิก
+      </button>
+
+      <button
+        class="danger"
+        onclick="logout()">
+        ออกจากระบบ
+      </button>
+
     </div>
+
   </div>
 </header>
+
 
 <main>
 
   <section class="hero">
-    <h1>ตลาดซื้อขายไอดี eFootball</h1>
-    <p class="muted">
-      ตลาดซื้อขายไอดี eFootball พร้อมระบบบัญชี Order และการชำระเงิน
+
+    <h1>⚽ ตลาดซื้อขายไอดี eFootball</h1>
+
+    <p>
+      ตลาดซื้อขายไอดี eFootball
+      พร้อมระบบสมาชิก ร้านค้า Order
+      และระบบส่งมอบข้อมูลหลังชำระเงิน
     </p>
 
-    <span id="apiStatus" class="status offline">
+    <span
+      id="apiStatus"
+      class="status offline">
       กำลังตรวจสอบ API...
     </span>
+
   </section>
 
+
   <div class="toolbar">
-    <button class="primary" onclick="loadListings()">🔄 รีเฟรชรายการ</button>
-    <button class="primary" onclick="openSell()">＋ ลงขายไอดี</button>
-    <button class="secondary" onclick="loadMyListings()">📦 รายการของฉัน</button>
-    <button class="secondary" onclick="loadOrders()">🧾 Orders</button>
+
+    <button
+      class="blue"
+      onclick="loadListings()">
+      🔄 รีเฟรชรายการ
+    </button>
+
+    <button
+      class="primary"
+      onclick="openSell()">
+      ＋ ลงขายไอดี
+    </button>
+
+    <button
+      class="secondary"
+      onclick="loadMyListings()">
+      📦 รายการของฉัน
+    </button>
+
+    <button
+      class="secondary"
+      onclick="loadOrders()">
+      🧾 Orders
+    </button>
+
+    <button
+      class="secondary"
+      onclick="openAdmin()">
+      ⚙️ Admin
+    </button>
+
   </div>
 
+
   <section>
-    <h2>ไอดีที่กำลังขาย</h2>
-    <div id="listings" class="listings">
-      <div class="empty">กำลังโหลด...</div>
+
+    <div class="section-title">
+      <div>
+        <h2>🛒 ตลาดไอดี</h2>
+        <div class="muted">
+          รายการที่เปิดขายอยู่
+        </div>
+      </div>
     </div>
+
+    <div
+      id="listings"
+      class="listings">
+
+      <div class="empty">
+        กำลังโหลดรายการ...
+      </div>
+
+    </div>
+
   </section>
 
 </main>
 
 
+<footer>
+  eFootball Market © 2026
+</footer>
+
+
 <!-- LOGIN -->
 
-<div id="loginModal" class="modal">
+<div
+  id="loginModal"
+  class="modal">
+
   <div class="modal-box">
 
-    <h2>เข้าสู่ระบบ</h2>
+    <h2>🔐 เข้าสู่ระบบ</h2>
 
     <label>อีเมล</label>
-    <input id="loginEmail" type="email">
+
+    <input
+      id="loginEmail"
+      type="email"
+      placeholder="example@gmail.com">
 
     <label>รหัสผ่าน</label>
-    <input id="loginPassword" type="password">
+
+    <input
+      id="loginPassword"
+      type="password"
+      placeholder="รหัสผ่าน">
 
     <div class="row">
-      <button class="primary" onclick="login()">เข้าสู่ระบบ</button>
-      <button class="secondary" onclick="closeModals()">ปิด</button>
+
+      <button
+        class="primary"
+        onclick="login()">
+        เข้าสู่ระบบ
+      </button>
+
+      <button
+        class="secondary"
+        onclick="closeModals()">
+        ปิด
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
 
 <!-- REGISTER -->
 
-<div id="registerModal" class="modal">
+<div
+  id="registerModal"
+  class="modal">
+
   <div class="modal-box">
 
-    <h2>สมัครสมาชิก</h2>
+    <h2>📝 สมัครสมาชิก</h2>
 
     <label>อีเมล</label>
-    <input id="registerEmail" type="email">
+
+    <input
+      id="registerEmail"
+      type="email"
+      placeholder="example@gmail.com">
 
     <label>รหัสผ่าน</label>
-    <input id="registerPassword" type="password">
+
+    <input
+      id="registerPassword"
+      type="password"
+      placeholder="อย่างน้อย 8 ตัวอักษร">
 
     <div class="row">
-      <button class="primary" onclick="register()">สมัครสมาชิก</button>
-      <button class="secondary" onclick="closeModals()">ปิด</button>
+
+      <button
+        class="primary"
+        onclick="register()">
+        สมัครสมาชิก
+      </button>
+
+      <button
+        class="secondary"
+        onclick="closeModals()">
+        ปิด
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
 
 <!-- SELL -->
 
-<div id="sellModal" class="modal">
+<div
+  id="sellModal"
+  class="modal">
+
   <div class="modal-box">
 
-    <h2>ลงขายไอดี</h2>
+    <h2>＋ ลงขายไอดี</h2>
+
+    <p class="muted small">
+      ต้องมีสิทธิ์ Seller หรือ Admin
+      จึงสามารถลงขายได้
+    </p>
 
     <label>ชื่อรายการ</label>
-    <input id="sellTitle" placeholder="เช่น ไอดีทีมระดับสูง">
+
+    <input
+      id="sellTitle"
+      placeholder="เช่น ไอดีทีมระดับสูง">
 
     <label>รายละเอียด</label>
-    <textarea id="sellDescription"></textarea>
+
+    <textarea
+      id="sellDescription"
+      placeholder="รายละเอียดนักเตะ / ทีม / สิ่งที่ได้รับ"></textarea>
 
     <label>ราคา (บาท)</label>
-    <input id="sellPrice" type="number" min="1">
+
+    <input
+      id="sellPrice"
+      type="number"
+      min="1"
+      placeholder="1000">
 
     <label>ข้อมูลไอดี</label>
+
     <textarea
       id="sellAccountData"
-      placeholder="ข้อมูลเข้าสู่ระบบไอดี จะถูกเก็บอย่างปลอดภัย"
-    ></textarea>
+      placeholder="ข้อมูลเข้าสู่ระบบไอดี จะถูกเข้ารหัสในระบบ"></textarea>
 
     <div class="row">
-      <button class="primary" onclick="createListing()">ลงขาย</button>
-      <button class="secondary" onclick="closeModals()">ปิด</button>
+
+      <button
+        class="primary"
+        onclick="createListing()">
+        ลงขาย
+      </button>
+
+      <button
+        class="secondary"
+        onclick="closeModals()">
+        ปิด
+      </button>
+
     </div>
 
   </div>
+
+</div>
+
+
+<!-- ADMIN -->
+
+<div
+  id="adminModal"
+  class="modal">
+
+  <div class="modal-box">
+
+    <h2>⚙️ จัดการระบบ</h2>
+
+    <p class="muted">
+      สำหรับผู้ดูแลระบบเท่านั้น
+    </p>
+
+
+    <h3>เปิดใช้งาน Admin ครั้งแรก</h3>
+
+    <p class="small muted">
+      ใช้เฉพาะกรณีที่ระบบยังไม่มี Admin
+    </p>
+
+    <label>
+      Admin Bootstrap Secret
+    </label>
+
+    <input
+      id="adminSecret"
+      type="password"
+      placeholder="กรอก Secret จาก Render">
+
+    <button
+      class="primary"
+      onclick="bootstrapAdmin()">
+      🔐 เปิดใช้งาน Admin
+    </button>
+
+
+    <hr>
+
+
+    <h3>👥 ผู้ใช้งาน</h3>
+
+    <button
+      class="secondary"
+      onclick="loadAdminUsers()">
+      🔄 โหลดผู้ใช้
+    </button>
+
+    <div id="adminUsers">
+      <p class="muted">
+        กดโหลดผู้ใช้
+      </p>
+    </div>
+
+
+    <div style="margin-top:20px">
+
+      <button
+        class="secondary"
+        onclick="closeModals()">
+        ปิด
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
 
 
 <script>
 
-/* ================================
+/* =====================================================
    API
-================================ */
+===================================================== */
 
 const API_BASE_URL =
   localStorage.getItem("ef_api_base_url") ||
@@ -341,7 +695,9 @@ const API_BASE_URL =
 
 
 function getToken() {
+
   return localStorage.getItem("ef_token") || "";
+
 }
 
 
@@ -355,7 +711,8 @@ async function api(path, options = {}) {
   const token = getToken();
 
   if (token) {
-    headers.Authorization = "Bearer " + token;
+    headers.Authorization =
+      "Bearer " + token;
   }
 
   const response = await fetch(
@@ -366,41 +723,56 @@ async function api(path, options = {}) {
     }
   );
 
-  const text = await response.text();
+  const text =
+    await response.text();
 
   let data = {};
 
   try {
-    data = text ? JSON.parse(text) : {};
+
+    data =
+      text
+        ? JSON.parse(text)
+        : {};
+
   } catch {
+
     data = {
       message: text
     };
+
   }
 
   if (!response.ok) {
+
     throw new Error(
       data.message ||
       data.error ||
       `HTTP ${response.status}`
     );
+
   }
 
   return data;
+
 }
 
 
-/* ================================
-   HEALTH
-================================ */
+/* =====================================================
+   API HEALTH
+===================================================== */
 
 async function checkAPI() {
 
-  const status = document.getElementById("apiStatus");
+  const status =
+    document.getElementById(
+      "apiStatus"
+    );
 
   try {
 
-    const data = await api("/health");
+    const data =
+      await api("/health");
 
     if (data.ok) {
 
@@ -412,7 +784,9 @@ async function checkAPI() {
 
     } else {
 
-      throw new Error("API ไม่พร้อมใช้งาน");
+      throw new Error(
+        "API ไม่พร้อมใช้งาน"
+      );
 
     }
 
@@ -427,24 +801,45 @@ async function checkAPI() {
       "status offline";
 
   }
+
 }
 
 
-/* ================================
-   AUTH
-================================ */
+/* =====================================================
+   REGISTER
+===================================================== */
 
 async function register() {
 
   const email =
-    document.getElementById("registerEmail").value.trim();
+    document
+      .getElementById("registerEmail")
+      .value
+      .trim();
 
   const password =
-    document.getElementById("registerPassword").value;
+    document
+      .getElementById("registerPassword")
+      .value;
 
   if (!email || !password) {
-    alert("กรุณากรอกอีเมลและรหัสผ่าน");
+
+    alert(
+      "กรุณากรอกอีเมลและรหัสผ่าน"
+    );
+
     return;
+
+  }
+
+  if (password.length < 8) {
+
+    alert(
+      "รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร"
+    );
+
+    return;
+
   }
 
   try {
@@ -453,6 +848,7 @@ async function register() {
       "/api/auth/register",
       {
         method: "POST",
+
         body: JSON.stringify({
           email,
           password
@@ -460,7 +856,9 @@ async function register() {
       }
     );
 
-    alert("สมัครสมาชิกสำเร็จ");
+    alert(
+      "สมัครสมาชิกสำเร็จ"
+    );
 
     closeModals();
 
@@ -471,20 +869,35 @@ async function register() {
     alert(error.message);
 
   }
+
 }
 
+
+/* =====================================================
+   LOGIN
+===================================================== */
 
 async function login() {
 
   const email =
-    document.getElementById("loginEmail").value.trim();
+    document
+      .getElementById("loginEmail")
+      .value
+      .trim();
 
   const password =
-    document.getElementById("loginPassword").value;
+    document
+      .getElementById("loginPassword")
+      .value;
 
   if (!email || !password) {
-    alert("กรุณากรอกข้อมูลให้ครบ");
+
+    alert(
+      "กรุณากรอกข้อมูลให้ครบ"
+    );
+
     return;
+
   }
 
   try {
@@ -494,6 +907,7 @@ async function login() {
         "/api/auth/login",
         {
           method: "POST",
+
           body: JSON.stringify({
             email,
             password
@@ -502,7 +916,11 @@ async function login() {
       );
 
     if (!data.token) {
-      throw new Error("API ไม่ส่ง Token กลับมา");
+
+      throw new Error(
+        "API ไม่ส่ง Token กลับมา"
+      );
+
     }
 
     localStorage.setItem(
@@ -514,25 +932,39 @@ async function login() {
 
     await loadMe();
 
-    alert("เข้าสู่ระบบสำเร็จ");
+    await loadListings();
+
+    alert(
+      "เข้าสู่ระบบสำเร็จ"
+    );
 
   } catch (error) {
 
     alert(error.message);
 
   }
+
 }
 
 
+/* =====================================================
+   ME
+===================================================== */
+
 async function loadMe() {
 
-  const token = getToken();
+  const token =
+    getToken();
 
   const userText =
-    document.getElementById("userText");
+    document.getElementById(
+      "userText"
+    );
 
   const roleText =
-    document.getElementById("roleText");
+    document.getElementById(
+      "roleText"
+    );
 
   if (!token) {
 
@@ -555,7 +987,8 @@ async function loadMe() {
       data.user || data;
 
     userText.textContent =
-      user.email || "เข้าสู่ระบบแล้ว";
+      user.email ||
+      "เข้าสู่ระบบแล้ว";
 
     roleText.textContent =
       "สิทธิ์: " +
@@ -565,7 +998,9 @@ async function loadMe() {
 
     console.error(error);
 
-    localStorage.removeItem("ef_token");
+    localStorage.removeItem(
+      "ef_token"
+    );
 
     userText.textContent =
       "ยังไม่ได้เข้าสู่ระบบ";
@@ -574,54 +1009,70 @@ async function loadMe() {
       "";
 
   }
+
 }
 
+
+/* =====================================================
+   LOGOUT
+===================================================== */
 
 function logout() {
 
-  localStorage.removeItem("ef_token");
+  localStorage.removeItem(
+    "ef_token"
+  );
 
   loadMe();
 
-  alert("ออกจากระบบแล้ว");
+  alert(
+    "ออกจากระบบแล้ว"
+  );
 
 }
 
 
-/* ================================
+/* =====================================================
    LISTINGS
-================================ */
+===================================================== */
 
 async function loadListings() {
 
   const container =
-    document.getElementById("listings");
+    document.getElementById(
+      "listings"
+    );
 
   container.innerHTML =
-    `<div class="empty">กำลังโหลด...</div>`;
+    `<div class="empty">
+      กำลังโหลดรายการ...
+    </div>`;
 
   try {
 
     const data =
-      await api("/api/listings");
+      await api(
+        "/api/listings"
+      );
 
     const listings =
       Array.isArray(data)
         ? data
         : (
-            data.listings ||
-            data.items ||
-            []
-          );
+          data.listings ||
+          data.items ||
+          []
+        );
 
     if (!listings.length) {
 
       container.innerHTML =
         `<div class="empty">
-          ยังไม่มีรายการขาย
+          🛒 ยังไม่มีรายการขาย
         </div>`;
 
       return;
+
     }
 
     container.innerHTML =
@@ -635,11 +1086,17 @@ async function loadListings() {
 
     container.innerHTML =
       `<div class="empty">
-        โหลดรายการไม่ได้<br>
-        <small>${escapeHTML(error.message)}</small>
+        โหลดรายการไม่ได้
+        <br>
+        <small>
+          ${escapeHTML(
+            error.message
+          )}
+        </small>
       </div>`;
 
   }
+
 }
 
 
@@ -658,13 +1115,15 @@ function renderListing(item) {
     "ไม่มีรายละเอียด";
 
   const price =
-    Number(item.price || 0);
+    Number(
+      item.price || 0
+    );
 
   return `
     <div class="card">
 
       <h3>
-        ${escapeHTML(title)}
+        ⚽ ${escapeHTML(title)}
       </h3>
 
       <p class="muted">
@@ -677,19 +1136,19 @@ function renderListing(item) {
 
       <button
         class="primary"
-        onclick="createOrder('${id}')"
-      >
+        onclick="createOrder('${escapeHTML(String(id))}')">
         🛒 ซื้อไอดี
       </button>
 
     </div>
   `;
+
 }
 
 
-/* ================================
+/* =====================================================
    SELL
-================================ */
+===================================================== */
 
 function openSell() {
 
@@ -702,9 +1161,12 @@ function openSell() {
     openLogin();
 
     return;
+
   }
 
-  openModal("sellModal");
+  openModal(
+    "sellModal"
+  );
 
 }
 
@@ -712,30 +1174,41 @@ function openSell() {
 async function createListing() {
 
   const title =
-    document.getElementById("sellTitle")
-      .value.trim();
+    document
+      .getElementById("sellTitle")
+      .value
+      .trim();
 
   const description =
-    document.getElementById("sellDescription")
-      .value.trim();
+    document
+      .getElementById("sellDescription")
+      .value
+      .trim();
 
   const price =
     Number(
-      document.getElementById("sellPrice")
+      document
+        .getElementById("sellPrice")
         .value
     );
 
   const accountData =
-    document.getElementById("sellAccountData")
+    document
+      .getElementById("sellAccountData")
       .value;
 
-  if (!title || !price || !accountData) {
+  if (
+    !title ||
+    !price ||
+    !accountData
+  ) {
 
     alert(
       "กรุณากรอกชื่อ ราคา และข้อมูลไอดี"
     );
 
     return;
+
   }
 
   try {
@@ -744,16 +1217,36 @@ async function createListing() {
       "/api/listings",
       {
         method: "POST",
+
         body: JSON.stringify({
           title,
           description,
           price,
-          account_data: accountData
+          account_data:
+            accountData
         })
       }
     );
 
-    alert("ลงขายสำเร็จ");
+    alert(
+      "ลงขายสำเร็จ"
+    );
+
+    document.getElementById(
+      "sellTitle"
+    ).value = "";
+
+    document.getElementById(
+      "sellDescription"
+    ).value = "";
+
+    document.getElementById(
+      "sellPrice"
+    ).value = "";
+
+    document.getElementById(
+      "sellAccountData"
+    ).value = "";
 
     closeModals();
 
@@ -768,11 +1261,13 @@ async function createListing() {
 }
 
 
-/* ================================
+/* =====================================================
    ORDER
-================================ */
+===================================================== */
 
-async function createOrder(listingId) {
+async function createOrder(
+  listingId
+) {
 
   if (!getToken()) {
 
@@ -783,6 +1278,7 @@ async function createOrder(listingId) {
     openLogin();
 
     return;
+
   }
 
   if (
@@ -790,7 +1286,9 @@ async function createOrder(listingId) {
       "ต้องการสร้าง Order สำหรับรายการนี้หรือไม่?"
     )
   ) {
+
     return;
+
   }
 
   try {
@@ -800,18 +1298,25 @@ async function createOrder(listingId) {
         "/api/orders",
         {
           method: "POST",
+
           body: JSON.stringify({
-            listing_id: listingId
+            listing_id:
+              listingId
           })
         }
       );
 
     alert(
-      "สร้าง Order สำเร็จ\nOrder ID: " +
-      (data.order?.id ||
-       data.id ||
-       "-")
+      "สร้าง Order สำเร็จ\n" +
+      "Order ID: " +
+      (
+        data.order?.id ||
+        data.id ||
+        "-"
+      )
     );
+
+    await loadOrders();
 
   } catch (error) {
 
@@ -822,9 +1327,9 @@ async function createOrder(listingId) {
 }
 
 
-/* ================================
+/* =====================================================
    MY LISTINGS
-================================ */
+===================================================== */
 
 async function loadMyListings() {
 
@@ -837,7 +1342,18 @@ async function loadMyListings() {
     openLogin();
 
     return;
+
   }
+
+  const container =
+    document.getElementById(
+      "listings"
+    );
+
+  container.innerHTML =
+    `<div class="empty">
+      กำลังโหลด...
+    </div>`;
 
   try {
 
@@ -850,22 +1366,20 @@ async function loadMyListings() {
       Array.isArray(data)
         ? data
         : (
-            data.listings ||
-            data.items ||
-            []
-          );
-
-    const container =
-      document.getElementById("listings");
+          data.listings ||
+          data.items ||
+          []
+        );
 
     if (!items.length) {
 
       container.innerHTML =
         `<div class="empty">
-          ยังไม่มีรายการของคุณ
+          📦 ยังไม่มีรายการของคุณ
         </div>`;
 
       return;
+
     }
 
     container.innerHTML =
@@ -875,16 +1389,21 @@ async function loadMyListings() {
 
   } catch (error) {
 
-    alert(error.message);
+    container.innerHTML =
+      `<div class="empty">
+        ${escapeHTML(
+          error.message
+        )}
+      </div>`;
 
   }
 
 }
 
 
-/* ================================
+/* =====================================================
    ORDERS
-================================ */
+===================================================== */
 
 async function loadOrders() {
 
@@ -897,113 +1416,147 @@ async function loadOrders() {
     openLogin();
 
     return;
+
   }
+
+  const container =
+    document.getElementById(
+      "listings"
+    );
+
+  container.innerHTML =
+    `<div class="empty">
+      กำลังโหลด Orders...
+    </div>`;
 
   try {
 
     const data =
-      await api("/api/orders");
+      await api(
+        "/api/orders"
+      );
 
     const orders =
       Array.isArray(data)
         ? data
         : (
-            data.orders ||
-            data.items ||
-            []
-          );
-
-    const container =
-      document.getElementById("listings");
+          data.orders ||
+          data.items ||
+          []
+        );
 
     if (!orders.length) {
 
       container.innerHTML =
         `<div class="empty">
-          ยังไม่มี Order
+          🧾 ยังไม่มี Order
         </div>`;
 
       return;
+
     }
 
     container.innerHTML =
       orders
-        .map(order => `
-
-          <div class="card">
-
-            <h3>
-              Order #${escapeHTML(
-                String(order.id || "")
-              )}
-            </h3>
-
-            <p>
-              สถานะ:
-              <strong>
-                ${escapeHTML(
-                  order.status || "-"
-                )}
-              </strong>
-            </p>
-
-            <p>
-              การชำระเงิน:
-              ${escapeHTML(
-                order.payment_status || "-"
-              )}
-            </p>
-
-            ${
-              (
-                order.payment_status === "paid" ||
-                order.status === "paid" ||
-                order.status === "completed"
-              )
-              ? `
-                <button
-                  class="primary"
-                  onclick="getDelivery('${order.id}')"
-                >
-                  🔐 รับข้อมูลไอดี
-                </button>
-              `
-              : ""
-            }
-
-          </div>
-
-        `)
+        .map(renderOrder)
         .join("");
 
   } catch (error) {
 
-    alert(error.message);
+    container.innerHTML =
+      `<div class="empty">
+        ${escapeHTML(
+          error.message
+        )}
+      </div>`;
 
   }
 
 }
 
 
-/* ================================
-   DELIVERY
-================================ */
+function renderOrder(order) {
 
-async function getDelivery(orderId) {
+  const id =
+    String(
+      order.id || ""
+    );
+
+  const status =
+    order.status || "-";
+
+  const payment =
+    order.payment_status || "-";
+
+  const canDelivery =
+    payment === "paid" ||
+    status === "paid" ||
+    status === "completed";
+
+  return `
+    <div class="card">
+
+      <h3>
+        🧾 Order #${escapeHTML(id)}
+      </h3>
+
+      <p>
+        สถานะ:
+        <strong>
+          ${escapeHTML(status)}
+        </strong>
+      </p>
+
+      <p class="muted">
+        การชำระเงิน:
+        ${escapeHTML(payment)}
+      </p>
+
+      ${
+        canDelivery
+        ? `
+          <button
+            class="primary"
+            onclick="getDelivery('${escapeHTML(id)}')">
+            🔐 รับข้อมูลไอดี
+          </button>
+        `
+        : `
+          <p class="muted">
+            ⏳ รอยืนยันการชำระเงิน
+          </p>
+        `
+      }
+
+    </div>
+  `;
+
+}
+
+
+/* =====================================================
+   DELIVERY
+===================================================== */
+
+async function getDelivery(
+  orderId
+) {
 
   if (
     !confirm(
       "ต้องการรับข้อมูลไอดีหรือไม่?"
     )
   ) {
+
     return;
+
   }
 
   try {
 
     const data =
       await api(
-        `/api/orders/${orderId}/delivery`
+        `/api/orders/${encodeURIComponent(orderId)}/delivery`
       );
 
     const delivery =
@@ -1029,16 +1582,282 @@ async function getDelivery(orderId) {
 }
 
 
-/* ================================
-   MODAL
-================================ */
+/* =====================================================
+   ADMIN
+===================================================== */
+
+function openAdmin() {
+
+  if (!getToken()) {
+
+    alert(
+      "กรุณาเข้าสู่ระบบก่อน"
+    );
+
+    openLogin();
+
+    return;
+
+  }
+
+  openModal(
+    "adminModal"
+  );
+
+  loadAdminUsers();
+
+}
+
+
+/* =====================================================
+   ADMIN BOOTSTRAP
+===================================================== */
+
+async function bootstrapAdmin() {
+
+  const secret =
+    document
+      .getElementById(
+        "adminSecret"
+      )
+      .value;
+
+  if (!secret) {
+
+    alert(
+      "กรุณากรอก Admin Bootstrap Secret"
+    );
+
+    return;
+
+  }
+
+  try {
+
+    await api(
+      "/api/admin/bootstrap",
+      {
+        method: "POST",
+
+        body: JSON.stringify({
+          secret
+        })
+      }
+    );
+
+    document.getElementById(
+      "adminSecret"
+    ).value = "";
+
+    alert(
+      "เปิดใช้งาน Admin สำเร็จ"
+    );
+
+    await loadMe();
+
+    await loadAdminUsers();
+
+  } catch (error) {
+
+    document.getElementById(
+      "adminSecret"
+    ).value = "";
+
+    alert(error.message);
+
+  }
+
+}
+
+
+/* =====================================================
+   ADMIN USERS
+===================================================== */
+
+async function loadAdminUsers() {
+
+  const box =
+    document.getElementById(
+      "adminUsers"
+    );
+
+  box.innerHTML =
+    `<p class="muted">
+      กำลังโหลดผู้ใช้...
+    </p>`;
+
+  try {
+
+    const data =
+      await api(
+        "/api/admin/users"
+      );
+
+    const users =
+      data.users || [];
+
+    if (!users.length) {
+
+      box.innerHTML =
+        `<p class="muted">
+          ไม่พบผู้ใช้
+        </p>`;
+
+      return;
+
+    }
+
+    box.innerHTML =
+      users
+        .map(renderAdminUser)
+        .join("");
+
+  } catch (error) {
+
+    box.innerHTML =
+      `<p style="color:#ff8b96">
+        ${escapeHTML(
+          error.message
+        )}
+      </p>`;
+
+  }
+
+}
+
+
+function renderAdminUser(user) {
+
+  const id =
+    String(
+      user.id || ""
+    );
+
+  const email =
+    escapeHTML(
+      user.email || ""
+    );
+
+  const role =
+    escapeHTML(
+      user.role || "buyer"
+    );
+
+  return `
+    <div class="admin-user">
+
+      <div class="admin-user-email">
+        👤 ${email}
+      </div>
+
+      <div class="admin-role">
+        ID: ${escapeHTML(id)}
+        <br>
+        สิทธิ์ปัจจุบัน:
+        <strong>
+          ${role}
+        </strong>
+      </div>
+
+      <div class="row">
+
+        <button
+          class="primary"
+          onclick="changeUserRole('${escapeHTML(id)}','seller')">
+          Seller
+        </button>
+
+        <button
+          class="secondary"
+          onclick="changeUserRole('${escapeHTML(id)}','buyer')">
+          Buyer
+        </button>
+
+        <button
+          class="danger"
+          onclick="changeUserRole('${escapeHTML(id)}','admin')">
+          Admin
+        </button>
+
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* =====================================================
+   CHANGE ROLE
+===================================================== */
+
+async function changeUserRole(
+  userId,
+  role
+) {
+
+  if (
+    !confirm(
+      "เปลี่ยนสิทธิ์ผู้ใช้เป็น " +
+      role +
+      " ใช่หรือไม่?"
+    )
+  ) {
+
+    return;
+
+  }
+
+  try {
+
+    await api(
+      "/api/admin/users/" +
+      encodeURIComponent(
+        userId
+      ) +
+      "/role",
+      {
+        method: "PATCH",
+
+        body: JSON.stringify({
+          role
+        })
+      }
+    );
+
+    alert(
+      "เปลี่ยนสิทธิ์สำเร็จ"
+    );
+
+    await loadAdminUsers();
+
+    await loadMe();
+
+  } catch (error) {
+
+    alert(error.message);
+
+  }
+
+}
+
+
+/* =====================================================
+   MODALS
+===================================================== */
 
 function openModal(id) {
 
-  document
-    .getElementById(id)
-    .classList
-    .add("active");
+  const modal =
+    document.getElementById(id);
+
+  if (modal) {
+
+    modal.classList.add(
+      "active"
+    );
+
+  }
 
 }
 
@@ -1046,10 +1865,14 @@ function openModal(id) {
 function closeModals() {
 
   document
-    .querySelectorAll(".modal")
+    .querySelectorAll(
+      ".modal"
+    )
     .forEach(
       modal =>
-        modal.classList.remove("active")
+        modal.classList.remove(
+          "active"
+        )
     );
 
 }
@@ -1059,7 +1882,9 @@ function openLogin() {
 
   closeModals();
 
-  openModal("loginModal");
+  openModal(
+    "loginModal"
+  );
 
 }
 
@@ -1068,30 +1893,77 @@ function openRegister() {
 
   closeModals();
 
-  openModal("registerModal");
+  openModal(
+    "registerModal"
+  );
 
 }
 
 
-/* ================================
-   SECURITY / HTML
-================================ */
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
 
 function escapeHTML(value) {
 
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  return String(
+    value ?? ""
+  )
+    .replaceAll(
+      "&",
+      "&amp;"
+    )
+    .replaceAll(
+      "<",
+      "&lt;"
+    )
+    .replaceAll(
+      ">",
+      "&gt;"
+    )
+    .replaceAll(
+      '"',
+      "&quot;"
+    )
+    .replaceAll(
+      "'",
+      "&#039;"
+    );
 
 }
 
 
-/* ================================
+/* =====================================================
+   CLOSE MODAL WHEN CLICK BACKGROUND
+===================================================== */
+
+document
+  .querySelectorAll(".modal")
+  .forEach(modal => {
+
+    modal.addEventListener(
+      "click",
+      event => {
+
+        if (
+          event.target === modal
+        ) {
+
+          modal.classList.remove(
+            "active"
+          );
+
+        }
+
+      }
+    );
+
+  });
+
+
+/* =====================================================
    START
-================================ */
+===================================================== */
 
 async function start() {
 
