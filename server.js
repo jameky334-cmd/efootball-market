@@ -1960,5 +1960,25 @@ process.on(
     process.exit(0);
   }
 );
+async function start() {
+  try {
+    await initializeDatabase();
 
+    const server = app.listen(PORT, '0.0.0.0', () => {
+      console.log(
+        `eFootball Market API v${VERSION} listening on ${PORT}`
+      );
+    });
+
+    server.on('error', (error) => {
+      console.error('Server error:', error);
+      process.exit(1);
+    });
+  } catch (error) {
+    console.error('Startup failed:', error);
+    process.exit(1);
+  }
+}
+
+start();
 
