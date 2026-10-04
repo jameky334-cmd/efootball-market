@@ -1346,17 +1346,275 @@ function card(item){
         </p>
 
         <button
-          class="btn primary"
-          onclick="buy(${id})">
-          ซื้อไอดี
-        </button>
+  class="btn primary"
+  onclick="addToCart(${id})">
+  🛒 เพิ่มลงตะกร้า
+</button>
 
       </div>
 
     </div>
   `;
 }
+function getCart(){
+  try{
+    const cart = JSON.parse(
+      localStorage.getItem('ef_cart') || '[]'
+    );
 
+    return Array.isArray(cart) ? cart : [];
+  }catch(error){
+    return [];
+  }
+}
+
+function saveCart(cart){
+  localStorage.setItem(
+    'ef_cart',
+    JSON.stringify(cart)
+  );
+
+  updateCartCount();
+}
+
+function updateCartCount(){
+  const count = getCart().length;
+
+  const el = document.getElementById('cartCount');
+
+  if(el){
+    el.textContent = count;
+  }
+}
+
+async function addToCart(id){
+
+  if(!token()){
+    openAuth('login');
+    return;
+  }
+
+  try{
+
+    const listings = await api('/api/listings');
+
+    const item = listings.find(
+      x => Number(x.id) === Number(id)
+    );
+
+    if(!item){
+      toast('ไม่พบไอดีนี้');
+      return;
+    }
+
+    const cart = getCart();
+
+    if(
+      cart.some(
+        x => Number(x.id) === Number(item.id)
+      )
+    ){
+      toast('ไอดีนี้อยู่ในตะกร้าแล้ว');
+      return;
+    }
+
+    cart.push({
+      id:Number(item.id),
+      title:item.title || 'eFootball Account',
+      price:Number(item.price || 0)
+    });
+
+    saveCart(cart);
+
+    toast('เพิ่มลงตะกร้าแล้ว');
+
+  }catch(error){
+
+    toast(error.message);
+
+  }
+}
+
+function removeFromCart(id){
+
+  const cart = getCart().filter(
+    x => Number(x.id) !== Number(id)
+  );
+
+  saveCart(cart);
+
+  renderCart();
+}
+
+function openCart(){
+
+  if(!token()){
+    openAuth('login');
+    return;
+  }
+
+  openModal('cartModal');
+
+  renderCart();
+}
+
+function renderCart(){
+
+  const box =
+    document.getElementById('cartContent');
+
+  if(!box) return;
+
+  const cart = getCart();
+
+  if(cart.length === 0){
+
+    box.innerHTML = `
+      <div class="empty">
+        🛒 ตะกร้าว่าง
+        <br><br>
+        ไปเลือกไอดีที่ต้องการซื้อได้เลย
+      </div>
+    `;
+
+    return;
+  }
+
+  const total = cart.reduce(
+    (sum,item) =>
+      sum + Number(item.price || 0),
+    0
+  );
+
+  box.innerHTML = `
+
+    ${cart.map(item => `
+
+      <div class="card"
+           style="margin-bottom:10px">
+
+        <strong>
+          ${esc(item.title)}
+        </strong>
+
+        <div class="price">
+          ฿${Number(item.price)
+            .toLocaleString('th-TH')}
+        </div>
+
+        <button
+          class="btn danger"
+          onclick="removeFromCart(${item.id})">
+
+          ลบ
+
+        </button>
+
+      </div>
+
+    `).join('')}
+
+    <div class="card">
+
+      <strong>
+        ยอดรวม
+      </strong>
+
+      <div class="price">
+        ฿${total.toLocaleString('th-TH')}
+      </div>
+
+      <button
+        class="btn primary"
+        onclick="checkoutCart()">
+
+        ดำเนินการสั่งซื้อ
+
+      </button>
+
+      <button
+        class="btn dark"
+        onclick="saveCart([]);renderCart()">
+
+        ล้างตะกร้า
+
+      </button>
+
+    </div>
+  `;
+}
+
+async function checkoutCart(){
+
+  const cart = getCart();
+
+  if(cart.length === 0){
+
+    toast('ตะกร้าว่าง');
+
+    return;
+  }
+
+  if(
+    !confirm(
+      'ยืนยันสั่งซื้อ ' +
+      cart.length +
+      ' รายการหรือไม่?'
+    )
+  ){
+
+    return;
+  }
+
+  const remaining = [];
+
+  let success = 0;
+
+  for(const item of cart){
+
+    try{
+
+      await api(
+        '/api/orders',
+        {
+          method:'POST',
+
+          body:JSON.stringify({
+            listing_id:Number(item.id)
+          })
+        }
+      );
+
+      success++;
+
+    }catch(error){
+
+      remaining.push(item);
+
+    }
+  }
+
+  saveCart(remaining);
+
+  renderCart();
+
+  if(success > 0){
+
+    toast(
+      'สร้างออเดอร์สำเร็จ ' +
+      success +
+      ' รายการ'
+    );
+
+  }else{
+
+    toast(
+      'ไม่สามารถสร้างออเดอร์ได้'
+    );
+
+  }
+
+      }
 async function buy(id){
 
   if(!token()){
