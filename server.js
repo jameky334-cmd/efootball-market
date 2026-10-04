@@ -1944,28 +1944,6 @@ app.use(
   }
 );
 
-async function start() {
-  try {
-    await initializeDatabase();
-
-    app.listen(
-      PORT,
-      "0.0.0.0",
-      () => {
-        console.log(
-          `eFootball Market API v${VERSION} listening on ${PORT}`
-        );
-      }
-    );
-  } catch (error) {
-    console.error(
-      "Failed to start server:",
-      error
-    );
-
-    process.exit(1);
-  }
-}
 
 process.on(
   "SIGTERM",
