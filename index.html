@@ -723,7 +723,20 @@ th{
       <textarea id="sellDescription"
                 placeholder="รายละเอียดไอดี"></textarea>
     </label>
+<label>
+  รูปภาพไอดี
 
+  <input
+    id="sellImage"
+    type="file"
+    accept="image/jpeg,image/png,image/webp"
+  >
+
+  <img
+    id="sellImagePreview"
+    style="display:none;width:100%;max-height:220px;object-fit:cover;margin-top:10px;border-radius:12px;"
+  >
+</label>
     <label>
       ข้อมูลบัญชี
       <textarea id="sellAccountData"
