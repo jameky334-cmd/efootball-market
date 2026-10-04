@@ -844,30 +844,34 @@ app.post(
 
       const result = await pool.query(
         `INSERT INTO listings
-         (
-           seller_id,
-           title,
-           description,
-           price,
-           account_data_encrypted,
-           status
-         )
-         VALUES
-         ($1,$2,$3,$4,$5,'active')
+        (
+  seller_id,
+  title,
+  description,
+  price,
+  account_data_encrypted,
+  image_url,
+  status
+)
+VALUES
+($1,$2,$3,$4,$5,$6,'active')
          RETURNING
-           id,
-           title,
-           description,
-           price,
-           status,
-           created_at`,
-        [
-          req.user.id,
-          title,
-          description,
-          price,
-          encrypted
-        ]
+         id,
+         title,
+         description,
+         price,
+         image_url,
+         status,
+         created_at
+        
+  [
+     req.user.id,
+     title,
+     description,
+     price,
+     encrypted,
+     imageUrl
+  ]
       );
 
       res.status(201).json({
