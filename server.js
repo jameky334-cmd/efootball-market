@@ -839,7 +839,8 @@ app.post(
         });
       }
 
-      const result = await pool.query(
+const encrypted = encryptDelivery(accountData);
+ const result = await pool.query(
   `INSERT INTO listings
   (
     seller_id,
