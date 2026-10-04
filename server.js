@@ -812,7 +812,11 @@ app.post(
         req.body?.account_data,
         10000
       );
-
+      
+      const imageUrl = cleanText(
+       req.body?.image_url,
+        2000000
+      );
       const price = normalizePrice(
         req.body?.price
       );
