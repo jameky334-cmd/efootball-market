@@ -1549,17 +1549,47 @@ function openSell(){
 
   openModal('sellModal');
 }
-
 async function createListing(event){
 
   event.preventDefault();
 
   try{
 
+    const imageFile =
+      $('sellImage').files?.[0];
+
+    let imageUrl = '';
+
+    if(imageFile){
+
+      if(imageFile.size > 2 * 1024 * 1024){
+
+        toast('รูปต้องมีขนาดไม่เกิน 2 MB');
+
+        return;
+      }
+
+      imageUrl =
+        await new Promise((resolve, reject)=>{
+
+          const reader =
+            new FileReader();
+
+          reader.onload = () =>
+            resolve(reader.result);
+
+          reader.onerror = reject;
+
+          reader.readAsDataURL(imageFile);
+
+        });
+    }
+
     await api(
       '/api/listings',
       {
         method:'POST',
+
         body:JSON.stringify({
 
           title:
@@ -1574,7 +1604,10 @@ async function createListing(event){
             $('sellDescription').value.trim(),
 
           account_data:
-            $('sellAccountData').value
+            $('sellAccountData').value,
+
+          image_url:
+            imageUrl
 
         })
       }
@@ -1586,6 +1619,10 @@ async function createListing(event){
     $('sellPrice').value = '';
     $('sellDescription').value = '';
     $('sellAccountData').value = '';
+    $('sellImage').value = '';
+
+    $('sellImagePreview').src = '';
+    $('sellImagePreview').style.display = 'none';
 
     toast(
       'ลงขายไอดีสำเร็จ'
@@ -1596,8 +1633,10 @@ async function createListing(event){
   }catch(error){
 
     toast(error.message);
+
   }
-}
+      }
+
 
 async function openAdmin(){
 
