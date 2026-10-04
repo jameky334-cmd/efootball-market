@@ -1135,29 +1135,83 @@ function updateUI(){
           `
           : ''
         }
-
+       
         ${
-          u.role === 'admin'
-          ? `
-            <button class="btn dark"
-                    onclick="openAdmin()">
-              Admin
-            </button>
-          `
-          : ''
-        }
+        u.role === 'admin'
+        ? `
+          <button class="btn dark"
+                  onclick="openAdmin()">
+            Admin
+          </button>
+        `
+        : ''
+      }
 
-        <button class="btn danger"
-                onclick="logout()">
-          ออกจากระบบ
-        </button>
+      ${
+        u.role === 'buyer'
+        ? `
+          <button class="btn dark"
+                  onclick="bootstrapAdmin()">
+            ตั้งเป็น Admin ครั้งแรก
+          </button>
+        `
+        : ''
+      }
 
+      <button class="btn danger"
+              onclick="logout()">
+        ออกจากระบบ
+      </button>
       </div>
 
     </div>
   `;
 }
+async function bootstrapAdmin(){
 
+  const secret = prompt(
+    'กรอก ADMIN_BOOTSTRAP_SECRET เพื่อเปิด Admin ครั้งแรก'
+  );
+
+  if(secret === null || !secret.trim()){
+    return;
+  }
+
+  try{
+
+    const data = await api(
+      '/api/admin/bootstrap',
+      {
+        method:'POST',
+        body:JSON.stringify({
+          secret:secret.trim()
+        })
+      }
+    );
+
+    if(data.user){
+      const value = JSON.stringify(data.user);
+
+      localStorage.setItem(
+        'ef_user',
+        value
+      );
+
+      localStorage.setItem(
+        'ef_api_user',
+        value
+      );
+    }
+
+    toast('ตั้ง Admin สำเร็จ');
+
+    await refreshMe();
+
+  }catch(error){
+
+    toast(error.message);
+  }
+}
 function logout(){
 
   localStorage.removeItem('ef_token');
