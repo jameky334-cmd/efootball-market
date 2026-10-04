@@ -356,6 +356,7 @@ async function initializeDatabase() {
         price NUMERIC(12,2) NOT NULL
           CHECK (price > 0),
         account_data_encrypted TEXT,
+        image_url TEXT,
         status TEXT NOT NULL DEFAULT 'active'
           CHECK (
             status IN (
