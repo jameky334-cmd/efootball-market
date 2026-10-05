@@ -744,6 +744,7 @@ app.get("/api/listings", async (req, res, next) => {
          l.title,
          l.description,
          l.price,
+         l.image_url,
          l.status,
          l.created_at,
          u.id AS seller_id,
