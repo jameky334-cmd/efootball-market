@@ -1329,7 +1329,89 @@ async function checkApi(){
       'ออฟไลน์';
   }
 }
+let allListings = [];
 
+function filterListings(){
+
+  const search =
+    ($('listingSearch')?.value || '')
+      .trim()
+      .toLowerCase();
+
+  const minValue =
+    $('minPrice')?.value || '';
+
+  const maxValue =
+    $('maxPrice')?.value || '';
+
+  const min =
+    minValue === ''
+      ? 0
+      : Number(minValue);
+
+  const max =
+    maxValue === ''
+      ? Infinity
+      : Number(maxValue);
+
+  const sort =
+    $('listingSort')?.value || 'newest';
+
+  let filtered =
+    allListings.filter(item => {
+
+      const title =
+        String(
+          item.title ||
+          item.name ||
+          ''
+        ).toLowerCase();
+
+      const description =
+        String(
+          item.description || ''
+        ).toLowerCase();
+
+      const price =
+        Number(item.price || 0);
+
+      return (
+        (!search ||
+          title.includes(search) ||
+          description.includes(search))
+        &&
+        price >= min
+        &&
+        price <= max
+      );
+    });
+
+  if(sort === 'price_low'){
+    filtered.sort(
+      (a,b) =>
+        Number(a.price || 0) -
+        Number(b.price || 0)
+    );
+  }
+
+  if(sort === 'price_high'){
+    filtered.sort(
+      (a,b) =>
+        Number(b.price || 0) -
+        Number(a.price || 0)
+    );
+  }
+
+  if($('listingResultCount')){
+    $('listingResultCount').textContent =
+      `พบ ${filtered.length} รายการ`;
+  }
+
+  $('listingGrid').innerHTML =
+    filtered.length
+      ? filtered.map(card).join('')
+      : '<div class="empty">ไม่พบไอดีที่ตรงกับการค้นหา</div>';
+}
 async function loadListings(){
 
   $('listingGrid').innerHTML = `
