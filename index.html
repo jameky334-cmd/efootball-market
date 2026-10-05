@@ -949,35 +949,7 @@ async function api(path,options={}){
   }
 }
 
-  const response =
-    await fetch(
-      API + path,
-      {
-        ...options,
-        headers:{
-          ...headers(),
-          ...(options.headers || {})
-        }
-      }
-    );
-
-  let data = {};
-
-  try{
-    data = await response.json();
-  }catch(e){}
-
-  if(!response.ok){
-
-    throw new Error(
-      data.error ||
-      data.message ||
-      'เกิดข้อผิดพลาด'
-    );
-  }
-
-  return data;
-}
+  
 
 function toast(message){
 
