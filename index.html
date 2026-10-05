@@ -1350,7 +1350,7 @@ async function loadListings(){
             data.items ||
             []
           );
-
+allListings = list;
     $('statListings').textContent =
       list.length;
 
@@ -1364,10 +1364,7 @@ async function loadListings(){
 
       return;
     }
-
-    $('listingGrid').innerHTML =
-      list.map(card).join('');
-
+filterListings();
   }catch(error){
 
     $('listingGrid').innerHTML = `
