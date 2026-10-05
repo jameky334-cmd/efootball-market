@@ -900,6 +900,55 @@ function headers(){
 
 async function api(path,options={}){
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+
+  try{
+    const response =
+      await fetch(
+        API + path,
+        {
+          ...options,
+          signal: controller.signal,
+          headers:{
+            ...headers(),
+            ...(options.headers || {})
+          }
+        }
+      );
+
+    let data = {};
+
+    try{
+      data = await response.json();
+    }catch(e){}
+
+    if(!response.ok){
+
+      throw new Error(
+        data.error ||
+        data.message ||
+        `HTTP ${response.status}`
+      );
+    }
+
+    return data;
+
+  }catch(error){
+
+    if(error.name === 'AbortError'){
+      throw new Error('API ตอบสนองช้าเกิน 15 วินาที');
+    }
+
+    throw error;
+
+  }finally{
+
+    clearTimeout(timeout);
+
+  }
+}
+
   const response =
     await fetch(
       API + path,
