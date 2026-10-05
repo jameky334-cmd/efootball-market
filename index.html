@@ -1343,15 +1343,23 @@ function card(item){
   const description =
     item.description ||
     'ไม่มีรายละเอียด';
+const imageUrl =
+  String(item.image_url || '').trim();
 
-  return `
-
+return `
     <div class="listing">
 
-      <div class="listing-img">
-        eFOOTBALL
-      </div>
-
+    <div class="listing-img">
+  ${
+    imageUrl
+      ? `<img
+          src="${esc(imageUrl)}"
+          alt="${esc(title)}"
+          style="width:100%;height:100%;object-fit:cover;"
+        >`
+      : 'eFOOTBALL'
+  }
+</div>
       <div class="listing-body">
 
         <strong>
@@ -1417,11 +1425,15 @@ async function addToCart(id){
 
   try{
 
-    const listings = await api('/api/listings');
+  const data = await api('/api/listings');
 
-    const item = listings.find(
-      x => Number(x.id) === Number(id)
-    );
+const listings = Array.isArray(data)
+  ? data
+  : (data.listings || data.items || []);
+
+const item = listings.find(
+  x => Number(x.id) === Number(id)
+);
 
     if(!item){
       toast('ไม่พบไอดีนี้');
