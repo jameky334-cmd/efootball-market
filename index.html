@@ -1890,6 +1890,42 @@ function openSell(){
 
   openModal('sellModal');
 }
+  function openSell(){
+  ...
+}
+
+function previewSellImage(){
+
+  const input = $('sellImage');
+  const img = $('sellImagePreview');
+
+  if(!input || !img) return;
+
+  const file = input.files && input.files[0];
+
+  if(!file){
+    img.src = '';
+    img.style.display = 'none';
+    return;
+  }
+
+  if(file.size > 2 * 1024 * 1024){
+    toast('รูปต้องมีขนาดไม่เกิน 2 MB');
+    input.value = '';
+    img.src = '';
+    img.style.display = 'none';
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    img.src = reader.result;
+    img.style.display = 'block';
+  };
+
+  reader.readAsDataURL(file);
+}
 async function createListing(event){
 
   event.preventDefault();
