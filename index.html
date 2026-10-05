@@ -531,8 +531,39 @@ th{
     </button>
 
   </div>
+<div class="card" style="margin-bottom:14px">
+  <input id="listingSearch"
+         type="search"
+         placeholder="🔎 ค้นหาไอดี / ชื่อรายการ"
+         oninput="filterListings()"
+         style="width:100%;padding:12px;margin-bottom:10px">
 
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <input id="minPrice"
+           type="number"
+           placeholder="ราคาต่ำสุด"
+           oninput="filterListings()"
+           style="padding:12px">
+
+    <input id="maxPrice"
+           type="number"
+           placeholder="ราคาสูงสุด"
+           oninput="filterListings()"
+           style="padding:12px">
+  </div>
+
+  <select id="listingSort"
+          onchange="filterListings()"
+          style="width:100%;padding:12px;margin-top:10px">
+    <option value="newest">ใหม่ล่าสุด</option>
+    <option value="price_low">ราคาต่ำ → สูง</option>
+    <option value="price_high">ราคาสูง → ต่ำ</option>
+  </select>
+
+  <p id="listingResultCount" class="muted"></p>
+</div>
   <div id="listingGrid"
+  
        class="listings">
 
     <div class="empty">
