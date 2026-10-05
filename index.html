@@ -1511,7 +1511,32 @@ return `
   onclick="addToCart(${id})">
   🛒 เพิ่มลงตะกร้า
 </button>
+${(() => {
 
+  const u = user();
+
+  if(!u){
+    return '';
+  }
+
+  const canCancel =
+    u.role === 'admin' ||
+    (
+      u.role === 'seller' &&
+      Number(u.id) === Number(item.seller_id)
+    );
+
+  return canCancel
+    ? `
+      <button
+        class="btn danger"
+        onclick="cancelListing(${id})">
+        ❌ ยกเลิกประกาศ
+      </button>
+    `
+    : '';
+
+})()}
       </div>
 
     </div>
