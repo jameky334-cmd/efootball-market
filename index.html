@@ -2006,6 +2006,35 @@ function previewSellImage(){
 
   reader.readAsDataURL(file);
 }
+  async function cancelListing(id){
+
+  if(!confirm('ต้องการยกเลิกรายการนี้ใช่หรือไม่?')){
+    return;
+  }
+
+  try{
+
+    await api(
+      `/api/listings/${Number(id)}/status`,
+      {
+        method:'PATCH',
+        body:JSON.stringify({
+          status:'cancelled'
+        })
+      }
+    );
+
+    toast('ยกเลิกรายการสำเร็จ');
+
+    await loadListings();
+    await loadMyListings();
+
+  }catch(error){
+
+    toast(error.message);
+
+  }
+  }
 async function createListing(event){
 
   event.preventDefault();
