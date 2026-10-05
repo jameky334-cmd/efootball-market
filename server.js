@@ -409,7 +409,10 @@ async function initializeDatabase() {
       ADD COLUMN IF NOT EXISTS description TEXT
       NOT NULL DEFAULT ''
     `);
-
+    await client.query(`
+      ALTER TABLE listings
+      ADD COLUMN IF NOT EXISTS image_url TEXT
+    `);
     await client.query(`
       ALTER TABLE listings
       ADD COLUMN IF NOT EXISTS account_data_encrypted TEXT
