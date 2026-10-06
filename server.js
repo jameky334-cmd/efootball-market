@@ -1767,7 +1767,11 @@ app.patch(
   auth,
   requireRole("admin"),
   async (req, res, next) => {
+    let client;
+
     try {
+      client = await pool.connect();
+
       const userId =
         Number(req.params.id);
 
@@ -1795,8 +1799,56 @@ app.patch(
         });
       }
 
+      await client.query("BEGIN");
+
+      const target =
+        await client.query(
+          `SELECT id,email,role
+           FROM users
+           WHERE id=$1
+           FOR UPDATE`,
+          [userId]
+        );
+
+      if (!target.rowCount) {
+        await client.query("ROLLBACK");
+        return res.status(404).json({
+          error: "User not found"
+        });
+      }
+
+      if (
+        Number(req.user.id) === userId &&
+        role !== "admin"
+      ) {
+        await client.query("ROLLBACK");
+        return res.status(400).json({
+          error: "You cannot remove your own admin role"
+        });
+      }
+
+      if (
+        target.rows[0].role === "admin" &&
+        role !== "admin"
+      ) {
+        const admins =
+          await client.query(
+            `SELECT id
+             FROM users
+             WHERE role='admin'
+             FOR UPDATE`
+          );
+
+        if (admins.rowCount <= 1) {
+          await client.query("ROLLBACK");
+          return res.status(400).json({
+            error: "At least one admin account is required"
+          });
+        }
+      }
+
       const result =
-        await pool.query(
+        await client.query(
           `UPDATE users
            SET role=$1
            WHERE id=$2
@@ -1807,13 +1859,7 @@ app.patch(
           ]
         );
 
-      if (!result.rowCount) {
-        return res.status(404).json({
-          error: "User not found"
-        });
-      }
-
-      await pool.query(
+      await client.query(
         `INSERT INTO audit_logs
          (
            user_id,
@@ -1839,15 +1885,26 @@ app.patch(
         ]
       );
 
+      await client.query("COMMIT");
+
       res.json({
         user: result.rows[0]
       });
     } catch (error) {
+      if (client) {
+        try {
+          await client.query("ROLLBACK");
+        } catch {}
+      }
+
       next(error);
+    } finally {
+      if (client) {
+        client.release();
+      }
     }
   }
 );
-
 app.get(
   "/api/admin/audit-logs",
   auth,
