@@ -2014,13 +2014,6 @@ function previewSellImage(){
     return;
   }
 
-  if(file.size > 2 * 1024 * 1024){
-    toast('รูปต้องมีขนาดไม่เกิน 2 MB');
-    input.value = '';
-    img.src = '';
-    img.style.display = 'none';
-    return;
-  }
 
   const reader = new FileReader();
 
