@@ -807,6 +807,27 @@ th{
 
   </div>
 </div>
+<!-- PAYMENT -->
+<div id="paymentModal" class="modal">
+  <div class="modal-box">
+
+    <div class="modal-head">
+      <h3>💳 ชำระเงิน</h3>
+
+      <button
+        class="close"
+        onclick="closeModal('paymentModal')">
+        ×
+      </button>
+    </div>
+
+    <div id="paymentContent">
+      กำลังโหลด...
+    </div>
+
+  </div>
+</div>
+
 <!-- ADMIN -->
 
 <div id="adminModal"
@@ -1739,32 +1760,26 @@ async function checkoutCart(){
   const cart = getCart();
 
   if(cart.length === 0){
-
     toast('ตะกร้าว่าง');
-
     return;
   }
 
-  if(
-    !confirm(
-      'ยืนยันสั่งซื้อ ' +
-      cart.length +
-      ' รายการหรือไม่?'
-    )
-  ){
-
+  if(!confirm(
+    'ยืนยันสั่งซื้อ ' +
+    cart.length +
+    ' รายการหรือไม่?'
+  )){
     return;
   }
 
   const remaining = [];
-
-  let success = 0;
+  const createdOrders = [];
 
   for(const item of cart){
 
     try{
 
-      await api(
+      const data = await api(
         '/api/orders',
         {
           method:'POST',
@@ -1775,7 +1790,16 @@ async function checkoutCart(){
         }
       );
 
-      success++;
+      if(data?.order){
+        createdOrders.push(data.order);
+      }else{
+        createdOrders.push({
+          listing_id:Number(item.id),
+          title:item.title,
+          price:Number(item.price || 0),
+          status:'pending'
+        });
+      }
 
     }catch(error){
 
@@ -1785,16 +1809,15 @@ async function checkoutCart(){
   }
 
   saveCart(remaining);
-
   renderCart();
 
-  if(success > 0){
+  if(createdOrders.length > 0){
 
-    toast(
-      'สร้างออเดอร์สำเร็จ ' +
-      success +
-      ' รายการ'
-    );
+    closeModal('cartModal');
+
+    openPaymentModal(createdOrders);
+
+    loadOrders();
 
   }else{
 
@@ -1804,7 +1827,96 @@ async function checkoutCart(){
 
   }
 
-      }
+}
+
+function openPaymentModal(orders){
+
+  const list = Array.isArray(orders)
+    ? orders
+    : [];
+
+  const total = list.reduce(
+    (sum, order) =>
+      sum + Number(order.price || 0),
+    0
+  );
+
+  const orderNumbers = list
+    .map(order =>
+      order.id
+        ? '#' + order.id
+        : 'รายการใหม่'
+    )
+    .join(', ');
+
+  const box =
+    document.getElementById(
+      'paymentContent'
+    );
+
+  if(!box) return;
+
+  box.innerHTML = `
+    <div class="card">
+
+      <strong>
+        สร้างออเดอร์สำเร็จ ✅
+      </strong>
+
+      <p style="margin-top:10px">
+        ออเดอร์: ${esc(orderNumbers)}
+      </p>
+
+      <div class="price">
+        ฿${total.toLocaleString('th-TH')}
+      </div>
+
+      <p>
+        สถานะ:
+        <strong>รอชำระเงิน</strong>
+      </p>
+
+      <div class="card"
+           style="margin-top:12px">
+
+        <strong>
+          💳 ช่องทางชำระเงิน
+        </strong>
+
+        <p>
+          ระบบเตรียมรองรับ
+          Payment Gateway แล้ว
+        </p>
+
+        <p>
+          ขณะนี้ยังไม่ได้เชื่อมต่อ
+          Payment Gateway หรือ PromptPay จริง
+        </p>
+
+        <p>
+          ⚠️ ยังไม่ต้องโอนเงินจริง
+        </p>
+
+      </div>
+
+      <button
+        class="btn primary"
+        type="button"
+        onclick="
+          closeModal('paymentModal');
+          go('orders');
+        ">
+
+        ดูออเดอร์ของฉัน
+
+      </button>
+
+    </div>
+  `;
+
+  openModal('paymentModal');
+
+}
 async function buy(id){
 
   if(!token()){
