@@ -2034,49 +2034,83 @@ async function loadOrders(){
     }
 
     $('orderList').innerHTML =
-      orders.map(order=>`
+  orders.map(order => {
 
-        <div class="card"
-             style="margin-bottom:10px">
+    const isPaid =
+      order.status === 'paid' ||
+      order.payment_status === 'paid';
 
-          <strong>
-            Order #${esc(order.id)}
-          </strong>
+    const canCancel =
+      !isPaid &&
+      order.status !== 'completed' &&
+      order.status !== 'cancelled';
 
-          <p class="muted">
-            ราคา:
-            ฿${Number(
-              order.amount ||
-              order.price ||
-              0
-            ).toLocaleString('th-TH')}
-          </p>
+    return `
 
-          <span class="badge">
-            ${esc(order.status || '-')}
-          </span>
+      <div class="card"
+           style="margin-bottom:10px">
+
+        <strong>
+          Order #${esc(order.id)}
+        </strong>
+
+        <p>
+          ${esc(
+            order.title ||
+            'รายการ eFootball'
+          )}
+        </p>
+
+        <p class="muted">
+          ราคา:
+          ฿${Number(
+            order.amount ||
+            order.price ||
+            0
+          ).toLocaleString('th-TH')}
+        </p>
+
+        <span class="badge">
+          ${esc(
+            order.status || '-'
+          )}
+        </span>
+
+        <div class="actions">
 
           ${
-            order.status === 'paid' ||
-            order.payment_status === 'paid'
+            isPaid
             ? `
-              <div class="actions">
+              <button
+                class="btn primary"
+                type="button"
+                onclick="delivery(${Number(order.id)})">
+                รับข้อมูลไอดี
+              </button>
+            `
+            : ''
+          }
 
-                <button
-                  class="btn primary"
-                  onclick="delivery(${Number(order.id)})">
-                  รับข้อมูลไอดี
-                </button>
-
-              </div>
+          ${
+            canCancel
+            ? `
+              <button
+                class="btn danger"
+                type="button"
+                onclick="cancelOrder(${Number(order.id)})">
+                ยกเลิกออเดอร์
+              </button>
             `
             : ''
           }
 
         </div>
 
-      `).join('');
+      </div>
 
+    `;
+
+  }).join('');
   }catch(error){
 
     $('orderList').innerHTML = `
