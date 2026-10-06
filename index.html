@@ -1756,11 +1756,16 @@ function renderCart(){
 }
 
 async function checkoutCart(){
-
+  
   const cart = getCart();
 
   if(cart.length === 0){
     toast('ตะกร้าว่าง');
+    return;
+  }
+
+  if(!token()){
+    openAuth('login');
     return;
   }
 
@@ -1774,6 +1779,7 @@ async function checkoutCart(){
 
   const remaining = [];
   const createdOrders = [];
+  const failedItems = [];
 
   for(const item of cart){
 
@@ -1783,7 +1789,6 @@ async function checkoutCart(){
         '/api/orders',
         {
           method:'POST',
-
           body:JSON.stringify({
             listing_id:Number(item.id)
           })
@@ -1791,19 +1796,28 @@ async function checkoutCart(){
       );
 
       if(data?.order){
+
         createdOrders.push(data.order);
+
       }else{
+
         createdOrders.push({
           listing_id:Number(item.id),
           title:item.title,
           price:Number(item.price || 0),
           status:'pending'
         });
+
       }
 
     }catch(error){
 
       remaining.push(item);
+
+      failedItems.push({
+        item,
+        message:error.message || 'เกิดข้อผิดพลาด'
+      });
 
     }
   }
@@ -1817,20 +1831,37 @@ async function checkoutCart(){
 
     openPaymentModal(createdOrders);
 
-    loadOrders();
+    await loadOrders();
+
+    if(failedItems.length > 0){
+
+      toast(
+        'สร้างสำเร็จ ' +
+        createdOrders.length +
+        ' รายการ และสร้างไม่ได้ ' +
+        failedItems.length +
+        ' รายการ'
+      );
+
+    }
+
+  }else if(failedItems.length > 0){
+
+    toast(
+      'สร้างออเดอร์ไม่ได้: ' +
+      failedItems[0].message
+    );
+
+    await loadOrders();
 
   }else{
 
-    toast(
-      'ไม่สามารถสร้างออเดอร์ได้'
-    );
+    toast('ไม่สามารถสร้างออเดอร์ได้');
 
   }
 
 }
-
-function openPaymentModal(orders){
-
+  function openPaymentModal(orders){
   const list = Array.isArray(orders)
     ? orders
     : [];
