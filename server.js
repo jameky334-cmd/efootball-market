@@ -818,9 +818,9 @@ app.post(
       );
       
       const imageUrl = cleanText(
-       req.body?.image_url,
-        2000000
-      );
+  req.body?.image_url,
+  500000
+);
       const price = normalizePrice(
         req.body?.price
       );
