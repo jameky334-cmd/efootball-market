@@ -23,8 +23,8 @@ if (!DATABASE_URL) throw new Error("DATABASE_URL is missing");
 if (!JWT_SECRET) throw new Error("JWT_SECRET is missing");
 
 app.disable("x-powered-by");
-app.use(express.json({ limit: "1mb" }));
-
+app.set("trust proxy", 1);
+app.use(express.json({ limit: "2mb" }));
 app.use((req, res, next) => {
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("X-Frame-Options", "DENY");
@@ -82,9 +82,9 @@ function rateLimit({
 } = {}) {
   return (req, res, next) => {
     const ip =
-      req.headers["x-forwarded-for"]?.split(",")[0]?.trim() ||
-      req.socket.remoteAddress ||
-      "unknown";
+  req.ip ||
+  req.socket.remoteAddress ||
+  "unknown";
 
     const key = `${req.path}:${ip}`;
     const now = Date.now();
@@ -883,18 +883,22 @@ const encrypted = encryptDelivery(accountData);
   }
 );
 
+
 app.patch(
   "/api/listings/:id/status",
   auth,
   async (req, res, next) => {
+    const client = await pool.connect();
+
     try {
       const listingId =
         Number(req.params.id);
 
-      const status = cleanText(
-        req.body?.status,
-        30
-      ).toLowerCase();
+      const status =
+        cleanText(
+          req.body?.status,
+          30
+        ).toLowerCase();
 
       if (!Number.isInteger(listingId)) {
         return res.status(400).json({
@@ -912,38 +916,133 @@ app.patch(
         });
       }
 
-      const result = await pool.query(
-        `UPDATE listings
-         SET status = $1
-         WHERE id = $2
-           AND (
-             seller_id = $3
-             OR $4 = 'admin'
-           )
-         RETURNING id,title,status`,
-        [
-          status,
-          listingId,
-          req.user.id,
-          req.user.role
-        ]
-      );
+      await client.query("BEGIN");
+
+      const result =
+        await client.query(
+          `SELECT
+             id,
+             seller_id,
+             status
+           FROM listings
+           WHERE id=$1
+           FOR UPDATE`,
+          [listingId]
+        );
 
       if (!result.rowCount) {
+        await client.query("ROLLBACK");
+
         return res.status(404).json({
           error: "Listing not found"
         });
       }
 
+      const listing =
+        result.rows[0];
+
+      const isOwner =
+        Number(listing.seller_id) ===
+        Number(req.user.id);
+
+      const isAdmin =
+        req.user.role === "admin";
+
+      if (!isOwner && !isAdmin) {
+        await client.query("ROLLBACK");
+
+        return res.status(403).json({
+          error: "Permission denied"
+        });
+      }
+
+      if (
+        status === listing.status
+      ) {
+        await client.query("ROLLBACK");
+
+        return res.status(400).json({
+          error:
+            "Listing already has this status"
+        });
+      }
+
+      if (
+        status === "active" &&
+        listing.status === "sold"
+      ) {
+        await client.query("ROLLBACK");
+
+        return res.status(400).json({
+          error:
+            "Sold listing cannot be reactivated"
+        });
+      }
+
+      const openOrders =
+        await client.query(
+          `SELECT id
+           FROM orders
+           WHERE listing_id=$1
+             AND (
+               status IN ('pending','paid')
+               OR payment_status='paid'
+             )
+           FOR UPDATE`,
+          [listingId]
+        );
+
+      if (openOrders.rowCount > 0) {
+        await client.query("ROLLBACK");
+
+        return res.status(409).json({
+          error:
+            "Listing has an open order; cancel or complete the order first"
+        });
+      }
+
+      const updated =
+        await client.query(
+          `UPDATE listings
+           SET status=$1
+           WHERE id=$2
+           RETURNING id,title,status`,
+          [
+            status,
+            listingId
+          ]
+        );
+
+      await audit(
+        client,
+        req.user.id,
+        `listing_${status}`,
+        "listing",
+        listingId
+      );
+
+      await client.query("COMMIT");
+
       res.json({
-        listing: result.rows[0]
+        listing:
+          updated.rows[0]
       });
+
     } catch (error) {
+
+      try {
+        await client.query(
+          "ROLLBACK"
+        );
+      } catch {}
+
       next(error);
+
+    } finally {
+      client.release();
     }
   }
 );
-
 app.post(
   "/api/orders",
   auth,
