@@ -2039,14 +2039,24 @@ async function loadOrders(){
     const isPaid =
       order.status === 'paid' ||
       order.payment_status === 'paid';
+const currentUser = user();
 
-    const canCancel =
-      !isPaid &&
-      order.status !== 'completed' &&
-      order.status !== 'cancelled';
+const isSeller =
+  currentUser?.role === 'seller';
+
+const isBuyer =
+  currentUser?.role === 'buyer';
+
+const isAdmin =
+  currentUser?.role === 'admin';
+
+const canCancel =
+  !isPaid &&
+  order.status !== 'completed' &&
+  order.status !== 'cancelled' &&
+  (isBuyer || isSeller || isAdmin);
 
     return `
-
       <div class="card"
            style="margin-bottom:10px">
 
