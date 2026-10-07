@@ -2148,7 +2148,53 @@ async function delivery(id){
     toast(error.message);
   }
 }
+async function cancelOrder(id){
 
+  if(!token()){
+    openAuth('login');
+    return;
+  }
+
+  if(!confirm(
+    'ยืนยันยกเลิก Order #' +
+    Number(id) +
+    ' ?'
+  )){
+    return;
+  }
+
+  try{
+
+    await api(
+      '/api/orders/' +
+      Number(id) +
+      '/status',
+      {
+        method:'PATCH',
+        body:JSON.stringify({
+          status:'cancelled'
+        })
+      }
+    );
+
+    toast(
+      'ยกเลิก Order #' +
+      Number(id) +
+      ' สำเร็จ'
+    );
+
+    await loadOrders();
+    await loadListings();
+
+  }catch(error){
+
+    toast(
+      'ยกเลิกออเดอร์ไม่ได้: ' +
+      (error.message || 'เกิดข้อผิดพลาด')
+    );
+
+  }
+}
 function openSell(){
 
   const u = user();
