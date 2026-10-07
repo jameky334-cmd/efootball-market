@@ -1537,10 +1537,19 @@ const isSeller =
           error: "Permission denied"
         });
       }
+if (
+  nextStatus === "completed" &&
+  isSeller &&
+  !isAdmin &&
+  !isBuyer
+) {
+  await client.query("ROLLBACK");
 
+  return res.status(403).json({
+    error:
+      "Seller can only cancel the order"
+  });
 }
-
-if (nextStatus === "completed") {
       if (nextStatus === "completed") {
         if (
           order.payment_status !==
