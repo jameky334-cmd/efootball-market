@@ -1388,7 +1388,7 @@ app.post(
 
       const order =
         result.rows[0];
-      if (
+  
         if (order.listing_status !== "active") {
   await client.query("ROLLBACK");
 
@@ -1396,15 +1396,15 @@ app.post(
     error: "Listing is not active"
   });
       }
-        order.status === "cancelled" ||
-        order.payment_status ===
-          "cancelled"
+        order.status !== "pending" ||
+order.payment_status ===
+  "cancelled"
       ) {
         await client.query("ROLLBACK");
 
         return res.status(409).json({
           error:
-            "Cancelled order cannot be paid"
+            "Only pending orders can be paid"
         });
       }
 
