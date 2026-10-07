@@ -967,18 +967,14 @@ app.patch(
         });
       }
 
-      if (
-        status === "active" &&
-        listing.status === "sold"
-      ) {
-        await client.query("ROLLBACK");
+      if (listing.status === "sold") {
+  await client.query("ROLLBACK");
 
-        return res.status(400).json({
-          error:
-            "Sold listing cannot be reactivated"
-        });
-      }
-
+  return res.status(409).json({
+    error:
+      "Sold listings cannot change status"
+  });
+}
       const openOrders =
         await client.query(
           `SELECT id
@@ -1390,11 +1386,22 @@ app.post(
         result.rows[0];
   
         if (
+  order.payment_status === "paid"
+) {
+  await client.query("COMMIT");
+
+  return res.json({
+    ok: true,
+    already_paid: true
+  });
+}
+
+if (
   order.listing_status !== "active"
 ) {
-        await client.query("ROLLBACK");
+  await client.query("ROLLBACK");
 
-        return res.status(409).json({
+  return res.status(409).json({
     error: "Listing is not active"
   });
 }
@@ -1411,32 +1418,20 @@ if (
   });
 }
 
-      if (
-        Math.abs(
-          Number(order.price) -
-          amount
-        ) > 0.01
-      ) {
-        await client.query("ROLLBACK");
+if (
+  Math.abs(
+    Number(order.price) -
+    amount
+  ) > 0.01
+) {
+  await client.query("ROLLBACK");
 
-        return res.status(400).json({
-          error:
-            "Payment amount does not match order"
-        });
-      }
-
-      if (
-        order.payment_status ===
-        "paid"
-      ) {
-        await client.query("COMMIT");
-
-        return res.json({
-          ok: true,
-          already_paid: true
-        });
-      }
-
+  return res.status(400).json({
+    error:
+      "Payment amount does not match order"
+  });
+}
+      
       const duplicate =
         await client.query(
           `SELECT id
