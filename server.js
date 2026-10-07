@@ -1111,13 +1111,14 @@ app.get(
   o.buyer_id = $1
   OR l.seller_id = $1
   OR $2 = 'admin'
-           ORDER BY o.created_at DESC
-           LIMIT 100
-[
-  req.user.id,
-  req.user.role
-]
-
+           
+ORDER BY o.created_at DESC
+LIMIT 100`,
+          [
+            req.user.id,
+            req.user.role
+          ]
+        );
       res.json({
         orders: result.rows
       });
@@ -1150,12 +1151,13 @@ app.get(
     OR l.seller_id = $2
     OR $3 = 'admin'
   )
-LIMIT 1
-      [
-  orderId,
-  req.user.id,
-  req.user.role
-]
+LIMIT 1`,
+          [
+            orderId,
+            req.user.id,
+            req.user.role
+          ]
+        );
 
       if (!result.rowCount) {
         return res.status(404).json({
