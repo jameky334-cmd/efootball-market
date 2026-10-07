@@ -1523,7 +1523,9 @@ app.patch(
       const isBuyer =
         Number(order.buyer_id) ===
         Number(req.user.id);
-
+const isSeller =
+  Number(order.seller_id) ===
+  Number(req.user.id);
       if (!isAdmin && !isBuyer) {
         await client.query("ROLLBACK");
 
