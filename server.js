@@ -1526,7 +1526,11 @@ app.patch(
 const isSeller =
   Number(order.seller_id) ===
   Number(req.user.id);
-      if (!isAdmin && !isBuyer) {
+      if (
+  !isAdmin &&
+  !isBuyer &&
+  !isSeller
+) {
         await client.query("ROLLBACK");
 
         return res.status(403).json({
@@ -1534,6 +1538,9 @@ const isSeller =
         });
       }
 
+}
+
+if (nextStatus === "completed") {
       if (nextStatus === "completed") {
         if (
           order.payment_status !==
