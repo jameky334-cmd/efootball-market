@@ -1277,10 +1277,8 @@ app.post(
     max: 120
   }),
   async (req, res, next) => {
-    const client =
-      await pool.connect();
-
-    try {
+    
+    
       if (!PAYMENT_WEBHOOK_SECRET) {
         return res.status(503).json({
           error:
@@ -1315,7 +1313,10 @@ app.post(
             "Invalid webhook secret"
         });
       }
+const client =
+  await pool.connect();
 
+try {
       const orderId =
         Number(req.body?.order_id);
 
