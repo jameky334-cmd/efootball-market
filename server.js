@@ -1389,24 +1389,27 @@ app.post(
       const order =
         result.rows[0];
   
-        if (order.listing_status !== "active") {
-  await client.query("ROLLBACK");
-
-  return res.status(409).json({
-    error: "Listing is not active"
-  });
-      }
-        order.status !== "pending" ||
-order.payment_status ===
-  "cancelled"
-      ) {
+        if (
+  order.listing_status !== "active"
+) {
         await client.query("ROLLBACK");
 
         return res.status(409).json({
-          error:
-            "Only pending orders can be paid"
-        });
-      }
+    error: "Listing is not active"
+  });
+}
+
+if (
+  order.status !== "pending" ||
+  order.payment_status === "cancelled"
+) {
+  await client.query("ROLLBACK");
+
+  return res.status(409).json({
+    error:
+      "Only pending orders can be paid"
+  });
+}
 
       if (
         Math.abs(
