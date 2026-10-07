@@ -1388,8 +1388,14 @@ app.post(
 
       const order =
         result.rows[0];
-
       if (
+        if (order.listing_status !== "active") {
+  await client.query("ROLLBACK");
+
+  return res.status(409).json({
+    error: "Listing is not active"
+  });
+      }
         order.status === "cancelled" ||
         order.payment_status ===
           "cancelled"
