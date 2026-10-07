@@ -1494,9 +1494,10 @@ app.patch(
 
       const result =
         await client.query(
-          `SELECT
-             o.*,
-             l.status AS listing_status
+          SELECT
+  o.*,
+  l.seller_id,
+  l.status AS listing_status
            FROM orders o
            JOIN listings l
              ON l.id=o.listing_id
