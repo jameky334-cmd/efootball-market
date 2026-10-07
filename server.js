@@ -1102,9 +1102,10 @@ app.get(
              o.payment_status,
              o.paid_at,
              o.created_at,
-             l.title,
-             l.description
-           FROM orders o
+               l.title,
+  l.description,
+  l.seller_id
+FROM orders o
            JOIN listings l
              ON l.id = o.listing_id
            WHERE
