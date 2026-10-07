@@ -1492,19 +1492,19 @@ app.patch(
 
       await client.query("BEGIN");
 
-      const result =
-        await client.query(
-          SELECT
-  o.*,
-  l.seller_id,
-  l.status AS listing_status
-           FROM orders o
-           JOIN listings l
-             ON l.id=o.listing_id
-           WHERE o.id=$1
-           FOR UPDATE`,
-          [orderId]
-        );
+const result =
+  await client.query(
+    `SELECT
+       o.*,
+       l.seller_id,
+       l.status AS listing_status
+     FROM orders o
+     JOIN listings l
+       ON l.id=o.listing_id
+     WHERE o.id=$1
+     FOR UPDATE`,
+    [orderId]
+  );
 
       if (!result.rowCount) {
         await client.query("ROLLBACK");
