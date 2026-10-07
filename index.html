@@ -2054,7 +2054,15 @@ const canCancel =
   !isPaid &&
   order.status !== 'completed' &&
   order.status !== 'cancelled' &&
-  (isBuyer || isSeller || isAdmin);
+  (
+    isBuyer ||
+    isAdmin ||
+    (
+      isSeller &&
+      Number(order.seller_id) ===
+      Number(currentUser.id)
+    )
+  );
 
     return `
       <div class="card"
