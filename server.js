@@ -1508,6 +1508,7 @@ if (
 } finally {
   client?.release();
 }
+    }
 );
 
 app.get(
