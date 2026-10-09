@@ -1313,12 +1313,14 @@ app.post(
             "Invalid webhook secret"
         });
       }
-const client =
-  await pool.connect();
+let client;
 
 try {
-      const orderId =
-        Number(req.body?.order_id);
+  client = await pool.connect();
+
+  const orderId =
+    Number(req.body?.order_id);
+
 
       const paymentRef =
         cleanText(
