@@ -1662,55 +1662,79 @@ amount <= 0
         });
       }
 
-      const order =
-        result.rows[0];
-  
-        if (
-  order.payment_status === "paid"
-) {
-  await client.query("COMMIT");
+      
+      const order = result.rows[0];
 
-  return res.json({
-    ok: true,
-    already_paid: true
-  });
-}
+      if (order.payment_status === "paid") {
+        await client.query("COMMIT");
+        return res.json({ ok: true, already_paid: true });
+      }
 
-if (
-  order.listing_status !== "active"
-) {
-  await client.query("ROLLBACK");
+      if (order.listing_status !== "active") {
+        await client.query("ROLLBACK");
+        return res.status(409).json({ error: "Listing is not active" });
+      }
 
-  return res.status(409).json({
-    error: "Listing is not active"
-  });
-}
+      if (
+        order.status !== "pending" ||
+        order.payment_status === "cancelled"
+      ) {
+        await client.query("ROLLBACK");
+        return res.status(409).json({
+          error: "Only pending orders can be paid"
+        });
+      }
 
-if (
-  order.status !== "pending" ||
-  order.payment_status === "cancelled"
-) {
-  await client.query("ROLLBACK");
+      if (
+        String(provider).toLowerCase() !== "opn" ||
+        !OPN_SECRET_KEY ||
+        !OPN_SECRET_KEY.startsWith("skey_") ||
+        !order.payment_ref ||
+        String(order.payment_ref) !== String(paymentRef)
+      ) {
+        await client.query("ROLLBACK");
+        return res.status(400).json({
+          error: "Payment reference/provider verification failed"
+        });
+      }
 
-  return res.status(409).json({
-    error:
-      "Only pending orders can be paid"
-  });
-}
+      const opnResponse = await fetch(
+        "https://api.omise.co/charges/" +
+          encodeURIComponent(String(order.payment_ref)),
+        {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Basic " +
+              Buffer.from(OPN_SECRET_KEY + ":").toString("base64")
+          }
+        }
+      );
 
-if (
-  Math.abs(
-    Number(order.price) -
-    amount
-  ) > 0.01
-) {
-  await client.query("ROLLBACK");
+      if (!opnResponse.ok) {
+        await client.query("ROLLBACK");
+        return res.status(502).json({
+          error: "Unable to verify payment with Opn"
+        });
+      }
 
-  return res.status(400).json({
-    error:
-      "Payment amount does not match order"
-  });
-}
+      const verifiedCharge = await opnResponse.json();
+      const expectedSatang = Math.round(Number(order.price) * 100);
+
+      if (
+        verifiedCharge.id !== String(order.payment_ref) ||
+        verifiedCharge.status !== "successful" ||
+        verifiedCharge.paid !== true ||
+        String(verifiedCharge.currency).toLowerCase() !== "thb" ||
+        !Number.isSafeInteger(Number(verifiedCharge.amount)) ||
+        Number(verifiedCharge.amount) !== expectedSatang
+      ) {
+        await client.query("ROLLBACK");
+        return res.status(400).json({
+          error: "Opn payment is not successful or amount does not match"
+        });
+          }
+        
       
       const duplicate =
         await client.query(
