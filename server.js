@@ -16,6 +16,7 @@ const JWT_SECRET = process.env.JWT_SECRET;
 const FRONTEND_ORIGIN = process.env.FRONTEND_ORIGIN || "";
 const NODE_ENV = process.env.NODE_ENV || "development";
 const PAYMENT_WEBHOOK_SECRET = process.env.PAYMENT_WEBHOOK_SECRET || "";
+const OPN_SECRET_KEY = process.env.OPN_SECRET_KEY || "";
 const DELIVERY_ENCRYPTION_KEY = process.env.DELIVERY_ENCRYPTION_KEY || "";
 const ADMIN_BOOTSTRAP_SECRET = process.env.ADMIN_BOOTSTRAP_SECRET || "";
 
