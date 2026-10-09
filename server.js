@@ -1347,7 +1347,8 @@ try {
         !Number.isInteger(orderId) ||
         !paymentRef ||
         !provider ||
-        !Number.isFinite(amount)
+!Number.isFinite(amount) ||
+amount <= 0
       ) {
         return res.status(400).json({
           error:
