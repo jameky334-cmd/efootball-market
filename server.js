@@ -1271,6 +1271,281 @@ LIMIT 1`,
   }
 );
 
+/* Opn PromptPay: สร้าง QR และตรวจสอบการชำระเงิน */
+
+app.post("/api/payments/opn/charge", auth, async (req, res) => {
+  try {
+    if (!OPN_SECRET_KEY || !OPN_SECRET_KEY.startsWith("skey_")) {
+      return res.status(503).json({ error: "ยังไม่ได้ตั้งค่า Opn Secret Key" });
+    }
+
+    const orderId = Number(req.body?.order_id);
+    if (!Number.isSafeInteger(orderId) || orderId <= 0) {
+      return res.status(400).json({ error: "เลขออเดอร์ไม่ถูกต้อง" });
+    }
+
+    const result = await pool.query(
+      `SELECT o.id, o.buyer_id, o.status, o.payment_status,
+              o.payment_ref, l.price, l.status AS listing_status
+       FROM orders o
+       JOIN listings l ON l.id = o.listing_id
+       WHERE o.id = $1`,
+      [orderId]
+    );
+
+    if (!result.rowCount) {
+      return res.status(404).json({ error: "ไม่พบออเดอร์" });
+    }
+
+    const order = result.rows[0];
+
+    if (
+      Number(order.buyer_id) !== Number(req.user.id) &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(403).json({ error: "ไม่มีสิทธิ์ชำระออเดอร์นี้" });
+    }
+
+    if (order.status !== "pending" || order.listing_status !== "active") {
+      return res.status(409).json({ error: "ออเดอร์นี้ไม่พร้อมให้ชำระเงิน" });
+    }
+
+    // ถ้ามี Charge เดิม ให้ใช้ Charge เดิม ไม่สร้างซ้ำ
+    if (order.payment_ref && order.payment_status !== "failed") {
+      const oldResponse = await fetch(
+        "https://api.omise.co/charges/" +
+          encodeURIComponent(order.payment_ref),
+        {
+          headers: {
+            Authorization:
+              "Basic " +
+              Buffer.from(OPN_SECRET_KEY + ":").toString("base64")
+          }
+        }
+      );
+
+      const oldCharge = await oldResponse.json();
+
+      if (
+        oldResponse.ok &&
+        oldCharge.status !== "failed" &&
+        oldCharge.status !== "expired"
+      ) {
+        return res.json({
+          order_id: order.id,
+          charge_id: oldCharge.id,
+          status: oldCharge.status,
+          qr_url:
+            oldCharge.source?.scannable_code?.image?.download_uri || null
+        });
+      }
+    }
+
+    const amount = Math.round(Number(order.price) * 100);
+
+    if (!Number.isSafeInteger(amount) || amount < 2000 || amount > 15000000) {
+      return res.status(400).json({
+        error: "ยอด PromptPay ต้องอยู่ระหว่าง 20 ถึง 150,000 บาท"
+      });
+    }
+
+    const body = new URLSearchParams();
+    body.set("amount", String(amount));
+    body.set("currency", "THB");
+    body.set("source[type]", "promptpay");
+    body.set("metadata[order_id]", String(order.id));
+
+    const response = await fetch("https://api.omise.co/charges", {
+      method: "POST",
+      headers: {
+        Authorization:
+          "Basic " +
+          Buffer.from(OPN_SECRET_KEY + ":").toString("base64"),
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body
+    });
+
+    const charge = await response.json();
+
+    if (!response.ok) {
+      console.error("Opn charge error:", response.status, charge);
+      return res.status(502).json({
+        error: "สร้าง QR ไม่สำเร็จ กรุณาตรวจสอบการเปิดใช้ PromptPay ใน Opn"
+      });
+    }
+
+    const qrUrl = charge.source?.scannable_code?.image?.download_uri;
+
+    if (!charge.id || !qrUrl) {
+      return res.status(502).json({
+        error: "Opn ไม่ได้ส่ง QR กลับมา"
+      });
+    }
+
+    await pool.query(
+      `UPDATE orders
+       SET payment_provider = 'opn',
+           payment_ref = $1,
+           payment_status = 'pending'
+       WHERE id = $2 AND status = 'pending'`,
+      [charge.id, order.id]
+    );
+
+    return res.status(201).json({
+      order_id: order.id,
+      charge_id: charge.id,
+      status: charge.status,
+      qr_url: qrUrl
+    });
+  } catch (err) {
+    console.error("Opn charge error:", err);
+    return res.status(500).json({ error: "เกิดข้อผิดพลาดในการสร้าง QR" });
+  }
+});
+
+
+app.get("/api/payments/opn/status/:orderId", auth, async (req, res) => {
+  try {
+    if (!OPN_SECRET_KEY || !OPN_SECRET_KEY.startsWith("skey_")) {
+      return res.status(503).json({ error: "ยังไม่ได้ตั้งค่า Opn Secret Key" });
+    }
+
+    const orderId = Number(req.params.orderId);
+
+    const result = await pool.query(
+      `SELECT o.id, o.buyer_id, o.status, o.payment_status,
+              o.payment_ref, o.payment_provider, o.listing_id, l.price
+       FROM orders o
+       JOIN listings l ON l.id = o.listing_id
+       WHERE o.id = $1`,
+      [orderId]
+    );
+
+    if (!result.rowCount) {
+      return res.status(404).json({ error: "ไม่พบออเดอร์" });
+    }
+
+    const order = result.rows[0];
+
+    if (
+      Number(order.buyer_id) !== Number(req.user.id) &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(403).json({ error: "ไม่มีสิทธิ์ตรวจสอบออเดอร์นี้" });
+    }
+
+    if (order.payment_status === "paid") {
+      return res.json({ order_id: order.id, paid: true, status: "successful" });
+    }
+
+    if (!order.payment_ref || order.payment_provider !== "opn") {
+      return res.status(409).json({ error: "ออเดอร์นี้ยังไม่มีรายการชำระ Opn" });
+    }
+
+    const response = await fetch(
+      "https://api.omise.co/charges/" + encodeURIComponent(order.payment_ref),
+      {
+        headers: {
+          Authorization:
+            "Basic " +
+            Buffer.from(OPN_SECRET_KEY + ":").toString("base64")
+        }
+      }
+    );
+
+    const charge = await response.json();
+
+    if (!response.ok) {
+      return res.status(502).json({ error: "ตรวจสอบสถานะกับ Opn ไม่สำเร็จ" });
+    }
+
+    const expectedAmount = Math.round(Number(order.price) * 100);
+
+    if (
+      charge.id !== order.payment_ref ||
+      Number(charge.amount) !== expectedAmount ||
+      charge.currency !== "THB"
+    ) {
+      return res.status(409).json({ error: "ข้อมูลยอดเงินไม่ตรงกับออเดอร์" });
+    }
+
+    if (charge.status !== "successful") {
+      return res.json({
+        order_id: order.id,
+        paid: false,
+        status: charge.status || "pending"
+      });
+    }
+
+    // ล็อกออเดอร์และสินค้า ป้องกันยืนยันซ้ำหรือขายสินค้าซ้ำ
+    const client = await pool.connect();
+
+    try {
+      await client.query("BEGIN");
+
+      const locked = await client.query(
+        `SELECT o.status, o.payment_status, o.listing_id,
+                l.status AS listing_status
+         FROM orders o
+         JOIN listings l ON l.id = o.listing_id
+         WHERE o.id = $1
+         FOR UPDATE OF o, l`,
+        [order.id]
+      );
+
+      if (!locked.rowCount) {
+        await client.query("ROLLBACK");
+        return res.status(404).json({ error: "ไม่พบออเดอร์" });
+      }
+
+      const current = locked.rows[0];
+
+      if (current.payment_status !== "paid") {
+        if (
+          current.status !== "pending" ||
+          current.listing_status !== "active"
+        ) {
+          await client.query("ROLLBACK");
+          return res.status(409).json({
+            error: "ออเดอร์หรือสินค้าไม่พร้อมยืนยันการชำระ"
+          });
+        }
+
+        await client.query(
+          `UPDATE orders
+           SET status = 'paid', payment_status = 'paid'
+           WHERE id = $1 AND status = 'pending'`,
+          [order.id]
+        );
+
+        await client.query(
+          `UPDATE listings SET status = 'sold'
+           WHERE id = $1 AND status = 'active'`,
+          [order.listing_id]
+        );
+      }
+
+      await client.query("COMMIT");
+    } catch (err) {
+      await client.query("ROLLBACK");
+      throw err;
+    } finally {
+      client.release();
+    }
+
+    return res.json({
+      order_id: order.id,
+      paid: true,
+      status: "successful"
+    });
+  } catch (err) {
+    console.error("Opn status error:", err);
+    return res.status(500).json({ error: "ตรวจสอบการชำระเงินไม่สำเร็จ" });
+  }
+});
+
+
 app.post(
   "/api/payments/webhook",
   rateLimit({
