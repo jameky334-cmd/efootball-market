@@ -1495,13 +1495,15 @@ if (
         status: "paid"
       });
     } catch (error) {
-      try {
-        await client.query("ROLLBACK");
-      } catch {}
+  if (client) {
+    try {
+      await client.query("ROLLBACK");
+    } catch {}
+  }
 
-      next(error);
+  next(error);
     } finally {
-      client.release();
+      client?.release();
     }
   }
 );
