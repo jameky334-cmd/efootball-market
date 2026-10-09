@@ -1503,10 +1503,11 @@ if (
   }
 
   next(error);
-    } finally {
-      client?.release();
-    }
-  }
+    
+    
+} finally {
+  client?.release();
+}
 );
 
 app.get(
